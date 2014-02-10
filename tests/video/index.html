@@ -1,0 +1,251 @@
+<html>
+	<head>
+		<title>Adelle Video Test</title>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script type="text/javascript" src="swfobject/swfobject.js"></script>
+		<script type="text/javascript">
+		//swfobject.registerObject("myId", "9.0.0", "expressInstall.swf");
+		</script>
+		<style>
+			#container object {
+				float: left;
+				opacity: 1;
+			}
+			body {
+				background-color: #000;
+				color: #fff;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Video Test</h1>
+		<button id="pause_videos">Pause/Play</button>
+		<button id="mute_all">Mute/UnMute All</button>
+		<button id="increase_v_all">Increase Volume on All</button>
+		<button id="decrease_v_all">Decrease Volume on All</button>
+		<button id="go_to_start">Restart Videos</button>
+		<button id="go_to_middle">Seek to Middle of Video</button>
+		<button id="go_to_random">Seek To Random Time Video</button>
+		<button id="resize">Resize Videos</button>
+		<input id="num_of_videos" type="text"> Videos (Max 19)
+		<div id="container"></div>
+		
+		<script type="text/javascript">
+			var Video = function(id, index){
+				this.id = id;
+				this.index = index;
+				this.w = Math.random() * 200 + 100;
+				this.h = this.w * (9/16);
+				this.init();
+				this.volume = 50;
+				this.muted = false;
+			};
+
+			Video.prototype.init = function(){
+				// The video to load.
+				$("<div id='c" + this.id + "'></div>").appendTo("#container");
+				this.elementId = "video" + this.id;
+				// Lets Flash from another domain call JavaScript
+				var params = { allowScriptAccess: "always" };
+				// The element id of the Flash embed
+				var atts = { id: this.elementId, class: "video" };
+				// All of the magic handled by SWFObject (http://code.google.com/p/swfobject/)
+				 swfobject.embedSWF("http://www.youtube.com/apiplayer?" +
+                     "version=3&enablejsapi=1&playerapiid=player" + this.index, 
+                     "c" + this.id, this.w, this.h, "9", null, null, params, atts);
+			}
+
+			Video.prototype.createPlayer = function(){
+				this.player = document.getElementById(this.elementId);
+				this.player.cueVideoById(this.id);
+				this.player.setVolume();
+				this.playing = false;
+			}
+
+			Video.prototype.playPause = function(){
+				if(this.playing){
+					this.player.pauseVideo();
+					this.playing = false;
+				}
+				else {
+					this.player.playVideo();
+					this.playing = true;
+				}
+			}
+
+			Video.prototype.muteUnmute = function(){
+				if(this.muted){
+					this.unMute();
+				}
+				else {
+					this.muted();
+				}
+			}
+
+			Video.prototype.mute = function(){
+				this.player.mute();
+				this.muted = true;
+			}
+
+			Video.prototype.unMute = function(){
+				this.player.unMute();
+				this.muted = false;
+			}
+
+			Video.prototype.increaseVolume = function(){
+				this.volume = this.volume + 5; 
+				if(this.volume > 100) {
+					this.volume = 100;
+				}
+				this.setVolume();
+			}
+
+			Video.prototype.decreaseVolume = function(){
+				this.volume = this.volume - 5; 
+				if(this.volume < 0) {
+					this.volume = 0;
+				}
+				this.setVolume();
+			}
+
+			Video.prototype.setVolume = function(){
+				this.player.setVolume(this.volume);
+			}
+
+			Video.prototype.goToMiddle = function(){
+				var seconds = this.player.getDuration() / 2;
+				this.goToSpecificTime(seconds);
+			}
+
+			Video.prototype.goToStart = function(){
+				this.goToSpecificTime(0);
+			}
+
+			Video.prototype.goToRandom = function(){
+				var seconds = parseInt(this.player.getDuration() * Math.random());
+				this.goToSpecificTime(seconds);
+			}
+
+			Video.prototype.goToSpecificTime = function(seconds){
+				this.player.seekTo(seconds);
+			}
+
+			Video.prototype.resize = function(){
+				this.w = this.player.width  = Math.random() * 200 + 100;
+				this.h = this.player.height = this.w * (9/16);
+			}
+
+			// Start Function
+
+			var videos = [];
+			var video_ids = [
+				"OkVti5vHnP8", // Benny Sings - Big Brown Eyes
+				"aF90W6ZeTGA", // Benny Sings - Can You Believe It's Magic 
+				"dSG1mFLz8ds", // Benny Sings - Little Donna
+				"VZhUu-08_Cg", // Benny Sings - Let Me In (Official Video)
+				"pIgZ7gMze7A", // Wham! - Wake Me Up Before You Go-Go
+				"Nj6SO_yKMe8", // Los Campesinos - You! Me! Dancing!
+				"_ku_ZMPJ5M0", // By Your Hand - Los Campesinos!
+				"Uev2J_cBHjQ", // Broken Social Scene - 7/4 Shoreline
+				"PF8o0W9a0no", // Broken Social Scene - Sweetest Kill
+				"Va0ezWC2du4", // Delta Spirit - "California"
+				"ADifNNwa1P8", // Delta Spirit :: Bushwick Blues
+				"YvbOWR-Zvdg", // Blood Orange - Forget It
+				"Z5UP4LzYz5k", // Seu Jorge - Carolina
+				"XwT2iiKeg1g", // Seu Jorge - Tive Razao
+				"J43T8rEOg-I", // Amadou & Mariam feat. Manu Chao - Sénégal Fast Food
+				"Ry3WFtlDSco", // the whitest boy alive 1517 live at ic berlin
+				"W7N5Oq9fl68", // The Whitest Boy Alive live in Prague 
+				"OczRpuGKTfY", // Kings Of Convenience - I'd Rather Dance With You
+				"RGLquqhSnxw", // Bubamara - Saban Bajramovic
+				"V6nvFTs7Has"  // Roos Jonker - New Dress
+			 ];
+			for(var i = 0; i < video_ids.length; i++){
+				videos.push(new Video(video_ids[i], videos.length));
+			}
+			function onYouTubePlayerReady(playerId) {
+				var id = parseInt(playerId.replace("player",""))
+				videos[id].createPlayer();
+			}
+
+			$("#pause_videos").click(function(){
+				for(var i = 0; i < videos.length; i++){
+					videos[i].playPause();
+				}
+			});
+
+			$("#increase_v_all").click(function(){
+				for(var i = 0; i < videos.length; i++){
+					videos[i].increaseVolume();
+				}
+			});
+
+			$("#decrease_v_all").click(function(){
+				for(var i = 0; i < videos.length; i++){
+					videos[i].decreaseVolume();
+				}
+			});
+
+			$("#mute_all").click(function(){
+				for(var i = 0; i < videos.length; i++){
+					videos[i].muteUnmute();
+				}
+			});
+
+			$("#go_to_middle").click(function(){
+				for(var i = 0; i < videos.length; i++){
+					videos[i].goToMiddle();
+				}
+			});
+
+			$("#go_to_start").click(function(){
+				for(var i = 0; i < videos.length; i++){
+					videos[i].goToStart();
+				}
+			});
+
+			$("#go_to_random").click(function(){
+				for(var i = 0; i < videos.length; i++){
+					videos[i].goToRandom();
+				}
+			});
+
+			$("#resize").click(function(){
+				for(var i = 0; i < videos.length; i++){
+					videos[i].resize();
+				}
+			});
+
+			$(document).on( "mouseover", ".video", function(){
+				for(var i = 0; i < videos.length; i++){
+					if(videos[i].elementId == this.id){
+						videos[i].unMute();
+					}
+					else {
+						videos[i].mute();
+					}
+				}
+			});
+
+			$(document).on( "mouseout", ".video", function(){
+				for(var i = 0; i < videos.length; i++){
+					videos[i].unMute();
+				}
+			})
+
+			$("#num_of_videos").change(function(){
+				$(".video").remove();
+				var value = $("#num_of_videos").val();
+				console.log(value);
+				videos = [];
+				if(value >= 19 ){
+					value = 19;
+				}
+				for(var i = 0; i < value; i++){
+					videos.push(new Video(video_ids[i], videos.length));
+				}
+			});
+
+		</script>
+	</body>
+</html>
