@@ -1,10 +1,39 @@
 var body = document.getElementsByTagName("body")[0];
 
+var NodeMapOptions = function() {
+	this.charge = -200;
+	this.linkDistance = 10;
+	this.radius = 8;
+	this.alpha = 0.1;	
+	if(page_options['size'] == 200){
+		this.charge = -58;
+		this.linkDistance = 30;
+		this.radius = 5.5;
+		this.alpha = 0.3;		
+	}
+	if(page_options['size'] == 400){
+		this.charge = -235;
+		this.linkDistance = 27;
+		this.radius = 6.1;
+		this.alpha = 0.3;		
+	}
+	if(page_options['size'] == 600){
+		this.charge = -222;
+		this.linkDistance = 22;
+		this.radius = 6.8;
+		this.alpha = 0.37;		
+	}
+
+};
+
 var NodeMap = function(){
 
 	var that = this;
 
-	var width = 960, height = 500;
+	var width = 200, height = 200;
+	if(page_options['size']){
+		var width = page_options['size'], height = page_options['size'];
+	}
 	var color = d3.scale.category10();
 	var nodes = [],links = [];
 	var color = d3.scale.category20();
@@ -12,8 +41,8 @@ var NodeMap = function(){
 	var force = d3.layout.force()
 		.nodes(nodes)
 		.links(links)
-		.charge(-400)
-		.linkDistance(20)
+		.charge(node_map_options.charge)
+		.linkDistance(node_map_options.linkDistance)
 		.size([width, height])
 		.on("tick", function(){
 			that.tick();
@@ -29,19 +58,37 @@ var NodeMap = function(){
 	this.i = 0;
 
 	this.init = function(){
+
+		$body = $("body"); 
+		$body.append('<br><br>');
 		for(i in projects){
-			$body = $("body"); 
-			$body.append("<button id='node-" + projects[i].id + "' class='node-button' data-id='" + projects[i].id + "'>" + projects[i].title + "</span>");
+		
+			$body.append("<button \
+				id='node-" + projects[i].id + "' \
+				class='node-button' \
+				data-id='" + projects[i].id + "' \
+				style='background-color: " + color(projects[i].id) + "' \
+				>" + projects[i].title + "</span>");
 		}
 
-		$('.node-button').click(function(){
-			var id = $(this).data('id');
-			that.addNode(projects[id]);
-		})
-
+		if(page_options['display-all-on-load']){
+			for(i in projects){
+				that.addNode(projects[i]);
+			}
+		}
+		else {
+			$('.node-button').click(function(){
+				var id = $(this).data('id');
+				that.addNode(projects[id]);
+			})
+		}
 	}
 
 	this.start = function() {
+
+		force
+			.charge(node_map_options.charge)
+			.linkDistance(node_map_options.linkDistance)
 
 		link = link.data(force.links(), function(d) { 
 			return d.source.id + "-" + d.target.id; 
@@ -63,8 +110,8 @@ var NodeMap = function(){
 			.append("circle")
 			.attr("class", function(d) { 
 				return "node " + d.id; })
-			.attr("r", 8)
-			.attr("fill", function(d, i) { return color(i); })
+			.attr("r", node_map_options.radius)
+			.attr("fill", function(d, i) { return color(d.id); })
 			.on("click", function(d){
 				console.log(d.id + " - " + d.title);
 			})
@@ -72,6 +119,9 @@ var NodeMap = function(){
 		node
 			.exit()
 			.remove();
+
+		node
+			.attr("r", node_map_options.radius);
 
 		force.start();
 	}
@@ -89,32 +139,35 @@ var NodeMap = function(){
 	}
 
 	this.addNode = function(node_object){
-		console.log(" -- add node -- ");
 		try{
-			var new_node = {
-				id: node_object.id,
-				title: node_object.title
-			};
-			nodes.push(new_node);
-			var new_links = _.where(project_relationships, { source: node_object.id });
-			var new_links = _.union(new_links, _.where(project_relationships, { target: node_object.id }));
-			for(i in new_links){
-				if(_.where(nodes, {id: new_links[i].source}).length > 0
-				&& _.where(nodes, {id: new_links[i].target}).length > 0 ){
-					console.log(' ^ appended link');
-					var source = _.where(nodes, {id: new_links[i].source})[0];
-					var target = _.where(nodes, {id: new_links[i].target})[0];
-					var source_index = _.indexOf(nodes, source);
-					var target_index = _.indexOf(nodes, target);
-					links.push({source: source_index, target: target_index});
+			if(_.where(nodes, { id: node_object.id }).length === 0) {
+				// Add Node
+				var new_node = {
+					id: node_object.id,
+					title: node_object.title
+				};
+				nodes.push(new_node);
+				this.start();
+
+				// Find Links
+				var new_links = _.where(project_relationships, { source: node_object.id });
+				var new_links = _.union(new_links, _.where(project_relationships, { target: node_object.id }));
+				for(i in new_links){
+					if(_.where(nodes, {id: new_links[i].source}).length > 0
+					&& _.where(nodes, {id: new_links[i].target}).length > 0 ){
+						var source = _.where(nodes, {id: new_links[i].source})[0];
+						var target = _.where(nodes, {id: new_links[i].target})[0];
+						var source_index = _.indexOf(nodes, source);
+						var target_index = _.indexOf(nodes, target);
+						links.push({source: source_index, target: target_index});
+						this.start();
+					}
 				}
 			}
-			this.start();
 		}
 		catch(err){
-			console.error("Error");
+			console.error("Error - Could Not Add Node");
 		}
-		
 	}
 
 	this.deleteNode = function(){
@@ -140,21 +193,52 @@ var NodeMap = function(){
 		});
 	}
 
+	setInterval(function(){
+		force.alpha(node_map_options.alpha);
+	}, 100);
+
 	this.init(); 
 }
 
-var node_map = new NodeMap(); 
-var add_node_button = document.getElementById("add-node");
-var remove_node_button = document.getElementById("remove-node");
+var node_map_options;
 
-body.onkeypress = function(event){
-	if(event.keyCode === 112){
-		node_map.print(); 
+window.onload = function() {
+
+	// Start Node Options
+	node_map_options = new NodeMapOptions();	
+
+	// Create Node Map
+	var node_map = new NodeMap(node_map_options); 
+
+	// Start GUI
+	var gui = new dat.GUI();
+	var c = [];
+	c[c.length] = gui.add(node_map_options, 'charge', -400, 0);
+	c[c.length] = gui.add(node_map_options, 'linkDistance', 0, 30);
+	c[c.length] = gui.add(node_map_options, 'radius', 0, 16);
+	c[c.length] = gui.add(node_map_options, 'alpha', 0, 2);
+	for(i in c){
+		c[i].onChange(function(value) {
+			// Start
+			console.log("start");
+			node_map.start(); 
+		});
+	};
+
+	// Bind Key Buttons
+	body.onkeypress = function(event){
+		if(event.keyCode === 112){
+			node_map.print(); 
+		}
+		else if(event.keyCode === 13){
+			node_map.deleteNode(); 
+		}
+		else {
+			console.log(event.keyCode);
+		}
 	}
-	else if(event.keyCode === 13){
-		node_map.deleteNode(); 
-	}
-	else {
-		console.log(event.keyCode);
-	}
-}
+
+};
+
+
+
