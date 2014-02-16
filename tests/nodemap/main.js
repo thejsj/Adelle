@@ -78,6 +78,7 @@ var NodeMap = function(){
 		}
 		else {
 			$('.node-button').click(function(){
+				$(this).addClass('disabled');
 				var id = $(this).data('id');
 				that.addNode(projects[id]);
 			})
@@ -114,6 +115,7 @@ var NodeMap = function(){
 			.attr("fill", function(d, i) { return color(d.id); })
 			.on("click", function(d){
 				console.log(d.id + " - " + d.title);
+				alert(d.id + " - " + d.title);
 			})
 
 		node
