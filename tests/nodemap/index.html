@@ -1,128 +1,81 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<style>
-
-.link {
-	stroke: #000;
-	stroke-width: 1.5px;
-}
-
-.node {
-	fill: #000;
-	stroke: #fff;
-	stroke-width: 1.5px;
-}
-
-.node.a { fill: #1f77b4; }
-.node.b { fill: #ff7f0e; }
-.node.c { fill: #2ca02c; }
-
-svg {
-	border: solid 1px #c7c7c7;
-}
-
-</style>
+<head>
+	<meta charset="utf-8">
+	<link href="style.css" rel="stylesheet" >
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="jquery-2.1.0.min.js"></script>
+	<script src="underscore.js"></script>
+</head>
 <body>
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script>
+	<!-- BODY -->
+	<script>
 
-var width = 960,
-		height = 500;
+	var projects = [{ 
+			id : 0,
+			title : "Body Space"
+		},{
+			id : 1,
+			title : "Weeping Walls"
+		},{
+			id : 2,
+			title : "Locomotion"
+		},{
+			id : 3,
+			title : "The Wave Hotel"
+		},{
+			id : 4,
+			title : "BoboBall"
+		},{
+			id : 5,
+			title : "Storage String"
+		},{
+			id : 6,
+			title : "Fitness Second"
+		},{
+			id : 7,
+			title : "Man Power Tower"
+		},{
+			id : 8,
+			title : "Jershey Streets"
+		},{
+			id : 9,
+			title : "Body Storminy"
+		},{
+			id : 10,
+			title : "Jazz Festival"
+		},{
+			id : 11,
+			title : "4 Feasts"
+		},{
+			id : 12,
+			title : "Pressing Play"
+		},{
+			id : 13,
+			title : "Free Play"
+		},{
+			id : 14,
+			title : "GeeLab Monthly"
+		},{
+			id : 15,
+			title : "DOHA"
+		}];
 
-var color = d3.scale.category10();
+	var project_relationships = [
+		{ source: 0, target: 4},
+		{ source: 1, target: 3},
+		{ source: 2, target: 7},
+		{ source: 3, target: 12},
+		{ source: 4, target: 10},
+		{ source: 4, target: 11},
+		{ source: 5, target: 8},
+		{ source: 6, target: 9},
+		{ source: 7, target: 11},
+		{ source: 7, target: 12},
+		{ source: 7, target: 13},
+		{ source: 9, target: 12},
+		{ source: 12, target: 13}
+	];
 
-var nodes = [],
-		links = [];
-
-var force = d3.layout.force()
-	.nodes(nodes)
-	.links(links)
-	.charge(-400)
-	.linkDistance(120)
-	.size([width, height])
-	.on("tick", tick);
-
-var svg = d3.select("body").append("svg")
-	.attr("width", width)
-	.attr("height", height);
-
-var node = svg.selectAll(".node"),
-	link = svg.selectAll(".link");
-
-// 1. Add three nodes and three links.
-setTimeout(function() {
-	var a = {id: "a"}, b = {id: "b"}, c = {id: "c"};
-	nodes.push(a, b, c);
-	links.push({source: a, target: b}, {source: a, target: c}, {source: b, target: c});
-	start();
-}, 0);
-
-function start() {
-	console.log('start');
-	link = link.data(force.links(), function(d) { 
-		return d.source.id + "-" + d.target.id; 
-	});
-
-	link
-		.enter()
-		.insert("line", ".node")
-		.attr("class", "link");
-
-	link
-		.exit()
-		.remove();
-
-	node = node.data(force.nodes(), function(d) { return d.id;});
-
-	node
-		.enter()
-		.append("circle")
-		.attr("class", function(d) { 
-			return "node " + d.id; })
-		.attr("r", 8);
-
-	node
-		.exit()
-		.remove();
-
-	force.start();
-}
-
-function tick() {
-
-	node
-		.attr("cx", function(d) { return d.x; })
-		.attr("cy", function(d) { return d.y; })
-
-	link
-		.attr("x1", function(d) { return d.source.x; })
-		.attr("y1", function(d) { return d.source.y; })
-		.attr("x2", function(d) { return d.target.x; })
-		.attr("y2", function(d) { return d.target.y; });
-}
-
-var body = document.getElementsByTagName("body")[0];
-
-var i = 0; 
-
-body.onclick = function(){
-	var i = Math.max(0, parseInt(Math.random() * nodes.length, 10) - 1);
-	console.log(i + " / " + nodes.length);
-	var n = nodes[0];
-	console.log(n);
-	var e = {id: "node-" + i};
-	try{
-		console.log("push");
-		nodes.push(e);
-		console.log("links");
-		links.push({source: n, target: e});
-		console.log("start");
-		start();
-	}
-	catch(err){
-		console.error("Error");
-	}
-	i = i + 1;
-}
-
-</script>
+	</script>
+	<script src="main.js"></script>
+</body>
