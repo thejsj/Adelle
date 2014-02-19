@@ -44,6 +44,20 @@ wp-content/themes/sportsbackers/.sass-cache/
 !tests/
 !tests/*
 
+# Ignore Videos
+**/*.mp4
+*.mp4
+**/*.ogg
+*.ogg
+**/*.webm
+*.webm
+**/*.avi
+*.avi
+
+# Ignore Python PYC files
+**/*.pyc
+*.pyc
+
 # Ignore OS generated files
 .orig
 .DS_Store

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<title>Video/Canvas Demo 1</title>
+
+<canvas id="canvas" height="600" width="600"></canvas>
+<video id="video1" controls loop>
+    <source src="converted-videos/benny-sings-big-brown-eyes-official-video.mp4" type="video/mp4">
+</video>
+
+<style>
+
+body {
+    background: black;
+}
+
+#canvas {  
+    width: 800px;
+    height: 80px;
+}
+
+video {
+    display: none;
+}
+
+</style>
+
+<script>
+
+var x_index = parseInt(Math.random() * 800, 10); 
+
+document.addEventListener('DOMContentLoaded', function(){
+
+    console.log('DOMContentLoaded');
+
+    var video = document.getElementById('video1');
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+
+    video.play();
+
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+
+    draw(video,context,canvas.width,canvas.height);
+
+},false);
+
+function draw(video,ctx,width,height) {
+    
+    x_index++;
+    if(x_index == 800){
+        x_index = 0;
+    }
+
+    ctx.drawImage(video,x_index,0,120,80);
+    setTimeout(draw,20,video,ctx,width,height);
+}
+
+</script>
