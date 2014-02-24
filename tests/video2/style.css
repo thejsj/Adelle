@@ -1,0 +1,24 @@
+body {
+    background: white;
+}
+
+canvas {  
+    width: 800px;
+    height: 80px;
+    margin: 0;
+    width: 0;
+    cursor: pointer;
+    margin-top: -4px;
+}
+
+canvas:hover {
+	background-color: #000;
+}
+
+video {
+    display: none;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}

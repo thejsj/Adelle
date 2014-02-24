@@ -24,6 +24,9 @@ class Video:
 
         self.absolute_filename =  self.original_absolute_filename
 
+        # Rename File
+        self.rename_file()
+
         # Convert File
         self.convert_video()
 
