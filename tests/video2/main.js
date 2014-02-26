@@ -7,21 +7,34 @@
         that.video_background_color_alpha = 0.01;
         that.speed = 390;
         that.start_on_init = 9;
+        that.video_quality = 'low';
         return that;
     };
+
+    var video_quality_heights = {
+        'low' : 80,
+        'medium' : 160,
+        'high' : 240,
+    }
+
+    var video_quality_widths = {
+        'low' : 120,
+        'medium' : 240,
+        'high' : 360,
+    }
 
     var video_filenames, id = 0, video, videos = [], video_options, re_init;
 
     video_filenames = [
-        'asa-asha-why-cant-we-official-music-video-hd.mp4',
-        'benny-sings-big-brown-eyes-official-video.mp4',
-        'benny-sings-let-me-in-videoclip.mp4',
-        'benny-sings-little-donna-official-video.mp4',
-        'broken-social-scene-7-4-shoreline.mp4',
-        'los-campesinos-you-me-dancing.mp4',
-        'mathieu-chedid-je-dis-aime.mp4',
-        'mathieu-chedid-qui-de-nous-deux.mp4',
-        'seu-jorge-changes.mp4',
+        'asa-asha-why-cant-we-official-music-video-hd',
+        'benny-sings-big-brown-eyes-official-video',
+        'benny-sings-let-me-in-videoclip',
+        'benny-sings-little-donna-official-video',
+        'broken-social-scene-7-4-shoreline',
+        'los-campesinos-you-me-dancing',
+        'mathieu-chedid-je-dis-aime',
+        'mathieu-chedid-qui-de-nous-deux',
+        'seu-jorge-changes',
     ];
 
     video_options = options();
@@ -38,22 +51,28 @@
         obj.canvas_id = 'canvas-' + obj.index;
         obj.video_id  = 'video-' + obj.index;
         obj.video_filename = video_filename; 
+        obj.video_height = video_quality_heights[video_options.video_quality];
+        obj.video_width = video_quality_widths[video_options.video_quality];
 
         // Create HTML for Elements
         obj.canvas_html = '<canvas id="' + obj.canvas_id + '"></canvas>';
         obj.video_html = '<video id="' + obj.video_id + '" controls loop>\
-            <source src="converted-videos/' + obj.video_filename + '" type="video/mp4">\
+            <source src="converted-videos/' + obj.video_filename + '-'+ video_options.video_quality +'.mp4" type="video/mp4">\
         </video>';
+
+        console.log(obj.video_filename + '-'+ video_options.video_quality +'.mp4');
 
         // Create Vars for Canvas
         obj.x_index = parseInt(Math.random() * 800, 10); 
         obj.direction = ( obj.index % 2 === 0 ) ? 'right' : 'left';
         obj.playing = false; 
-        obj.canvas_width  = 800; 
-        obj.canvas_height = 80; 
+        obj.canvas_width  = 1200; 
+        obj.canvas_height = obj.video_height; 
         obj.frame = 0; 
 
         that.init = function(){
+
+            console.log("Init");
 
             // Append Canvas and Video Tag
             $("#videos-container")
@@ -66,7 +85,7 @@
             obj.video = obj.$video.get(0);
             obj.canvas = obj.$canvas.get(0);
             obj.$canvas.width( obj.canvas_width );
-            obj.$canvas.height( obj.canvas_height );
+            obj.$canvas.height( obj.video_height );
 
             // Bind Can Play Element
             obj.$video.on('canplay', function(){
@@ -82,6 +101,7 @@
         }
 
         that.init_video = function(){
+            console.log("Init Video");
             if( !obj.playing ){
                 that.init_canvas();
                 obj.playing = true; 
@@ -92,9 +112,10 @@
         }
 
         that.init_canvas = function(){
+            console.log("Init Canvas");
             obj.ctx = obj.canvas.getContext('2d');
-            obj.canvas.width = 800;
-            obj.canvas.height = 80;
+            obj.canvas.width = obj.canvas_width;
+            obj.canvas.height = obj.video_height; 
             obj.video.play();
             requestAnimationFrame(that.draw);
         }
@@ -113,17 +134,17 @@
             // Draw Video Image
             if(obj.direction == 'right'){
                 obj.x_index = obj.x_index + ( video_options.speed / 100 );
-                if(obj.x_index >= 800){
+                if(obj.x_index >= obj.canvas_width){
                     obj.x_index = 0;
                 }
             }
             else if(obj.direction == 'left'){
                 obj.x_index = obj.x_index - ( video_options.speed / 100 );
                 if(obj.x_index <= 0){
-                    obj.x_index = 800;
+                    obj.x_index = obj.canvas_width;
                 }
             }
-            obj.ctx.drawImage(obj.video,obj.x_index,0,120,80);
+            obj.ctx.drawImage(obj.video,obj.x_index,0,obj.video_width,obj.video_height);
             // Loop
             obj.frame++;
             requestAnimationFrame(that.draw);
@@ -174,24 +195,32 @@
         c[c.length] = gui.addColor(video_options, 'video_background_color');
         c[c.length] = gui.add(video_options, 'video_background_color_alpha', 0, 0.1 );
         c[c.length] = gui.add(video_options, 'speed', 0, 1000);
-        c[c.length] = gui.add(video_options, 'start_on_init', 0, video_filenames.length - 1);
+        c[c.length] = gui.add(video_options, 'start_on_init', 0, 10);
+        c[c.length] = gui.add(video_options, 'video_quality', ['low', 'medium', 'high']);
         for(i in c){
             c[0].onChange(function(value) {
                 $("body")
                     .css("background", video_options.background_color);
             });
             c[4].onChange(function(value) {
-                clearTimeout(re_init);
-                re_init = setTimeout(function(){
-                    // Start
-                    videos = [];
-                    id = 0;
-                    $("#videos-container").html(''); 
-                    initAllVideos(); 
-                }, 500);
+                ReInitAllVideos();
+            });
+            c[5].onChange(function(value) {
+                ReInitAllVideos();
             });
         };
     });
+
+    function ReInitAllVideos(){
+        clearTimeout(re_init);
+        re_init = setTimeout(function(){
+            // Start
+            videos = [];
+            id = 0;
+            $("#videos-container").html(''); 
+            initAllVideos(); 
+        }, 500);
+    }
     
 
 })(window.jQuery);
