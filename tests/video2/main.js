@@ -8,6 +8,8 @@
         that.speed = 390;
         that.start_on_init = 9;
         that.video_quality = 'low';
+        that.canvas_opacity = 1;
+        that.video_opacity = 1;
         return that;
     };
 
@@ -144,7 +146,12 @@
                     obj.x_index = obj.canvas_width;
                 }
             }
+            // Draw Image
+            obj.ctx.save();
+            obj.ctx.globalAlpha = video_options.video_opacity;
             obj.ctx.drawImage(obj.video,obj.x_index,0,obj.video_width,obj.video_height);
+            obj.ctx.restore();
+
             // Loop
             obj.frame++;
             requestAnimationFrame(that.draw);
@@ -197,6 +204,8 @@
         c[c.length] = gui.add(video_options, 'speed', 0, 1000);
         c[c.length] = gui.add(video_options, 'start_on_init', 0, 10).step(1);
         c[c.length] = gui.add(video_options, 'video_quality', ['low', 'medium', 'high']);
+        c[c.length] = gui.add(video_options, 'canvas_opacity', 0, 1 );
+        c[c.length] = gui.add(video_options, 'video_opacity', 0, 1 );
         for(i in c){
             c[0].onChange(function(value) {
                 $("body")
@@ -207,6 +216,9 @@
             });
             c[5].onChange(function(value) {
                 ReInitAllVideos();
+            });
+            c[6].onChange(function(value) {
+                $("canvas").css('opacity', video_options.canvas_opacity);
             });
         };
     });
