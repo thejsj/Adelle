@@ -195,7 +195,7 @@
         c[c.length] = gui.addColor(video_options, 'video_background_color');
         c[c.length] = gui.add(video_options, 'video_background_color_alpha', 0, 0.1 );
         c[c.length] = gui.add(video_options, 'speed', 0, 1000);
-        c[c.length] = gui.add(video_options, 'start_on_init', 0, 10);
+        c[c.length] = gui.add(video_options, 'start_on_init', 0, 10).step(1);
         c[c.length] = gui.add(video_options, 'video_quality', ['low', 'medium', 'high']);
         for(i in c){
             c[0].onChange(function(value) {
