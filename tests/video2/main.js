@@ -2,7 +2,7 @@
 
     var options = function() {
         that = {}; 
-        that.background_color = "#FFFFFF";
+        that.background_color = [ 255, 255, 255 ];
         that.video_background_color = [ 255, 255, 255 ];
         that.video_background_color_alpha = 0.01;
         that.speed = 390;
