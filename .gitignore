@@ -38,6 +38,7 @@ wp-content/*
 !wp-content/themes/
 wp-content/themes/*
 !wp-content/themes/adelle/
+!wp-content/themes/adelle/*
 
 # Don't Ignore Tests
 !tests/
