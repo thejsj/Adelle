@@ -72,3 +72,7 @@ Thumbs.db
 # Database Backups
 database-backups
 database-backups/*
+
+# Foundation
+/bower_components/*
+/node_modules/*
