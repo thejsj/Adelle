@@ -101,5 +101,5 @@ module.exports = function(grunt) {
 	// Tasks
 	grunt.registerTask('default', ['build','watch']);
 	grunt.registerTask('build', ['sass', 'browserify']);
-	grunt.registerTask('deploy', ['sass', 'browserify','uglify', 'cssmin']);
+	grunt.registerTask('deploy', ['build', 'uglify', 'cssmin']);
 }
