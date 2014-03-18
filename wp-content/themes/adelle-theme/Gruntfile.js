@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 				  outputStyle: 'expanded'
 				},
 				files: {
-				  'styles.css': 'scss/app.scss'
+				  'css/style.css': 'scss/app.scss'
 				}        
 			}
 		},
@@ -77,8 +77,8 @@ module.exports = function(grunt) {
 			minify: {
 				expand: true,
 				cwd: './',
-				src: ['style.css'],
-				dest: 'style.css',
+				src: ['css/style.css'],
+				dest: './',
 				ext: '.css'
 			}
 		},
