@@ -37,8 +37,7 @@ wp-content/*
 # specify (see the commented-out example for a hint on how to do this.)
 !wp-content/themes/
 wp-content/themes/*
-!wp-content/themes/sportsbackers/
-wp-content/themes/sportsbackers/.sass-cache/
+!wp-content/themes/adelle/
 
 # Don't Ignore Tests
 !tests/
