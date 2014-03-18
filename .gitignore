@@ -68,3 +68,7 @@ wp-content/themes/sportsbackers/.sass-cache/
 ehthumbs.db
 Thumbs.db
 !README.md
+
+# Database Backups
+database-backups
+database-backups/*
