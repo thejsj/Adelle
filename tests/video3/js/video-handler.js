@@ -75,6 +75,7 @@ var VideoHandler;
             __self.canvas_width  = __self.element_width; 
             __self.canvas_height = global.getWindowWidth(); 
 
+            __self.dummy_frame = 0; 
             __self.frame = 0; 
 
             // Create HTML for Elements
@@ -226,7 +227,14 @@ var VideoHandler;
                 __self.ctx.restore();
 
                 // Loop
-                __self.frame++;
+                __self.dummy_frame++;
+                if( __self.uses_video ){
+                    __self.frame += 1;
+                }
+                else if( __self.dummy_frame % 20 === 0 ){
+                    __self.frame += 1;
+                }
+                
                 requestAnimationFrame(self.draw);
             }
 
