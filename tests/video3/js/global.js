@@ -2,7 +2,7 @@ var Global;
 
 (function($){
 
-	Global = function(){
+	Global = function( callback ){
 
 		var self = {}, __self = {};
 
@@ -10,8 +10,17 @@ var Global;
 
 			__self.window_height = $(window).height();
 	        __self.window_width  = $(window).width();
+	        __self.fallback_view = true;
+
 	        self.$videos_container = $("#videos-container");
 
+	        $.getJSON( "js/fallback-images.json", function( data ) {
+	        	self.fallback_images = data;
+	        	console.log( self.fallback_images );
+	        	if( typeof callback !== 'undefined' ){
+	        		callback(); 
+	        	}
+			});
 		}
 
 		self.setTotalWidth = function( new_width ){
@@ -35,7 +44,11 @@ var Global;
 			return __self.total_width;
 		}
 
-		self.init(); 
+		self.getIfFallback = function(){
+			return __self.fallback_view; 
+		}
+
+		self.init( callback ); 
 		return self; 
 
 	}

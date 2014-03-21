@@ -72,7 +72,7 @@ class Video:
         args = shlex.split(cmd)
         pp = subprocess.call(args)
 
-        cmd = "ffmpeg -i " + self.absolute_filename + " -f image2 -vf fps=fps=1/5 " + self.thumbnails_directory + "/" + self.slug + "%d.png"
+        cmd = "ffmpeg -i " + self.absolute_filename + " -f image2 -vf fps=fps=1/5 " + self.thumbnails_directory + "/" + self.slug + "_%d.png"
         args = shlex.split(cmd)
         pp = subprocess.call(args)
         

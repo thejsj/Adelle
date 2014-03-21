@@ -4,7 +4,7 @@ var VideoHandler;
 
     VideoHandler = function( global ){
 
-        var video_filenames, id = 0, video, videos = [], video_options, re_init, self = {}, color;
+        var project_names, id = 0, video, videos = [], video_options, re_init, self = {}, color;
 
         color = d3.scale.category10();
 
@@ -34,7 +34,7 @@ var VideoHandler;
             'high' : 240,
         };
 
-        video_filenames = [
+        project_names = [
             'asa-asha-why-cant-we-official-music-video-hd',
             'benny-sings-big-brown-eyes-official-video',
             'benny-sings-little-donna-official-video',
@@ -47,117 +47,201 @@ var VideoHandler;
             'mathieu-chedid-qui-de-nous-deux',
         ];
 
-        video = function(video_filename){
+        video = function(project_name, images){
 
             // Set Main Containers
             var self = {}; // Public
-            var obj = {}; // Private
+            var __self = {}; // Private
 
             // Set Basic IDS
-            obj.index = id;
+            __self.index = id;
             id = id + 1;
-            obj.canvas_id = 'canvas-' + obj.index;
-            obj.video_id  = 'video-' + obj.index;
-            obj.video_filename = video_filename; 
-            obj.color = color( id );
+            __self.canvas_id = 'canvas-' + __self.index;
+            __self.video_id  = 'video-' + __self.index;
+            __self.project_name = project_name; 
+            __self.fallback_images = global.fallback_images[ __self.project_name ];
+            __self.uses_video = !global.getIfFallback(); 
+            __self.color = color( id );
 
-            obj.video_height = video_quality_heights[video_options.video_quality];
-            obj.video_width = video_quality_widths[video_options.video_quality];
-
-            // Create HTML for Elements
-            obj.canvas_html = '<canvas id="' + obj.canvas_id + '"></canvas>';
-            obj.video_html = '<video id="' + obj.video_id + '" controls loop>\
-                <source src="converted-videos/' + obj.video_filename + '-'+ video_options.video_quality +'.mp4" type="video/mp4">\
-            </video>';
+            __self.element_height = video_quality_heights[video_options.video_quality];
+            __self.element_width = video_quality_widths[video_options.video_quality];
 
             // Create Vars for Canvas
-            obj.y_index = parseInt(Math.random() * 800, 10); 
-            obj.x_index = 0;
-            obj.direction = ( obj.index % 2 === 0 ) ? 'right' : 'left';
-            obj.playing = false; 
+            __self.y_index = parseInt(Math.random() * 800, 10); 
+            __self.x_index = 0;
+            __self.direction = ( __self.index % 2 === 0 ) ? 'right' : 'left';
+            __self.bound = false; 
 
-            obj.canvas_width  = obj.video_width; 
-            obj.canvas_height = global.getWindowWidth(); 
+            __self.canvas_width  = __self.element_width; 
+            __self.canvas_height = global.getWindowWidth(); 
 
-            obj.frame = 0; 
+            __self.frame = 0; 
+
+            // Create HTML for Elements
+            __self.canvas_html = '<canvas id="' + __self.canvas_id + '"></canvas>';
+
+            __self.video_html = '<video id="' + __self.video_id + '" controls loop>\
+                <source src="converted-videos/' + __self.project_name + '-'+ video_options.video_quality +'.mp4" type="video/mp4">\
+            </video>';
 
             self.getWidth = function(){
-                return obj.canvas_width;
+                return __self.canvas_width;
             }
 
             self.init = function(){
 
-                // Append Canvas and Video Tag
+                // Append Canvas
                 global.$videos_container
-                    .append(obj.canvas_html)
-                    .append(obj.video_html);
+                    .append(__self.canvas_html)
+                __self.$canvas = $("#" + __self.canvas_id);
+                __self.canvas = __self.$canvas.get(0);
+                __self.$canvas.width( __self.canvas_width );
+                __self.$canvas.height( __self.canvas_height );
+
+                if( __self.uses_video ){
+                    self.init_video( self.init_canvas ); 
+                }
+                else {
+                    self.init_fallback( self.init_canvas ); 
+                }
+            }
+
+            self.init_video = function( callback ){
+
+                // Append Video Tag
+                global.$videos_container
+                    .append(__self.video_html);
                 
                 // Get Video and Canvas Element
-                obj.$video  = $("#" + obj.video_id);
-                obj.$canvas = $("#" + obj.canvas_id);
-                obj.video = obj.$video.get(0);
-                obj.canvas = obj.$canvas.get(0);
-                obj.$canvas.width( obj.canvas_width );
-                obj.$canvas.height( obj.canvas_height );
+                __self.$video  = $("#" + __self.video_id);
+                __self.video = __self.$video.get(0);              
 
                 // Bind Can Play Element
-                obj.$video.on('canplay', function(){
-                    if(video_options.start_on_init <= obj.index){
-                        obj.$canvas.click(function(){
-                            self.init_video(); 
-                        });
-                    }
-                    else {
-                        self.init_video(); 
+                __self.$video.on('canplay', function(){
+                    self.bind_video();
+                    if( typeof callback !== 'undefined' ){
+                        callback();
                     }
                 });
             }
 
-            self.init_video = function(){
-                if( !obj.playing ){
-                    self.init_canvas();
-                    obj.playing = true; 
-                    obj.$canvas.click(function(){
-                        alert("Hello There! You have clicked on video #" + (obj.index + 1));
+            self.init_fallback = function( callback ){
+
+                // Transform all images items into a dictionary
+                for( i in __self.fallback_images ){
+                    var image_file = "converted-videos/" + __self.project_name + "/" + __self.fallback_images[i];
+                    __self.fallback_images[i] = {
+                        filename : image_file,
+                        loaded : false,
+                    }
+                }
+                console.log( __self.fallback_images )
+
+                // Load ALl Images In the Array
+                for(i in __self.fallback_images){
+                    var this_image = __self.fallback_images[i];
+                    this_image.img = $("<img />")
+                        .attr('src', this_image.filename)
+                        .data('index', i)
+                        .data('id', this_image.filename)
+                        .load(function() {
+                            var $this = $(this);
+                            var index = $this.data('index');
+                            if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
+                               console.error('Broken Image : ' + __self.fallback_images[i].filename );
+                            }
+                            __self.fallback_images[index].loaded = true; 
+                            var number_of_images_not_loaded = 0; 
+                            for(i in __self.fallback_images){
+                                if( __self.fallback_images[i].loaded !== true ){
+                                    number_of_images_not_loaded += 1;  
+                                }
+                            }
+                            if( number_of_images_not_loaded === 0 ){
+                                if( typeof callback !== 'undefined' ){
+                                    callback();
+                                }
+                            }
+                        }); 
+                    this_image.img = this_image.img[0];
+                }
+            }
+
+            self.bind_canvas_click = function(){
+                if( !__self.bound ){
+                    __self.bound = true; 
+                    __self.$canvas.on('touchstart mouseup', function(){
+                        alert("Hello There! You have clicked on video #" + (__self.index + 1));
                     });
                 }
             }
 
             self.init_canvas = function(){
-                obj.ctx = obj.canvas.getContext('2d');
-                obj.canvas.width = obj.canvas_width;
-                obj.canvas.height = obj.canvas_height; 
-                obj.video.play();
+
+                // Bind Click to cnavas
+                self.bind_canvas_click(); 
+
+                // Get Canvas Element
+                __self.ctx = __self.canvas.getContext('2d');
+                __self.canvas.width = __self.canvas_width;
+                __self.canvas.height = __self.canvas_height;
+
+                if( __self.uses_video ){
+                    __self.video.play();
+                }
+                else {
+                    
+                }
                 requestAnimationFrame(self.draw);
             }
 
             self.draw = function(){
                 // Fade Other Frames Away Slowly
-                obj.ctx.fillStyle = self.parseArrayToRGBA( obj.color, video_options.video_background_color_alpha );
+                __self.ctx.fillStyle = self.parseArrayToRGBA( __self.color, video_options.video_background_color_alpha );
 
-                obj.ctx.fillRect(0,0,obj.canvas.width,obj.canvas.height);
+                __self.ctx.fillRect(0,0,__self.canvas.width,__self.canvas.height);
                 // Draw Video Image
-                if(obj.direction == 'right'){
-                    obj.y_index = obj.y_index + ( video_options.speed / 100 );
-                    if(obj.y_index >= obj.canvas_height){
-                        obj.y_index = 0;
+                if(__self.direction == 'right'){
+                    __self.y_index = __self.y_index + ( video_options.speed / 100 );
+                    if(__self.y_index >= __self.canvas_height){
+                        __self.y_index = 0;
                     }
                 }
-                else if(obj.direction == 'left'){
-                    obj.y_index = obj.y_index - ( video_options.speed / 100 );
-                    if(obj.y_index <= 0){
-                        obj.y_index = obj.canvas_height;
+                else if(__self.direction == 'left'){
+                    __self.y_index = __self.y_index - ( video_options.speed / 100 );
+                    if(__self.y_index <= 0){
+                        __self.y_index = __self.canvas_height;
                     }
                 }
                 // Draw Image
-                obj.ctx.save();
-                obj.ctx.globalAlpha = video_options.video_opacity;
-                obj.ctx.drawImage(obj.video,obj.x_index,obj.y_index,obj.video_width,obj.video_height);
-                obj.ctx.restore();
+                __self.ctx.save();
+                __self.ctx.globalAlpha = video_options.video_opacity;
+
+                if( __self.uses_video ){
+                    self.draw_video(); 
+                }
+                else {
+                    self.draw_fallback(); 
+                }
+                __self.ctx.restore();
 
                 // Loop
-                obj.frame++;
+                __self.frame++;
                 requestAnimationFrame(self.draw);
+            }
+
+            self.draw_video = function(){
+               __self.ctx.drawImage(__self.video,__self.x_index,__self.y_index,__self.element_width,__self.element_height);
+            }
+
+            self.draw_fallback = function(){
+                var current_image = __self.fallback_images[ __self.frame % __self.fallback_images.length ].img;
+                if( debug_mode ){
+                    console.log( 'Frame : ' + __self.frame )
+                    console.log( current_image );
+                }
+                
+                __self.ctx.drawImage( current_image,__self.x_index,__self.y_index,__self.element_width,__self.element_height);
             }
 
             self.parseArrayToRGBA = function(color, alpha){
@@ -191,8 +275,8 @@ var VideoHandler;
         };
 
         var initAllVideos = function(){
-            for(i in video_filenames){
-                videos.push( video(video_filenames[i]) );
+            for(i in project_names){
+                videos.push( video(project_names[i]) );
             }
 
             // Get Width
