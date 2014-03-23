@@ -46,7 +46,7 @@ var Video;
 	    // Frames
 	    __self.dummy_frame = 0; 
 	    __self.frame = 0; 
-	    __self.frame_change_speed = 100; 
+	    __self.frame_change_speed = 35; 
 	    __self.frame_in_which_to_change = Math.floor( Math.random() * __self.frame_change_speed ); 
 
 	    // Create HTML for Elements
