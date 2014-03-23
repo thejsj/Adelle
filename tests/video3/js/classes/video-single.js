@@ -163,7 +163,7 @@ var Video;
 	    __self.bind_canvas_click = function(){
 	        if( !__self.bound ){
 	            __self.bound = true; 
-	            __self.$canvas.on('touchstart mouseup', function(){
+	            __self.$canvas.on('touchend mouseup', function(){
 	                alert("Hello There! You have clicked on video #" + (__self.index + 1));
 	            });
 	        }
