@@ -282,7 +282,7 @@ var Video;
 	        if( __self.uses_video ){
 	            __self.frame += 1;
 	        }
-	        else if( __self.dummy_frame % 20 === 0 ){
+	        else if( __self.dummy_frame % 100 === 0 ){
 	            __self.frame += 1;
 	        }
 	        
