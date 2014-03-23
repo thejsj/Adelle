@@ -17,7 +17,7 @@ var Options;
             __self.global_options.background_color = [ 255, 255, 255 ];
             __self.global_options.video_background_color = [ 255, 255, 255 ];
             __self.global_options.video_background_color_alpha = 0.009;
-            __self.global_options.speed = 40;
+            __self.global_options.speed = 400;
             __self.global_options.start_on_init = 10;
             __self.global_options.video_quality = 'high';
             __self.global_options.canvas_opacity = 1;
