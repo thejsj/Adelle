@@ -46,6 +46,8 @@ var Video;
 	    // Frames
 	    __self.dummy_frame = 0; 
 	    __self.frame = 0; 
+	    __self.frame_change_speed = 100; 
+	    __self.frame_in_which_to_change = Math.floor( Math.random() * __self.frame_change_speed ); 
 
 	    // Create HTML for Elements
 	    __self.canvas_html = '<canvas id="' + __self.canvas_id + '"></canvas>';
@@ -282,7 +284,7 @@ var Video;
 	        if( __self.uses_video ){
 	            __self.frame += 1;
 	        }
-	        else if( __self.dummy_frame % 100 === 0 ){
+	        else if( __self.dummy_frame % __self.frame_change_speed === __self.frame_in_which_to_change ){
 	            __self.frame += 1;
 	        }
 	        
