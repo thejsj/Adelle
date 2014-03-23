@@ -64,11 +64,12 @@ var Global;
 			__self.paused     = false; 
 
 			$(document).keypress(function(event){
-				if( event.keyCode === 32 ){
+				if( event.keyCode === 43 ){
+					console.clear();
 					__self.debug_mode = !__self.debug_mode;
 					console.log( 'debug_mode : ' + __self.debug_mode );
 				}
-				if( event.keyCode === 13 ){
+				else if( event.keyCode === 13 ){
 				    __self.paused = !__self.paused; 
 				    console.log( 'Pasued : ' + __self.paused );
 				}

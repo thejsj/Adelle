@@ -224,9 +224,6 @@ var Video;
 		            if( ( __self.x_index + __self.element_width ) >= __self.canvas_width ){
 		            	double_x_index = __self.x_index - __self.canvas_width;
 		            	double_draw    = true; 
-		            	if( global.get('debug_mode') && __self.index === 2 ){
-		            		console.log( double_x_index );
-		            	}
 		            }
 		            if(__self.x_index >= __self.canvas_width){
 		                __self.x_index = 0;
@@ -234,12 +231,9 @@ var Video;
 		        }
 		        else if(__self.direction == 'left'){
 		            __self.x_index = __self.x_index - ( global.options.get('speed') / 100 );
-		            if( ( __self.x_index + __self.element_width ) <= 0 ){
+		            if( ( __self.element_width - __self.x_index ) <= 0 ){
 		            	double_x_index = __self.x_index - __self.canvas_width;
 		            	double_draw    = true; 
-		            	if( global.get('debug_mode') && __self.index === 2 ){
-		            		console.log( double_x_index );
-		            	}
 		            }
 		            if(__self.x_index <= 0){
 		                __self.x_index = __self.canvas_width;
@@ -249,9 +243,10 @@ var Video;
 	        else {
 	        	if(__self.direction == 'up'){
 		            __self.y_index = __self.y_index + ( global.options.get('speed') / 100 );
-		            if( ( __self.y_index + __self.element_height ) >= __self.canvas_height  ){
-		            	double_y_index = ( __self.y_index + __self.element_height ) - __self.canvas_height;
-		            	double_draw    = true; 
+		            
+		            if( ( __self.element_height - __self.y_index ) <= 0  ){
+		            	double_y_index = __self.y_index - __self.canvas_height;
+		            	double_draw    = true;
 		            }
 		            if(__self.y_index >= __self.canvas_height){
 		                __self.y_index = 0;
@@ -259,9 +254,9 @@ var Video;
 		        }
 		        else if(__self.direction == 'down'){
 		            __self.y_index = __self.y_index - ( global.options.get('speed') / 100 );
-		            if( ( __self.y_index + __self.element_height ) <= 0  ){
-		            	double_y_index = ( __self.y_index + __self.element_height ) - __self.canvas_height;
-		            	double_draw    = true;
+		            if( ( __self.y_index + __self.element_height ) >= __self.canvas_height  ){
+		            	double_y_index = __self.y_index - __self.canvas_height;
+		            	double_draw    = true; 
 		            }
 		            if(__self.y_index <= 0){
 		                __self.y_index = __self.canvas_height;
