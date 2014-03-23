@@ -164,7 +164,7 @@ var Video;
 	        if( !__self.bound ){
 	            __self.bound = true; 
 	            __self.$canvas.on('touchend mouseup', function(){
-	            	if( !globa.get('dragging') ){
+	            	if( !global.get('dragging') ){
 	            		console.log( 'Touchend Video Activate' );
 	                	alert("Hello There! You have clicked on video #" + (__self.index + 1));
 	            	}
@@ -202,20 +202,45 @@ var Video;
 	     * @return 
 	     */
 	    self.draw = function(){
+
+	    	if( global.get('paused') ){
+	    		// Don't Render This Frame
+				requestAnimationFrame(self.draw);
+				return false; 
+	    	}
+
 	        // Fade Other Frames Away Slowly
 	        __self.ctx.fillStyle = self.parseArrayToRGBA( __self.color, global.options.get('video_background_color_alpha') );
 	       	__self.ctx.fillRect(0,0,__self.canvas.width,__self.canvas.height);
+
+	       	var double_draw    = false; 
+	       	var double_x_index = null;
+	       	var double_y_index = null; 
 
 	        // Get Positioning of Next Frame
 	        if( global.isOrientationHorizontal() ){
 	        	if(__self.direction == 'right'){
 		            __self.x_index = __self.x_index + ( global.options.get('speed') / 100 );
+		            if( ( __self.x_index + __self.element_width ) >= __self.canvas_width ){
+		            	double_x_index = __self.x_index - __self.canvas_width;
+		            	double_draw    = true; 
+		            	if( global.get('debug_mode') && __self.index === 2 ){
+		            		console.log( double_x_index );
+		            	}
+		            }
 		            if(__self.x_index >= __self.canvas_width){
 		                __self.x_index = 0;
 		            }
 		        }
 		        else if(__self.direction == 'left'){
 		            __self.x_index = __self.x_index - ( global.options.get('speed') / 100 );
+		            if( ( __self.x_index + __self.element_width ) <= 0 ){
+		            	double_x_index = __self.x_index - __self.canvas_width;
+		            	double_draw    = true; 
+		            	if( global.get('debug_mode') && __self.index === 2 ){
+		            		console.log( double_x_index );
+		            	}
+		            }
 		            if(__self.x_index <= 0){
 		                __self.x_index = __self.canvas_width;
 		            }
@@ -224,12 +249,20 @@ var Video;
 	        else {
 	        	if(__self.direction == 'up'){
 		            __self.y_index = __self.y_index + ( global.options.get('speed') / 100 );
+		            if( ( __self.y_index + __self.element_height ) >= __self.canvas_height  ){
+		            	double_y_index = ( __self.y_index + __self.element_height ) - __self.canvas_height;
+		            	double_draw    = true; 
+		            }
 		            if(__self.y_index >= __self.canvas_height){
 		                __self.y_index = 0;
 		            }
 		        }
 		        else if(__self.direction == 'down'){
 		            __self.y_index = __self.y_index - ( global.options.get('speed') / 100 );
+		            if( ( __self.y_index + __self.element_height ) <= 0  ){
+		            	double_y_index = ( __self.y_index + __self.element_height ) - __self.canvas_height;
+		            	double_draw    = true;
+		            }
 		            if(__self.y_index <= 0){
 		                __self.y_index = __self.canvas_height;
 		            }
@@ -241,10 +274,11 @@ var Video;
 	        __self.ctx.globalAlpha = global.options.get('video_opacity');
 
 	        if( __self.uses_video ){
-	            self.draw_video(); 
+	            self.draw_element( __self.video, double_draw, double_x_index, double_y_index ); 
 	        }
 	        else {
-	            self.draw_fallback(); 
+	        	var current_image = __self.fallback_images[ __self.frame % __self.fallback_images.length ].img;  
+	            self.draw_element( current_image, double_draw, double_x_index, double_y_index ); 
 	        }
 	        __self.ctx.restore();
 
@@ -265,18 +299,17 @@ var Video;
 	     * @method draw_video
 	     * @return 
 	     */
-	    self.draw_video = function(){
-	       __self.ctx.drawImage(__self.video,__self.x_index,__self.y_index,__self.element_width,__self.element_height);
-	    }
-
-	    /**
-	     * Description
-	     * @method draw_fallback
-	     * @return 
-	     */
-	    self.draw_fallback = function(){
-	        var current_image = __self.fallback_images[ __self.frame % __self.fallback_images.length ].img;        
-	        __self.ctx.drawImage( current_image,__self.x_index,__self.y_index,__self.element_width,__self.element_height);
+	    self.draw_element = function( element, double_draw, double_x_index, double_y_index ){
+	       __self.ctx.drawImage( element,__self.x_index,__self.y_index,__self.element_width,__self.element_height);
+	       if( double_draw !== false ){
+	       		if( double_x_index === null ){
+	       			double_x_index = __self.x_index;
+	       		}
+	       		if( double_y_index === null ){
+	       			double_y_index = __self.y_index;
+	       		}
+				__self.ctx.drawImage( element, double_x_index, double_y_index,__self.element_width,__self.element_height);
+	       }
 	    }
 
 	    /* * * * * * * * * * * * *

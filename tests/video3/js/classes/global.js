@@ -60,6 +60,23 @@ var Global;
 				__self.dragging = false;
 			});
 
+			__self.debug_mode = false; 
+			__self.paused     = false; 
+
+			$(document).keypress(function(event){
+				if( event.keyCode === 32 ){
+					__self.debug_mode = !__self.debug_mode;
+					console.log( 'debug_mode : ' + __self.debug_mode );
+				}
+				if( event.keyCode === 13 ){
+				    __self.paused = !__self.paused; 
+				    console.log( 'Pasued : ' + __self.paused );
+				}
+				else {
+				    console.log( event.keyCode );
+				}
+			});
+
 	        // Get Fallback Images
 	        $.getJSON( "js/data/fallback-images.json", function( data ) {
 	        	self.fallback_images = data;
