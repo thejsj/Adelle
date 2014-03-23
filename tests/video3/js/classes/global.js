@@ -34,6 +34,32 @@ var Global;
 	        // Manipulate DOM
 	        self.$body.addClass( 'projects-orientation-' + __self.orientation );
 
+	        // Bind Scrolling
+
+	        __self.dragging = false;
+
+	        $("body").on("touchmove", function(){
+				console.log( 'Dragging - True' );
+				__self.dragging = true;
+			});
+
+			$("body").on("touchend", function(event){
+				if( __self.dragging ){
+					console.log( 'Prevented Touch End' );
+					event.preventDefault();
+					event.stopPropagation(); 
+	          		return false;
+				}
+				else {
+					console.log( 'Allowed Touch End' );
+				}
+			});
+
+			$("body").on("touchstart", function(){
+				console.log( 'Dragging - False' );
+				__self.dragging = false;
+			});
+
 	        // Get Fallback Images
 	        $.getJSON( "js/data/fallback-images.json", function( data ) {
 	        	self.fallback_images = data;
@@ -41,6 +67,7 @@ var Global;
 	        		callback( self ); 
 	        	}
 			});
+
 			return self; 
 		}
 

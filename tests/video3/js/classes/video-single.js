@@ -164,7 +164,10 @@ var Video;
 	        if( !__self.bound ){
 	            __self.bound = true; 
 	            __self.$canvas.on('touchend mouseup', function(){
-	                alert("Hello There! You have clicked on video #" + (__self.index + 1));
+	            	if( !globa.get('dragging') ){
+	            		console.log( 'Touchend Video Activate' );
+	                	alert("Hello There! You have clicked on video #" + (__self.index + 1));
+	            	}
 	            });
 	        }
 	    }
