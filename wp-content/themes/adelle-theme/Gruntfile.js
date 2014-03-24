@@ -22,7 +22,11 @@ module.exports = function(grunt) {
 			sass: {
 				files: 'scss/**/*.scss',
 				tasks: ['sass']
-			}
+			},
+			browserify_footer: {
+				files: 'js/app/footer.js',
+				tasks: ['browserify:footer']
+			},
 		},
 
 		// Javascript
@@ -32,14 +36,14 @@ module.exports = function(grunt) {
 				src: 'js/app/header.js',
 				dest: 'js/header.js',
 				options: {
-					transform: ['debowerify', 'decomponentify', 'deamdify', 'deglobalify'],
+					transform: ['debowerify'], //, 'decomponentify', 'deamdify', 'deglobalify'],
 				},
 			},
 			footer: {
 				src: 'js/app/footer.js',
 				dest: 'js/footer.js',
 				options: {
-					transform: ['debowerify', 'decomponentify', 'deamdify', 'deglobalify'],
+					transform: ['debowerify'], //, 'decomponentify', 'deamdify', 'deglobalify'],
 				},
 			}
 		},

@@ -33,13 +33,9 @@ class Video:
 
         # Video Files
         self.original_absolute_filename = os.path.join(raw_videos_directory, self.filename + self.file_extension)
-        self.new_absolute_filename = os.path.join(raw_videos_directory, self.slug + self.file_extension)
-        self.converted_filename_mp4 = os.path.join(self.converted_videos_directory, self.slug + self.file_extension)
-        self.converted_filename_webm = os.path.join(self.converted_videos_directory, self.slug + '.webm')
+        self.new_absolute_filename   = os.path.join(raw_videos_directory, self.slug + self.file_extension)
 
         # Thumbnails Direcotry
-        self.converted_filename_webm = os.path.join(self.converted_videos_directory, self.slug + '.webm')
-
         self.absolute_filename =  self.original_absolute_filename
 
         # Rename File
@@ -56,16 +52,26 @@ class Video:
         os.rename(self.new_absolute_filename, self.original_absolute_filename)
         self.absolute_filename = self.original_absolute_filename
 
-    def get_converted_filename_mp4(self, size):
-        return os.path.join(self.converted_videos_directory, self.slug + "-" + size + self.file_extension)
+    def get_converted_filename(self, size, file_extension):
+        return os.path.join(self.converted_videos_directory, self.slug + "-" + size + file_extension)
 
     def convert_video(self):
         print "* Convert Video"
         for key,setting in settings.iteritems():
-            print setting['video_width'], " --------- ",setting['video_height']
-            cmd = "ffmpeg -i " + self.absolute_filename + " -threads 0 -vf \"scale="+setting['video_width']+":"+setting['video_height']+",crop="+setting['video_height']+":"+setting['video_height']+"\" -t 30 -an -r "+setting['frame_rate']+" " + self.get_converted_filename_mp4(key)
+            # MP4
+            cmd = "ffmpeg -i " + self.absolute_filename + " -threads 0 -vf \"scale="+setting['video_width']+":"+setting['video_height']+",crop="+setting['video_height']+":"+setting['video_height']+"\" -t 30 -an -r "+setting['frame_rate']+" " + self.get_converted_filename(key, '.mp4')
             args = shlex.split(cmd)
             pp = subprocess.call(args)
+            # WebM
+            cmd = "ffmpeg -i " + self.absolute_filename + " -threads 0 -vf \"scale="+setting['video_width']+":"+setting['video_height']+",crop="+setting['video_height']+":"+setting['video_height']+"\" -t 30 -an -r "+setting['frame_rate']+" -c:v libvpx -crf 10 -b:v 1M -c:a libvorbis " + self.get_converted_filename(key, '.webm')
+            args = shlex.split(cmd)
+            pp = subprocess.call(args)
+            # Ogg
+            cmd = "ffmpeg2theora -o " + self.get_converted_filename(key, '.ogv') + " " + self.get_converted_filename(key, '.mp4')
+            args = shlex.split(cmd)
+            pp = subprocess.call(args)
+
+
         print "* Generating Thumbnails"
         # Make Direcotry
         cmd = "mkdir " + self.thumbnails_directory

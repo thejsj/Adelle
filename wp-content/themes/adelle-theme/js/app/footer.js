@@ -1,7 +1,21 @@
-var $ = require('jquery');
-var _ = require('underscore');
-var Foundation = require('foundation');
+(function($){
 
-$(document).foundation();
+	var _          = require('underscore');
+	var Backbone   = require('backbone');
+	var Mustache   = require('mustache');
 
-console.log( _ );
+	$.post(
+	    MyAjax.ajaxurl,
+	    {
+	        action : 'get-projects', // This is the name of your PHP function in functions.php
+	    },
+	    function( response ) {
+	        console.log(response);
+	    }
+	);
+
+})(window.jQuery);
+
+
+
+

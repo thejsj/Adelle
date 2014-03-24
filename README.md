@@ -2,8 +2,31 @@
 
 A combination of plain html tests and a WordPress instalation.
 
-## Install FFMPEG
+# Insstructions For Mac
+
+## Install Homebrew
+
+Install homebrew to install packages for video conversion.
 
 ```
-brew install ffmpeg --with-fdk-aac --with-ffplay --with-freetype --with-openjpeg --with-theora --with-tools
+ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
 ```
+
+## Install FFMPEG
+
+Install ffmpeg to convert videos to mp4 and webm and generate thumbnails.
+
+```
+brew install ffmpeg --with-fdk-aac --with-ffplay --with-freetype --with-openjpeg --with-theora --with-tools --with-libvpx
+```
+
+# Install FFMPEG2THEORA
+
+Install ffmpeg2theora in order to convert mp4s to ogv for Firefox.
+
+```
+brew install ffmpeg2theora
+```
+
+# Converting Videos
+

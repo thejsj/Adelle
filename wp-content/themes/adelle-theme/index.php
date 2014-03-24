@@ -1,19 +1,27 @@
 <?php get_header(); ?>	
-<noscript>
-	<section class="container">	
-		<?php if(have_posts()) : ?>
-			<?php while(have_posts()) : ?>
-				<?php the_post(); ?> 						
-				<article class="content list-content">
-					<h2><a href="<?php the_permalink(); ?>"><?php the_title();?></a></h2>
-					<?php the_content(); ?>
-				</article>
-			<?php endwhile; ?>
-		<?php else : ?>
-			<h2>Sorry!</h2>
-			<p>No posts have been published just yet.</p>	
-		<?php endif;?>
-		<!-- POST LIST ENDS -->
-	</section>
-</noscript>
+<?php 
+
+	$queried_object = get_queried_object();
+
+    if(is_404()){
+        $this_object = new FourOFour();
+    }
+    elseif(is_front_page() || is_home()){
+        $this_object = new ProjectsView($queried_object);
+    }
+    elseif( is_singular() && is_page() ){
+        $this_object = new Page($queried_object);
+    }
+    elseif(is_singular() && is_single()){
+        $this_object = new Project($queried_object);
+    }
+    elseif(is_singular() && is_single()){
+        $this_object = new Single($queried_object);
+    }
+    else {
+        $this_object = new FourOFour();
+    }
+
+?>
+<?php $this_object->render_template(); ?>
 <?php get_footer(); ?>

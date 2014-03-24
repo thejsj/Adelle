@@ -12,10 +12,20 @@
 	<meta name="title" content="<?php wp_title( '|', true, 'right' ); ?>">
 	<meta name="description" content="<?php bloginfo('description');?>">
 	<meta name="google-site-verification" content="">
-	<meta name="author" content="thejsj">
+	<meta name="author" content="Adelle Lin">
 	<meta charset="utf-8" />
 	<meta name="Copyright" content="<?php echo ' Copyright' . bloginfo('name') . '. All Rights Reserved.';?>">
 	<meta name="viewport" id="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=10.0,initial-scale=1.0" />
 	<?php wp_head(); ?>
 </head>
 <body>
+	<h1>
+		<a href="<?php bloginfo('url'); ?>"><?php bloginfo('name'); ?></a>
+	</h1>
+	<!-- Main Menu -->
+	<nav>
+		<?php wp_nav_menu( array(
+			'theme_location'  => 'main_menu',
+		)); ?> 
+	</nav>
+	<div class="main-content">

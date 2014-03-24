@@ -1,15 +1,4 @@
 <?php
-	
-	// Load theme scripts
-	function load_theme_scripts() {
-		// Load Modernizr
-		wp_register_script('header', get_template_directory_uri()  . '/js/header.js', array(), '', false);
-		wp_enqueue_script('header');
-		// Load js plugins
-		wp_register_script('footer', get_template_directory_uri()  . '/js/footer.js', array(''), '', true);
-		wp_enqueue_script('footer');					
-	}
-	add_action( 'wp_enqueue_scripts', 'load_theme_scripts' );
 
 	// Add post thumbnail support and declare image sizes
 	add_theme_support('post-thumbnails');
@@ -64,5 +53,13 @@
 		add_image_size( 'video_still', 360, 240 ); 
 		add_image_size( 'video_still@2x', 360 * 2, 240 * 2 ); 
 	}
+
+	/*
+	 * Menus
+	 */
+
+	register_nav_menus( array(
+		'main_menu' => 'Main Menu'
+	));
 
 ?>
