@@ -25,6 +25,7 @@
     "underscore": "~1.6.0",
     "mustache": "~0.8.1",
     "jquery": "~2.1.0",
-    "jquery-browserify": "~1.8.1"
+    "jquery-browserify": "~1.8.1",
+    "grunt-mustache": "~0.1.6"
   }
 }
