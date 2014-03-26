@@ -29,7 +29,7 @@
 			$video_files = array();
 			$video_formats_keys = array( 'video_file_mp4', 'video_file_ogg', 'video_file_webm' );
 			foreach( $video_formats_keys as $key ){
-				array_push( $video_files, get_post_meta( $this->ID, $key ) );
+				array_push( $video_files, get_field( $key, $this->ID ) );
 			}
 			return $video_files;
 		}

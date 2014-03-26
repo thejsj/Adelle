@@ -23,5 +23,8 @@
     }
 
 ?>
-<?php $this_object->render_template(); ?>
+<noscript>
+    <?php $this_object->render_template(); ?>
+</noscript>
+<div id='project-home-container'></div>
 <?php get_footer(); ?>

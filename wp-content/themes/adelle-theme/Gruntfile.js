@@ -23,8 +23,12 @@ module.exports = function(grunt) {
 				files: 'scss/**/*.scss',
 				tasks: ['sass']
 			},
-			browserify_footer: {
-				files: 'js/app/*.js',
+			mustache : {
+				files: ['templates/*.mustache'],
+				tasks: ['mustache']
+			},
+			watchify: {
+				files: ['js/app/*.js','js/classes/*.js'],
 				tasks: ['watchify']
 			},
 			options: {
@@ -51,6 +55,11 @@ module.exports = function(grunt) {
 			}
 		},
 		watchify: {
+			// options : {
+			// 	insertGlobals: true,
+			// 	standalone: true,
+			// 	ignoreMissing: true,
+			// },
 			header: {
 				src: './js/app/header.js',
 				dest: './js/header.js',
@@ -58,6 +67,28 @@ module.exports = function(grunt) {
 			footer: {
 				src: './js/app/footer.js',
 				dest: './js/footer.js',
+			}
+		},
+		// mustache_precompile: {
+		// 	options: {},
+		// 	files: {
+		// 		'./js/templates/templates.js': [
+		// 			'templates/404.mustache', 
+		// 			'templates/projects-view.mustache',
+		// 			'templates/single-project.mustache',
+		// 			'templates/single.mustache',
+		// 		],
+		// 	},
+		// },
+		mustache: {
+			files : {
+				src: 'templates/',
+				dest: 'js/templates.js',
+				options: {
+					prefix: 'Templates = ',
+					postfix: '; \nmodule.exports = Templates;',
+					verbose: true
+				}
 			}
 		},
 
@@ -108,6 +139,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-browserify');
 	grunt.loadNpmTasks('grunt-watchify');
+	//grunt.loadNpmTasks('grunt-mustache-precompile');
+	grunt.loadNpmTasks('grunt-mustache');
 
 	// Images
 	grunt.loadNpmTasks('grunt-favicons');

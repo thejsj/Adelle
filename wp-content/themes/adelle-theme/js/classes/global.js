@@ -1,4 +1,8 @@
 var Options = require('../classes/options.js');
+var Models  = require('../classes/models.js');
+var Views   = require('../classes/views.js');
+var VideoHandler = require('../classes/video-handler.js');
+var ScrollHandler = require('../classes/scroll-handler.js');
 
 var Global = {};
 
@@ -9,7 +13,7 @@ var Global = {};
 	 * @param {} callback
 	 * @return self
 	 */
-	Global = function( data, callback ){
+	Global = function( projects_array ){
 
 		var self = {}, __self = {};
 
@@ -37,50 +41,36 @@ var Global = {};
 	        self.$body.addClass( 'projects-orientation-' + __self.orientation );
 
 	        // Bind Scrolling
+	        __self.bindScrolling(); 
 
-	        __self.dragging = false;
-
-	        $("body").on("touchmove", function(){
-				__self.dragging = true;
-			});
-
-			$("body").on("touchend", function(event){
-				if( __self.dragging ){
-					event.preventDefault();
-					event.stopPropagation(); 
-	          		return false;
-				}
-			});
-
-			$("body").on("touchstart", function(){
-				__self.dragging = false;
-			});
-
-			__self.debug_mode = false; 
-			__self.paused     = false; 
-
-			$(document).keypress(function(event){
-				if( event.keyCode === 43 ){
-					console.clear();
-					__self.debug_mode = !__self.debug_mode;
-					console.log( 'debug_mode : ' + __self.debug_mode );
-				}
-				else if( event.keyCode === 13 ){
-				    __self.paused = !__self.paused; 
-				    console.log( 'Pasued : ' + __self.paused );
-				}
-				else {
-				    console.log( event.keyCode );
-				}
-			});
+			// Bind Debugging and Pausing
+			__self.bindDebugging(); 
 
 	        // Get Fallback Images
-	        $.getJSON( "js/data/fallback-images.json", function( data ) {
-	        	self.fallback_images = data;
-	        	if( typeof callback !== 'undefined' ){
-	        		callback( self ); 
-	        	}
-			});
+	  //       $.getJSON( "js/data/fallback-images.json", function( data ) {
+	  //       	
+	  //       	if( typeof callback !== 'undefined' ){
+	  //       		callback( self ); 
+	  //       	}
+			// });
+			__self.projects = new Models.ProjectCollection( projects_array );
+			// console.log( 'Projects' );
+			// console.log( projects_array );
+			// console.log( __self.projects );
+
+			// __self.projects.each(function( project, id ){
+			// 	console.log( project.get('post_title') )
+			// 	console.log( id )
+			// });
+
+			// Create Home View
+			__self.home_view = new Views.ProjectHome( __self.projects ); 
+
+			// self.fallback_images = data;
+			// self.video_handler = new VideoHandler( global ); 
+
+			// Init Scroll Handler
+			self.scroll_handler = new ScrollHandler( global );
 
 			return self; 
 		}
@@ -100,6 +90,7 @@ var Global = {};
 
 		/**
 		 * Set the global with variable and update the width of the video container object with jQuery
+		 *
 		 * @method setTotalWidth
 		 * @param Number new_width
 		 * @return this
@@ -107,8 +98,14 @@ var Global = {};
 		self.setTotalWidth = function( new_width ){
 			__self.total_width = new_width;
 			self.$videos_container.width( __self.total_width ); 
+			return self; 
 		}
 
+		/**
+		 * Add a class to 'body' based on our orientation
+		 *
+		 * @return this
+		 */
 		__self.setOrientationClass = function(){
 			var all_classes = self.$body.get(0).className.split(" "); 
 			for( i in all_classes ){
@@ -117,7 +114,62 @@ var Global = {};
 				}
 			}
 			self.$body.addClass( 'projects-orientation-' + __self.orientation );
+			return self; 
 		}
+
+		/** 
+		 * Bind Scrolling to a global 'dragging' variable, to be used in mobile
+		 * This prevents touchmove from being misinterpreted as touchend
+		 * 
+		 * @return this
+		 */
+		__self.bindScrolling = function(){
+			// Bind Scrolling
+	        __self.dragging = false;
+
+	        $("body").on("touchmove", function(){
+				__self.dragging = true;
+			});
+
+			$("body").on("touchend", function(event){
+				if( __self.dragging ){
+					event.preventDefault();
+					event.stopPropagation(); 
+	          		return false;
+				}
+			});
+
+			$("body").on("touchstart", function(){
+				__self.dragging = false;
+			});
+			return self; 
+		}
+
+		/**
+		 * Bind Certain Keys for Debugging
+		 *
+		 * @return this
+		 */
+		__self.bindDebugging = function(){
+			__self.debug_mode = false; 
+			__self.paused     = false; 
+
+			$(document).keypress(function(event){
+				if( event.keyCode === 43 ){
+					console.clear();
+					__self.debug_mode = !__self.debug_mode;
+					console.log( 'debug_mode : ' + __self.debug_mode );
+				}
+				else if( event.keyCode === 13 ){
+				    __self.paused = !__self.paused; 
+				    console.log( 'Pasued : ' + __self.paused );
+				}
+				else {
+				    console.log( event.keyCode );
+				}
+			});
+			return self; 
+		};
 
 		/* * * * * * * * * * * * * *
 		 *                         *
@@ -152,7 +204,7 @@ var Global = {};
 			return ( __self.orientation === 'vertical' ? true : false )
 		}
 
-		self.init( callback ); 
+		self.init(); 
 		return self; 
 	}
 	

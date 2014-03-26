@@ -1,16 +1,12 @@
 ;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var jQuery     = require('jquery');
-var _          = require('underscore');
-var Backbone   = require('backbone');
-var Mustache   = require('mustache');
-
+var jQuery = require('jquery');
 
 (function($){
 
+	// Get Dependencies
 	var Global = require('../classes/global.js');
-	var VideoHandler = require('../classes/video-handler.js');
-	var ScrollHandler = require('../classes/scroll-handler.js');
 
+	// On Document Ready, Get All Posts through an AJAX Request
 	$(document).ready(function(){
         $.post(	
 		    MyAjax.ajaxurl,
@@ -19,23 +15,24 @@ var Mustache   = require('mustache');
 			},
 			function( data ) {
 				console.log( data );
-				var global = new Global(data, function( self ){
-					// Init Videos and Scroll Handler
-					self.video_handler = new VideoHandler( global ); 
-					self.scroll_handler = new ScrollHandler( global );
-				}); 
+				// With the data response, create the global object
+				var global = new Global( data.posts ); 
 			}
 		);
     });
 
-})(window.jQuery);
+})( jQuery );
 
 
 
 
 
-},{"../classes/global.js":2,"../classes/scroll-handler.js":4,"../classes/video-handler.js":5,"backbone":7,"jquery":11,"mustache":12,"underscore":13}],2:[function(require,module,exports){
-var Options = require('../classes/options.js');
+},{"../classes/global.js":2,"jquery":14}],2:[function(require,module,exports){
+var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {};var Options = require('../classes/options.js');
+var Models  = require('../classes/models.js');
+var Views   = require('../classes/views.js');
+var VideoHandler = require('../classes/video-handler.js');
+var ScrollHandler = require('../classes/scroll-handler.js');
 
 var Global = {};
 
@@ -46,7 +43,7 @@ var Global = {};
 	 * @param {} callback
 	 * @return self
 	 */
-	Global = function( data, callback ){
+	Global = function( projects_array ){
 
 		var self = {}, __self = {};
 
@@ -74,50 +71,36 @@ var Global = {};
 	        self.$body.addClass( 'projects-orientation-' + __self.orientation );
 
 	        // Bind Scrolling
+	        __self.bindScrolling(); 
 
-	        __self.dragging = false;
-
-	        $("body").on("touchmove", function(){
-				__self.dragging = true;
-			});
-
-			$("body").on("touchend", function(event){
-				if( __self.dragging ){
-					event.preventDefault();
-					event.stopPropagation(); 
-	          		return false;
-				}
-			});
-
-			$("body").on("touchstart", function(){
-				__self.dragging = false;
-			});
-
-			__self.debug_mode = false; 
-			__self.paused     = false; 
-
-			$(document).keypress(function(event){
-				if( event.keyCode === 43 ){
-					console.clear();
-					__self.debug_mode = !__self.debug_mode;
-					console.log( 'debug_mode : ' + __self.debug_mode );
-				}
-				else if( event.keyCode === 13 ){
-				    __self.paused = !__self.paused; 
-				    console.log( 'Pasued : ' + __self.paused );
-				}
-				else {
-				    console.log( event.keyCode );
-				}
-			});
+			// Bind Debugging and Pausing
+			__self.bindDebugging(); 
 
 	        // Get Fallback Images
-	        $.getJSON( "js/data/fallback-images.json", function( data ) {
-	        	self.fallback_images = data;
-	        	if( typeof callback !== 'undefined' ){
-	        		callback( self ); 
-	        	}
-			});
+	  //       $.getJSON( "js/data/fallback-images.json", function( data ) {
+	  //       	
+	  //       	if( typeof callback !== 'undefined' ){
+	  //       		callback( self ); 
+	  //       	}
+			// });
+			__self.projects = new Models.ProjectCollection( projects_array );
+			// console.log( 'Projects' );
+			// console.log( projects_array );
+			// console.log( __self.projects );
+
+			// __self.projects.each(function( project, id ){
+			// 	console.log( project.get('post_title') )
+			// 	console.log( id )
+			// });
+
+			// Create Home View
+			__self.home_view = new Views.ProjectHome( __self.projects ); 
+
+			// self.fallback_images = data;
+			// self.video_handler = new VideoHandler( global ); 
+
+			// Init Scroll Handler
+			self.scroll_handler = new ScrollHandler( global );
 
 			return self; 
 		}
@@ -137,6 +120,7 @@ var Global = {};
 
 		/**
 		 * Set the global with variable and update the width of the video container object with jQuery
+		 *
 		 * @method setTotalWidth
 		 * @param Number new_width
 		 * @return this
@@ -144,8 +128,14 @@ var Global = {};
 		self.setTotalWidth = function( new_width ){
 			__self.total_width = new_width;
 			self.$videos_container.width( __self.total_width ); 
+			return self; 
 		}
 
+		/**
+		 * Add a class to 'body' based on our orientation
+		 *
+		 * @return this
+		 */
 		__self.setOrientationClass = function(){
 			var all_classes = self.$body.get(0).className.split(" "); 
 			for( i in all_classes ){
@@ -154,7 +144,62 @@ var Global = {};
 				}
 			}
 			self.$body.addClass( 'projects-orientation-' + __self.orientation );
+			return self; 
 		}
+
+		/** 
+		 * Bind Scrolling to a global 'dragging' variable, to be used in mobile
+		 * This prevents touchmove from being misinterpreted as touchend
+		 * 
+		 * @return this
+		 */
+		__self.bindScrolling = function(){
+			// Bind Scrolling
+	        __self.dragging = false;
+
+	        $("body").on("touchmove", function(){
+				__self.dragging = true;
+			});
+
+			$("body").on("touchend", function(event){
+				if( __self.dragging ){
+					event.preventDefault();
+					event.stopPropagation(); 
+	          		return false;
+				}
+			});
+
+			$("body").on("touchstart", function(){
+				__self.dragging = false;
+			});
+			return self; 
+		}
+
+		/**
+		 * Bind Certain Keys for Debugging
+		 *
+		 * @return this
+		 */
+		__self.bindDebugging = function(){
+			__self.debug_mode = false; 
+			__self.paused     = false; 
+
+			$(document).keypress(function(event){
+				if( event.keyCode === 43 ){
+					console.clear();
+					__self.debug_mode = !__self.debug_mode;
+					console.log( 'debug_mode : ' + __self.debug_mode );
+				}
+				else if( event.keyCode === 13 ){
+				    __self.paused = !__self.paused; 
+				    console.log( 'Pasued : ' + __self.paused );
+				}
+				else {
+				    console.log( event.keyCode );
+				}
+			});
+			return self; 
+		};
 
 		/* * * * * * * * * * * * * *
 		 *                         *
@@ -189,14 +234,72 @@ var Global = {};
 			return ( __self.orientation === 'vertical' ? true : false )
 		}
 
-		self.init( callback ); 
+		self.init(); 
 		return self; 
 	}
 	
 })(window.jQuery);
 
 module.exports = Global;
-},{"../classes/options.js":3}],3:[function(require,module,exports){
+},{"../classes/models.js":3,"../classes/options.js":4,"../classes/scroll-handler.js":5,"../classes/video-handler.js":6,"../classes/views.js":8}],3:[function(require,module,exports){
+var jQuery = require('jquery');
+var _ = require('underscore');
+var Mustache   = require('mustache');
+var Backbone   = require('backbone');
+Backbone.$ = $;
+
+var Models = {}; 
+
+(function( $ ){
+
+    console.log( Backbone );
+
+    Models.Project = Backbone.Model.extend({
+        defaults: {
+            ID: null, 
+            comment_count: "",
+            comment_status: "",
+            fallback_images: [],
+            featured_image: {},
+            filter: "raw",
+            guid: "",
+            menu_order: 0,
+            permalink: "",
+            ping_status: "",
+            pinged: "",
+            post_author: "",
+            post_content: "",
+            post_content_filtered: "",
+            post_date: "",
+            post_date_gmt: "",
+            post_excerpt: "",
+            post_mime_type: "",
+            post_modified: "",
+            post_modified_gmt: "",
+            post_name: "",
+            post_parent: 0,
+            post_password: "",
+            post_status: "",
+            post_title: "",
+            post_type: "",
+            template_name: "",
+            to_ping: "",
+            video_files: [],
+            vimeo_id: "",
+        },
+        initialize :  function(){
+            // Try to get id here...
+        }
+    });
+
+    Models.ProjectCollection = Backbone.Collection.extend({
+        model: Models.Project,
+    });
+
+})(  jQuery );
+
+module.exports = Models;
+},{"backbone":10,"jquery":14,"mustache":15,"underscore":16}],4:[function(require,module,exports){
 var dat = require('dat-gui');
 
 var Options = {};
@@ -282,7 +385,7 @@ var Options = {};
 })(window.jQuery);
 
 module.exports = Options;
-},{"dat-gui":8}],4:[function(require,module,exports){
+},{"dat-gui":11}],5:[function(require,module,exports){
 var ScrollHandler = {}; 
 
 (function($){
@@ -345,7 +448,7 @@ var ScrollHandler = {};
 
 module.exports = ScrollHandler;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 var Global = require('../classes/video-single.js');
 
 var VideoHandler = {}; 
@@ -467,7 +570,7 @@ var VideoHandler = {};
 })(window.jQuery);
 
 module.exports = VideoHandler;
-},{"../classes/video-single.js":6}],6:[function(require,module,exports){
+},{"../classes/video-single.js":7}],7:[function(require,module,exports){
 var Video; 
 
 (function($){
@@ -847,7 +950,69 @@ var Video;
 })(window.jQuery);
 
 module.exports = Video;
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
+var $          = require('jquery');
+var _          = require('underscore');
+var Mustache   = require('mustache');
+var Backbone   = require('backbone');
+Backbone.$ = $;
+var Templates  = require('../templates.js');
+
+
+var Views = {}; 
+
+(function( $ ){
+
+    // List of Projects in Home Page
+    Views.ProjectHome = Backbone.View.extend({
+        // Object in which this Model will be rendered
+        el: '#project-home-container',
+        // Template used for this (in index.html). Parsed by undersocre
+        initialize: function( project_collection ){
+            // Tie this view to the allMovies collection
+            this.coll = project_collection;
+            // Render on init
+            this.render();
+        },
+        render: function(){
+            // Empty the container (Pure and simple Jquery here)
+            this.$el.html('');
+            // Render (with underscore) and append (with Jquery) each item in this collction
+            this.coll.each(function(project, i){
+                // Pass variables to the template throuth the 'movie' variable
+                var single_project = new Views.SingleProjectVideo( project );
+                // Add it to the DOM
+                this.$el.append( single_project.render().el );
+            }, this);
+            return this;
+        }
+    });
+
+    // Single Project In Home Page
+    Views.SingleProjectVideo = Backbone.View.extend({
+        template: Templates['single-project-home'],
+        initialize: function( project ){
+            this.model = project;
+            this.render(); 
+        },
+        render: function(i){
+            this.el = Mustache.render( this.template, this.model.toJSON() ); 
+            return this;
+        },
+    });
+
+
+
+})( jQuery );
+
+module.exports = Views;
+},{"../templates.js":9,"backbone":10,"jquery":14,"mustache":15,"underscore":16}],9:[function(require,module,exports){
+Templates = {
+    "404" : '<div class="row"><div class="large-8 large-offset-2 columns four-zero-four"><h2>404</h2><p>Sorry, we can&#39;t find the page you are looking for! Perhaps you have entered the wrong URL? Obviously, it&#39;s not our fault!</p></div></div>',"single-project" : '<article class="project"><!-- Display Post Title --><h2><a href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Post Content --><div class="entry-content">{{# vimeo_id }}<!-- Vimeo Video --><div class="main-video"><iframe src="//player.vimeo.com/video/88054119" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>{{/ vimeo_id }}{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}<!-- Display Main Content -->{{ post_content }}</div></article>',"projects-view" : '{{# posts }}{{> single-project }}{{/ posts }}',"single-project-home" : '<canvas id="canvas-{{ ID }}"></canvas><video id="video-{{ ID }}" controls loop>{{#video_files}}<source src="{{{ url }}}" type="{{ mime_type }}">{{/video_files}}</video>',"single-project" : '{{> single-project }}',"single" : '<article class="single"><!-- Display Post Title --><h2><a href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Post Content --><div class="entry-content">{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}<!-- Display Main Content -->{{ post_content }}</div></article>',
+    "done": "true"
+  }; 
+module.exports = Templates;
+},{}],10:[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -2457,10 +2622,10 @@ module.exports = Video;
 
 }));
 
-},{"underscore":13}],8:[function(require,module,exports){
+},{"underscore":16}],11:[function(require,module,exports){
 module.exports = require('./vendor/dat.gui')
 module.exports.color = require('./vendor/dat.color')
-},{"./vendor/dat.color":9,"./vendor/dat.gui":10}],9:[function(require,module,exports){
+},{"./vendor/dat.color":12,"./vendor/dat.gui":13}],12:[function(require,module,exports){
 /**
  * dat-gui JavaScript Controller Library
  * http://code.google.com/p/dat-gui
@@ -3216,7 +3381,7 @@ dat.color.math = (function () {
 })(),
 dat.color.toString,
 dat.utils.common);
-},{}],10:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * dat-gui JavaScript Controller Library
  * http://code.google.com/p/dat-gui
@@ -6877,7 +7042,7 @@ dat.dom.CenteredDiv = (function (dom, common) {
 dat.utils.common),
 dat.dom.dom,
 dat.utils.common);
-},{}],11:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.0
  * http://jquery.com/
@@ -15990,7 +16155,7 @@ return jQuery;
 
 }));
 
-},{}],12:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /*!
  * mustache.js - Logic-less {{mustache}} templates with JavaScript
  * http://github.com/janl/mustache.js
@@ -16562,7 +16727,7 @@ return jQuery;
 
 }));
 
-},{}],13:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 //     Underscore.js 1.6.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors

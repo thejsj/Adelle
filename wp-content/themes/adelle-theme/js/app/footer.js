@@ -1,15 +1,11 @@
-var jQuery     = require('jquery');
-var _          = require('underscore');
-var Backbone   = require('backbone');
-var Mustache   = require('mustache');
-
+var jQuery = require('jquery');
 
 (function($){
 
+	// Get Dependencies
 	var Global = require('../classes/global.js');
-	var VideoHandler = require('../classes/video-handler.js');
-	var ScrollHandler = require('../classes/scroll-handler.js');
 
+	// On Document Ready, Get All Posts through an AJAX Request
 	$(document).ready(function(){
         $.post(	
 		    MyAjax.ajaxurl,
@@ -18,16 +14,13 @@ var Mustache   = require('mustache');
 			},
 			function( data ) {
 				console.log( data );
-				var global = new Global(data, function( self ){
-					// Init Videos and Scroll Handler
-					self.video_handler = new VideoHandler( global ); 
-					self.scroll_handler = new ScrollHandler( global );
-				}); 
+				// With the data response, create the global object
+				var global = new Global( data.posts ); 
 			}
 		);
     });
 
-})(window.jQuery);
+})( jQuery );
 
 
 
