@@ -24,8 +24,11 @@ module.exports = function(grunt) {
 				tasks: ['sass']
 			},
 			browserify_footer: {
-				files: 'js/app/footer.js',
-				tasks: ['browserify:footer']
+				files: 'js/app/*.js',
+				tasks: ['watchify']
+			},
+			options: {
+				livereload: true,
 			},
 		},
 
@@ -45,6 +48,16 @@ module.exports = function(grunt) {
 				options: {
 					transform: ['debowerify'], //, 'decomponentify', 'deamdify', 'deglobalify'],
 				},
+			}
+		},
+		watchify: {
+			header: {
+				src: './js/app/header.js',
+				dest: './js/header.js',
+			},
+			footer: {
+				src: './js/app/footer.js',
+				dest: './js/footer.js',
 			}
 		},
 
@@ -94,6 +107,7 @@ module.exports = function(grunt) {
 	// Javascript
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-browserify');
+	grunt.loadNpmTasks('grunt-watchify');
 
 	// Images
 	grunt.loadNpmTasks('grunt-favicons');

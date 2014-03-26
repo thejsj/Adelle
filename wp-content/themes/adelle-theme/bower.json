@@ -2,10 +2,6 @@
   "name": "foundation-libsass-template",
   "dependencies": {
     "foundation": "zurb/bower-foundation",
-    "underscore": "~1.6.0",
     "jquery": "~2.1.0",
-    "backbone": "~1.1.2",
-    "modernizr": "~2.7.2",
-    "mustache": "~0.8.1"
   }
 }
