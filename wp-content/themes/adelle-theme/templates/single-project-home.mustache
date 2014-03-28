@@ -1,6 +1,8 @@
-<canvas id="canvas-{{ ID }}"></canvas>
-<video id="video-{{ ID }}" controls loop>
-{{#video_files}}
-	<source src="{{{ url }}}" type="{{ mime_type }}">
-{{/video_files}}
-</video>
+<div id="container-{{ ID }}">
+	<canvas id="canvas-{{ ID }}"></canvas>
+	<video id="video-{{ ID }}" controls loop>
+	{{#video_files}}
+		<source src="{{{ url }}}" type="{{ mime_type }}">
+	{{/video_files}}
+	</video>
+</div>

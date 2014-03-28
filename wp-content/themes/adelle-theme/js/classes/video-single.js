@@ -8,24 +8,24 @@ var Video;
 	 * @param {} images
 	 * @return self
 	 */
-	Video = function(project_name, global, video_handler ){
+	Video = function( ID, video_files, fallback_images, parent ){
 
 	    // Set Main Containers
 	    var self = {}; // Public
 	    var __self = {}; // Private
+	    var global = parent.global; 
 
 	    // Set Basic IDS
-	    __self.index = video_handler.getNewVideoId();
+	    __self.index = ID;
 	    __self.canvas_id = 'canvas-' + __self.index;
 	    __self.video_id  = 'video-' + __self.index;
-	    __self.project_name = project_name; 
-	    __self.fallback_images = global.fallback_images[ __self.project_name ];
+	    __self.fallback_images = fallback_images;
 	    __self.uses_video = !global.get( 'fallback_view' ); 
-	    __self.color = video_handler.color( __self.index );
+	    __self.color = parent.color( __self.index );
 	    __self.bound = false; 
 
-	    __self.element_height = video_handler.video_quality_heights[ global.options.get('video_quality') ];
-	    __self.element_width  = video_handler.video_quality_widths[ global.options.get('video_quality') ];
+	    __self.element_height = parent.video_quality_heights[ global.options.get('video_quality') ];
+	    __self.element_width  = parent.video_quality_widths[ global.options.get('video_quality') ];
 
 	    // Create Vars for Canvas	   
 	    if( global.isOrientationHorizontal() ){
@@ -49,12 +49,6 @@ var Video;
 	    __self.frame_change_speed = 35; 
 	    __self.frame_in_which_to_change = Math.floor( Math.random() * __self.frame_change_speed ); 
 
-	    // Create HTML for Elements
-	    __self.canvas_html = '<canvas id="' + __self.canvas_id + '"></canvas>';
-	    __self.video_html = '<video id="' + __self.video_id + '" controls loop>\
-	        <source src="converted-videos/' + __self.project_name + '-'+ global.options.get('video_quality') +'.mp4" type="video/mp4">\
-	    </video>';
-
 	    /* * * * * * * * * * * * *
 	     *                       *
 	     *    Initialization     *
@@ -67,10 +61,6 @@ var Video;
 	     * @return 
 	     */
 	    self.init = function(){
-
-	        // Append Canvas
-	        global.$videos_container
-	            .append(__self.canvas_html);
 
 	        __self.$canvas = $("#" + __self.canvas_id);
 	        __self.canvas  = __self.$canvas.get(0);
@@ -92,10 +82,6 @@ var Video;
 	     * @return 
 	     */
 	    __self.init_video = function( callback ){
-
-	        // Append Video Tag
-	        global.$videos_container
-	            .append(__self.video_html);
 	        
 	        // Get Video and Canvas Element
 	        __self.$video  = $("#" + __self.video_id);
@@ -120,7 +106,7 @@ var Video;
 
 	        // Transform all images items into a dictionary
 	        for( i in __self.fallback_images ){
-	            var image_file = "converted-videos/" + __self.project_name + "/" + __self.fallback_images[i];
+	            var image_file = __self.fallback_images[i].url;
 	            __self.fallback_images[i] = {
 	                filename : image_file,
 	                loaded : false,

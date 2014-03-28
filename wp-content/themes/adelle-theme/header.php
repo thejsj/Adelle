@@ -16,16 +16,20 @@
 	<meta charset="utf-8" />
 	<meta name="Copyright" content="<?php echo ' Copyright' . bloginfo('name') . '. All Rights Reserved.';?>">
 	<meta name="viewport" id="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=10.0,initial-scale=1.0" />
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>" type="text/css">
 	<?php wp_head(); ?>
 </head>
-<body>
-	<h1>
-		<a href="<?php bloginfo('url'); ?>"><?php bloginfo('name'); ?></a>
-	</h1>
-	<!-- Main Menu -->
-	<nav>
-		<?php wp_nav_menu( array(
-			'theme_location'  => 'main_menu',
-		)); ?> 
-	</nav>
+<body style="background-color: black;">
+	<header id="header">
+		<h1 id="main-page-title">
+			<a href="<?php bloginfo('url'); ?>"><?php bloginfo('name'); ?></a>
+		</h1>
+		<!-- Main Menu -->
+		<nav>
+			<?php wp_nav_menu( array(
+				'theme_location'  => 'main_menu',
+			)); ?> 
+		</nav>
+	</header>
 	<div class="main-content">

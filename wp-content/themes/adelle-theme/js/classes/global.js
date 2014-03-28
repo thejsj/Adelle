@@ -46,31 +46,14 @@ var Global = {};
 			// Bind Debugging and Pausing
 			__self.bindDebugging(); 
 
-	        // Get Fallback Images
-	  //       $.getJSON( "js/data/fallback-images.json", function( data ) {
-	  //       	
-	  //       	if( typeof callback !== 'undefined' ){
-	  //       		callback( self ); 
-	  //       	}
-			// });
+			// Init Projects
 			__self.projects = new Models.ProjectCollection( projects_array );
-			// console.log( 'Projects' );
-			// console.log( projects_array );
-			// console.log( __self.projects );
-
-			// __self.projects.each(function( project, id ){
-			// 	console.log( project.get('post_title') )
-			// 	console.log( id )
-			// });
 
 			// Create Home View
-			__self.home_view = new Views.ProjectHome( __self.projects ); 
-
-			// self.fallback_images = data;
-			// self.video_handler = new VideoHandler( global ); 
+			__self.home_view = new Views.ProjectHome( __self.projects, self ); 
 
 			// Init Scroll Handler
-			self.scroll_handler = new ScrollHandler( global );
+			self.scroll_handler = new ScrollHandler( self );
 
 			return self; 
 		}
@@ -84,7 +67,7 @@ var Global = {};
 	        __self.setOrientationClass(); 
 
 			self.options.reInit(); 	
-			self.video_handler.reInit(); 
+			__self.home_view.reInitAllVideos(); 
 			self.scroll_handler.reInit(); 
 		}
 

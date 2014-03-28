@@ -1,3 +1,4 @@
+	<footer id="footer">
 	<!-- Display All Project Links ( For SEO ) -->
 			<?php $view = new ProjectsView(); ?>
 			<nav>
@@ -21,6 +22,7 @@
 		  g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
 		  s.parentNode.insertBefore(g,s)}(document,'script'));
 		</script>
-	-->  
+	--> 
+	</footer>
 </body>
 </html>

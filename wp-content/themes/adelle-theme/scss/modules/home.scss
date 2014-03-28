@@ -1,0 +1,104 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', 'Source Sans Pro', sans-serif;
+    background-color: black;
+}
+
+body{
+
+    &.projects-orientation-vertical {
+        background: white;
+        max-height: 100%;
+        width: auto;
+        overflow-y: hidden; 
+        #videos-container {
+            max-height: 100%;
+            width: auto;
+            overflow: hidden;
+            position: fixed;
+        }
+    }
+
+    &.projects-orientation-horizontal {
+        overflow-x: hidden;
+    }
+
+}
+
+canvas {  
+    margin: 0;
+    width: 0;
+    cursor: pointer;
+    margin-top: -4px;
+    &:hover {
+        background-color: #000;
+    }
+}
+
+video {
+    display: none;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+#header {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    h1#main-page-title {
+        text-transform: uppercase;
+        position: absolute;
+        font-weight: bold;
+        font-size: 6em;
+        color: white;
+        letter-spacing: 0.2em;
+        margin: auto;
+        display: inline-block;
+        text-align: center;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        line-height: 0.8em;
+        height: 196px;
+        width: 850px;        
+        a {
+            border-bottom: 7px solid white;
+            color: white; 
+            &:hover {
+            
+            } 
+        }
+    }
+    ul.menu {
+        list-style-type: none;
+        li {
+            list-style-type: none;
+            a {
+                color: white;
+                background: black;
+                padding: 5px 10px;
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+#footer {
+    display: none; 
+}
+
+.dg li:not(.folder) {
+    font-size: 11px;
+}
+
+.dg .c {
+    input[type=text], select {
+        font-size: 11px;
+        height: auto;
+        padding: 2px;
+    }
+}
