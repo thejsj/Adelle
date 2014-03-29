@@ -28,7 +28,7 @@ module.exports = function(grunt) {
 				tasks: ['mustache']
 			},
 			watchify: {
-				files: ['js/app/*.js','js/classes/*.js'],
+				files: ['js/app/*.js','js/classes/*.js','bower_components/foundation/js/**/*.js'],
 				tasks: ['watchify']
 			},
 			options: {
@@ -38,28 +38,7 @@ module.exports = function(grunt) {
 
 		// Javascript
 
-		browserify: {
-			header: {
-				src: 'js/app/header.js',
-				dest: 'js/header.js',
-				options: {
-					transform: ['debowerify'], //, 'decomponentify', 'deamdify', 'deglobalify'],
-				},
-			},
-			footer: {
-				src: 'js/app/footer.js',
-				dest: 'js/footer.js',
-				options: {
-					transform: ['debowerify'], //, 'decomponentify', 'deamdify', 'deglobalify'],
-				},
-			}
-		},
 		watchify: {
-			// options : {
-			// 	insertGlobals: true,
-			// 	standalone: true,
-			// 	ignoreMissing: true,
-			// },
 			header: {
 				src: './js/app/header.js',
 				dest: './js/header.js',
@@ -69,17 +48,6 @@ module.exports = function(grunt) {
 				dest: './js/footer.js',
 			}
 		},
-		// mustache_precompile: {
-		// 	options: {},
-		// 	files: {
-		// 		'./js/templates/templates.js': [
-		// 			'templates/404.mustache', 
-		// 			'templates/projects-view.mustache',
-		// 			'templates/single-project.mustache',
-		// 			'templates/single.mustache',
-		// 		],
-		// 	},
-		// },
 		mustache: {
 			files : {
 				src: 'templates/',
@@ -137,9 +105,7 @@ module.exports = function(grunt) {
 
 	// Javascript
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-browserify');
 	grunt.loadNpmTasks('grunt-watchify');
-	//grunt.loadNpmTasks('grunt-mustache-precompile');
 	grunt.loadNpmTasks('grunt-mustache');
 
 	// Images

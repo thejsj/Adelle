@@ -89,7 +89,6 @@ var Video;
 
 	        // Bind Can Play Element
 	        __self.$video.on('canplay', function(){
-	            __self.bind_canvas_click();
 	            if( typeof callback !== 'undefined' ){
 	                callback();
 	            }
@@ -144,44 +143,28 @@ var Video;
 	    }
 
 	    /**
-	     * Description
-	     * @method bind_canvas_click
-	     * @return 
-	     */
-	    __self.bind_canvas_click = function(){
-	        if( !__self.bound ){
-	            __self.bound = true; 
-	            __self.$canvas.on('touchend mouseup', function(){
-	            	if( !global.get('dragging') ){
-	            		console.log( 'Touchend Video Activate' );
-	                	alert("Hello There! You have clicked on video #" + (__self.index + 1));
-	            	}
-	            });
-	        }
-	    }
-
-	    /**
-	     * Description
+	     * Init Canvas
 	     * @method init_canvas
-	     * @return 
+	     * @return this
 	     */
 	    __self.init_canvas = function(){
-
-	        // Bind Click to cnavas
-	        __self.bind_canvas_click(); 
 
 	        // Get Canvas Element
 	        __self.ctx = __self.canvas.getContext('2d');
 	        __self.canvas.width  = __self.canvas_width;
 	        __self.canvas.height = __self.canvas_height;
 
-	        if( __self.uses_video ){
-	            __self.video.play();
+	        if( !__self.bound ){
+	            __self.bound = true; 
+		        if( __self.uses_video ){
+		            __self.video.play();
+		        }
+		        else {
+		            
+		        }
+	        	requestAnimationFrame(self.draw);
 	        }
-	        else {
-	            
-	        }
-	        requestAnimationFrame(self.draw);
+	        return self;
 	    }
 
 	    /**

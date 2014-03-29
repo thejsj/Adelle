@@ -1,8 +1,7 @@
-var $          = require('jquery');
 var _          = require('underscore');
 var Mustache   = require('mustache');
 var Backbone   = require('backbone');
-Backbone.$     = $;
+Backbone.$     = jQuery;
 var D3         = require('d3');
 var Video      = require('../classes/video-single.js');
 var Templates  = require('../templates.js');
@@ -85,6 +84,11 @@ var Views = {};
             this.model = project;   
             this.parent = parent;
             this.render(); 
+            this.modal = new Views.SingleProjectModal( this.model, this.parent );
+        },
+        events : {
+            // Bind the click event to the router
+            'click' : 'showProject',
         },
         render: function(i){
             this.el = Mustache.render( this.template, this.model.toJSON() ); 
@@ -99,8 +103,33 @@ var Views = {};
             );
             return this;
         },
+        showProject: function(){
+            this.modal.open(); 
+        }
     });
 
+
+    Views.SingleProjectModal = Backbone.View.extend({
+        template: Templates['single-project'],
+        initialize: function( project, parent ){
+            this.model = project;   
+            this.parent = parent;
+            this.render(); 
+        },
+        render: function(i){
+            this.el = Mustache.render( this.template, this.model.toJSON() ); 
+            this.parent.$el.append( this.el );
+            this.$el = $("#modal-" + this.model.get('ID'));
+            return this; 
+        },
+        open: function(){
+            var that = this; 
+            this.$el.foundation('reveal', 'open');
+            this.$el.find('.close-reveal-modal').click(function(){
+                that.$el.foundation('reveal', 'close');
+            });
+        }
+    })
 
 
 })( jQuery );

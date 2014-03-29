@@ -22,6 +22,7 @@ body{
 
     &.projects-orientation-horizontal {
         overflow-x: hidden;
+        height: 0px;
     }
 
 }
@@ -44,35 +45,37 @@ video {
     padding: 0;
 }
 
+h1#main-page-title {
+    text-transform: uppercase;
+    position: fixed;
+    font-weight: bold;
+    font-size: 6em;
+    color: white;
+    letter-spacing: 0.2em;
+    margin: auto;
+    display: inline-block;
+    text-align: center;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    line-height: 0.8em;
+    height: 107px;
+    width: 850px; 
+    overflow: visible;
+    z-index: 100;
+    cursor: pointer;    
+    a {
+        border-bottom: 7px solid white;
+        color: white; 
+        &:hover {
+            color: black; 
+        } 
+    }
+}
+
 #header {
     position: fixed;
-    width: 100%;
-    height: 100%;
-    h1#main-page-title {
-        text-transform: uppercase;
-        position: absolute;
-        font-weight: bold;
-        font-size: 6em;
-        color: white;
-        letter-spacing: 0.2em;
-        margin: auto;
-        display: inline-block;
-        text-align: center;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        line-height: 0.8em;
-        height: 196px;
-        width: 850px;        
-        a {
-            border-bottom: 7px solid white;
-            color: white; 
-            &:hover {
-            
-            } 
-        }
-    }
     ul.menu {
         list-style-type: none;
         li {
@@ -85,6 +88,31 @@ video {
             }
         }
     }
+}
+
+.home-project-container {
+    cursor: pointer;   
+    .home-content-container {
+        position: absolute;
+        width: 100%; 
+        height: 100%; 
+        cursor: pointer;
+        h2 {
+            text-align: center;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-weight: bold;
+            margin-top: 2.5em;
+        }
+    }
+    canvas {
+        cursor: pointer; 
+    }
+}
+
+.reveal-modal-bg {
+    cursor: pointer; 
 }
 
 #footer {

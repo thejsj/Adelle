@@ -1,14 +1,11 @@
-var jQuery = require('jquery');
-var _ = require('underscore');
-var Mustache   = require('mustache');
-var Backbone   = require('backbone');
-Backbone.$ = $;
+var _        = require('underscore');
+var Mustache = require('mustache');
+var Backbone = require('backbone');
+Backbone.$   = jQuery;
 
 var Models = {}; 
 
-(function( $ ){
-
-    console.log( Backbone );
+(function($){
 
     Models.Project = Backbone.Model.extend({
         defaults: {
@@ -52,6 +49,6 @@ var Models = {};
         model: Models.Project,
     });
 
-})(  jQuery );
+})(jQuery);
 
 module.exports = Models;

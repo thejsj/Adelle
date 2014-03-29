@@ -21,10 +21,10 @@
 	<?php wp_head(); ?>
 </head>
 <body style="background-color: black;">
+	<h1 id="main-page-title">
+		<a href="<?php bloginfo('url'); ?>"><?php bloginfo('name'); ?></a>
+	</h1>
 	<header id="header">
-		<h1 id="main-page-title">
-			<a href="<?php bloginfo('url'); ?>"><?php bloginfo('name'); ?></a>
-		</h1>
 		<!-- Main Menu -->
 		<nav>
 			<?php wp_nav_menu( array(
