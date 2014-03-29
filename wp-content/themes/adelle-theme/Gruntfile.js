@@ -48,6 +48,16 @@ module.exports = function(grunt) {
 				dest: './js/footer.js',
 			}
 		},
+		browserify: {
+			header: {
+				src: './js/app/header.js',
+				dest: './js/header.js',
+			},
+			footer: {
+				src: './js/app/footer.js',
+				dest: './js/footer.js',
+			}
+		},
 		mustache: {
 			files : {
 				src: 'templates/',
@@ -93,7 +103,7 @@ module.exports = function(grunt) {
 			minify: {
 				expand: true,
 				cwd: './',
-				src: ['css/style.css'],
+				src: ['style.css'],
 				dest: './',
 				ext: '.css'
 			}
@@ -106,6 +116,7 @@ module.exports = function(grunt) {
 	// Javascript
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-watchify');
+	grunt.loadNpmTasks('grunt-browserify');
 	grunt.loadNpmTasks('grunt-mustache');
 
 	// Images
