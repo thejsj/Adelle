@@ -89,9 +89,10 @@ var Video;
 
 	        // Bind Can Play Element
 	        __self.$video.on('canplay', function(){
-	            if( typeof callback !== 'undefined' ){
-	                callback();
-	            }
+	        	__self.video.play();
+	        	if( !__self.bound ){
+	        		parent.registerLoadedProject( ID ); 
+	        	}
 	        });
 	    }
 
@@ -133,6 +134,7 @@ var Video;
 	                        }
 	                    }
 	                    if( number_of_images_not_loaded === 0 ){
+	                    	parent.registerLoadedProject( ID ); 
 	                        if( typeof callback !== 'undefined' ){
 	                            callback();
 	                        }
@@ -147,7 +149,7 @@ var Video;
 	     * @method init_canvas
 	     * @return this
 	     */
-	    __self.init_canvas = function(){
+	   	self.init_canvas = function(){
 
 	        // Get Canvas Element
 	        __self.ctx = __self.canvas.getContext('2d');

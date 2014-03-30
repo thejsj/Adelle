@@ -39,6 +39,7 @@ var Models = {};
             to_ping: "",
             video_files: [],
             vimeo_id: "",
+            video_loaded: false,
         },
         initialize :  function(){
             // Try to get id here...

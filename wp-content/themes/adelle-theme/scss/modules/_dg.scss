@@ -1,0 +1,11 @@
+.dg li:not(.folder) {
+    font-size: 11px;
+}
+
+.dg .c {
+    input[type=text], select {
+        font-size: 11px;
+        height: auto;
+        padding: 2px;
+    }
+}

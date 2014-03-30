@@ -1,4 +1,8 @@
+var Backbone = require('backbone');
+Backbone.$   = jQuery;
+
 var Options = require('../classes/options.js');
+var Router  = require('../classes/router.js');
 var Models  = require('../classes/models.js');
 var Views   = require('../classes/views.js');
 var VideoHandler = require('../classes/video-handler.js');
@@ -30,7 +34,7 @@ var Global = {};
 	        
 	        // Get Options
 	        self.options = new Options( self );
-	        __self.fallback_view = self.options.get( 'fallback_view' );
+	        __self.fallback_view = Modernizr.video; 
 	        __self.orientation   = self.options.get( 'orientation' );
 
 	        // Elements
@@ -49,8 +53,14 @@ var Global = {};
 			// Init Projects
 			__self.projects = new Models.ProjectCollection( projects_array );
 
+			self.router = {}; 
+
 			// Create Home View
 			__self.home_view = new Views.ProjectHome( __self.projects, self ); 
+
+			// Init Router
+			self.router = new Router( __self.home_view );
+		    Backbone.history.start({ pushState: Modernizr.history });  // URLs don't work without this
 
 			// Init Scroll Handler
 			self.scroll_handler = new ScrollHandler( self );

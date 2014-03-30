@@ -52,4 +52,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 //   "foundation/components/offcanvas",
 //   "foundation/components/visibility";
 
+@import "modules/global";
+@import "modules/header";
+@import "modules/dg";
 @import "modules/home";
+@import "modules/single";

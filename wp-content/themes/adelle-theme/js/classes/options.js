@@ -25,7 +25,6 @@ var Options = {};
             __self.global_options.canvas_opacity = 1;
             __self.global_options.video_opacity = 0.2;
             __self.global_options.orientation = 'horizontal';
-            __self.global_options.fallback_view = false;
         };
 
         __self.initGui = function(){
@@ -40,7 +39,6 @@ var Options = {};
 		    c[c.length] = gui.add( __self.global_options , 'canvas_opacity', 0, 1 );
 		    c[c.length] = gui.add( __self.global_options , 'video_opacity', 0, 1 );
 		    c[c.length] = gui.add( __self.global_options , 'orientation', ['horizontal', 'vertical' ] );
-		    c[c.length] = gui.add( __self.global_options , 'fallback_view' );
 		    for(i in c){
 		        c[0].onChange(function(value) {
 		            $("body")

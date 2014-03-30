@@ -1,0 +1,50 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', 'Source Sans Pro', sans-serif;
+    background-color: black;
+}
+
+body{
+
+    &.projects-orientation-vertical {
+        background: white;
+        max-height: 100%;
+        width: auto;
+        overflow-y: hidden; 
+        #videos-container {
+            max-height: 100%;
+            width: auto;
+            overflow: hidden;
+            position: fixed;
+        }
+    }
+
+    &.projects-orientation-horizontal {
+        overflow-x: hidden;
+        height: 0px;
+    }
+
+}
+
+canvas {  
+    margin: 0;
+    width: 0;
+    cursor: pointer;
+    margin-top: -4px;
+    &:hover {
+        background-color: #000;
+    }
+}
+
+video {
+    display: none;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+#footer {
+    display: none; 
+}

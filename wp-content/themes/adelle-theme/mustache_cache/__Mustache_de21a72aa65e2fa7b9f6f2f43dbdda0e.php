@@ -1,6 +1,6 @@
 <?php
 
-class __Mustache_b44186f837bd6bef4c8bd20e538ec2a1 extends Mustache_Template
+class __Mustache_de21a72aa65e2fa7b9f6f2f43dbdda0e extends Mustache_Template
 {
     private $lambdaHelper;
 
@@ -9,7 +9,7 @@ class __Mustache_b44186f837bd6bef4c8bd20e538ec2a1 extends Mustache_Template
         $this->lambdaHelper = new Mustache_LambdaHelper($this->mustache, $context);
         $buffer = '';
 
-        $buffer .= $indent . '<article class="single">
+        $buffer .= $indent . '<article class="project">
 ';
         $buffer .= $indent . '	<!-- Display Post Title -->
 ';
@@ -29,6 +29,9 @@ class __Mustache_b44186f837bd6bef4c8bd20e538ec2a1 extends Mustache_Template
 ';
         $buffer .= $indent . '	<div class="entry-content">
 ';
+        // 'vimeo_id' section
+        $value = $context->find('vimeo_id');
+        $buffer .= $this->sectionE965c02e5b79dd0515fd5c81d2c67ac8($context, $indent, $value);
         $buffer .= $indent . '
 ';
         // 'featured_image' section
@@ -40,13 +43,50 @@ class __Mustache_b44186f837bd6bef4c8bd20e538ec2a1 extends Mustache_Template
 ';
         $buffer .= $indent . '		';
         $value = $this->resolveValue($context->find('post_content'), $context, $indent);
-        $buffer .= htmlspecialchars($value, 2, 'UTF-8');
+        $buffer .= $value;
         $buffer .= '
 ';
         $buffer .= $indent . '	</div>
 ';
         $buffer .= $indent . '</article>';
 
+        return $buffer;
+    }
+
+    private function sectionE965c02e5b79dd0515fd5c81d2c67ac8(Mustache_Context $context, $indent, $value)
+    {
+        $buffer = '';
+        if (!is_string($value) && is_callable($value)) {
+            $source = '
+		<!-- Vimeo Video -->
+		<div class="main-video">
+			<iframe src="//player.vimeo.com/video/88054119" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
+		</div>
+		';
+            $result = call_user_func($value, $source, $this->lambdaHelper);
+            if (strpos($result, '{{') === false) {
+                $buffer .= $result;
+            } else {
+                $buffer .= $this->mustache
+                    ->loadLambda((string) $result)
+                    ->renderInternal($context);
+            }
+        } elseif (!empty($value)) {
+            $values = $this->isIterable($value) ? $value : array($value);
+            foreach ($values as $value) {
+                $context->push($value);
+                $buffer .= $indent . '		<!-- Vimeo Video -->
+';
+                $buffer .= $indent . '		<div class="main-video">
+';
+                $buffer .= $indent . '			<iframe src="//player.vimeo.com/video/88054119" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
+';
+                $buffer .= $indent . '		</div>
+';
+                $context->pop();
+            }
+        }
+    
         return $buffer;
     }
 

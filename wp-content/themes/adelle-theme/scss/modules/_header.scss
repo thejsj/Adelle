@@ -1,0 +1,45 @@
+h1#main-page-title {
+    text-transform: uppercase;
+    position: fixed;
+    font-weight: bold;
+    font-size: 6em;
+    color: white;
+    letter-spacing: 0.2em;
+    margin: auto;
+    display: inline-block;
+    text-align: center;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    line-height: 0.8em;
+    height: 107px;
+    width: 850px; 
+    overflow: visible;
+    z-index: 100;
+    cursor: pointer;    
+    a {
+        border-bottom: 7px solid white;
+        color: white; 
+        &:hover {
+            color: black; 
+            border-color: black;
+        } 
+    }
+}
+
+#header {
+    position: fixed;
+    ul.menu {
+        list-style-type: none;
+        li {
+            list-style-type: none;
+            a {
+                color: white;
+                background: black;
+                padding: 5px 10px;
+                font-size: 16px;
+            }
+        }
+    }
+}

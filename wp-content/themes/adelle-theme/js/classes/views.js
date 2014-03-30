@@ -26,11 +26,11 @@ var Views = {};
         render: function(){
             // Empty the container (Pure and simple Jquery here)
             this.$el.html('');
-            this.videos = [];
+            this.videos = {};
             // Render (with underscore) and append (with Jquery) each item in this collction
             this.coll.each(function(project, i){
                 // Pass variables to the template throuth the 'movie' variable
-                this.videos.push( new Views.SingleProjectVideo( project, this ) );
+                this.videos[ project.get('ID') ] = ( new Views.SingleProjectVideo( project, this ) );
             }, this);
             // Get all Widths
             if( !this.global.isOrientationHorizontal() ){
@@ -74,21 +74,58 @@ var Views = {};
                 self.videos = [];
                 self.render(); 
             }, 500);
-        }
+        },
+        openModal: function( slug ){
+            var self = this; 
+            var current_model_id = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' }).get('ID')
+            var current_video = this.videos[ current_model_id ];
+            current_video.setAsViewed();
+            var $el =  this.current_modal = current_video.modal.$el; 
+            $el.foundation('reveal', 'open');
+            $el.find('.close-reveal-modal').click(function(){
+                self.global.router.navigate( '/', true);
+            });
+        },
+        closeModal: function( ){
+            if( this.current_modal ){
+                this.current_modal.foundation('reveal', 'close');
+                this.current_modal = null; 
+            }
+        },
+        registerLoadedProject: function( ID ){
+            // Set this one
+            this.coll.findWhere({ 'ID' : ID }).set('video_loaded', true);
+            // See if all are set
+            if( this.coll.where({ 'video_loaded' : false }).length == 0){
+                this.initVideos();
+            }
+        },
+        initVideos: function(){
+            var time = {};
+            this.$el.addClass('visible');
+            var ii = 0; 
+            $.each(this.videos, function(i,video){
+                time[ ii ] = ii * 700;
+                setTimeout(function(){
+                    video.initCanvas(); 
+                }, time[ ii ]);
+                ii++;
+            });
+        },
     });
 
     // Single Project In Home Page
     Views.SingleProjectVideo = Backbone.View.extend({
         template: Templates['single-project-home'],
         initialize: function( project, parent ){
-            this.model = project;   
+            this.viewed = false; 
+            this.model  = project;   
             this.parent = parent;
+            this.modal  = new Views.SingleProjectModal( this.model, this.parent );
             this.render(); 
-            this.modal = new Views.SingleProjectModal( this.model, this.parent );
         },
-        events : {
-            // Bind the click event to the router
-            'click' : 'showProject',
+        events: {
+            'click': 'showProject',
         },
         render: function(i){
             this.el = Mustache.render( this.template, this.model.toJSON() ); 
@@ -104,31 +141,32 @@ var Views = {};
             return this;
         },
         showProject: function(){
-            this.modal.open(); 
+            this.parent.global.router.navigate( this.model.get('relational_permalink') , true);
+        },
+        initCanvas: function(){
+            this.video.init_canvas(); 
+        },
+        setAsViewed: function(){
+            this.viewed = true; 
+            // Invoke Node Map
         }
     });
-
 
     Views.SingleProjectModal = Backbone.View.extend({
         template: Templates['single-project'],
         initialize: function( project, parent ){
             this.model = project;   
             this.parent = parent;
+            this.color = this.parent.color( this.model.get('ID') );
             this.render(); 
         },
         render: function(i){
             this.el = Mustache.render( this.template, this.model.toJSON() ); 
             this.parent.$el.append( this.el );
             this.$el = $("#modal-" + this.model.get('ID'));
+            this.$el.css('border-color', this.color);
             return this; 
         },
-        open: function(){
-            var that = this; 
-            this.$el.foundation('reveal', 'open');
-            this.$el.find('.close-reveal-modal').click(function(){
-                that.$el.foundation('reveal', 'close');
-            });
-        }
     })
 
 
