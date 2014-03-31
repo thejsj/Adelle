@@ -7,10 +7,9 @@ var Router = {};
 
     Router = Backbone.Router.extend({
         routes : {
-            "project/:slug/": "project",
-            "/": "home", // For when we can't find something
-            "": "home", // For when we can't find something
-            '*path':  'notFound', // Our last resort, go home
+            "project/:slug/" : "project",
+            ".*"   : "notFound"
+            '*path': 'home', // Our last resort, go home
         },
         initialize: function( home_view ){
             this.home_view = home_view; 
