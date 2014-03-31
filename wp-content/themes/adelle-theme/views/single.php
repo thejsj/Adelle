@@ -19,13 +19,24 @@
 
 			// Add Permalink
 			$this->permalink = get_permalink( $this->ID );
-			// http://adelle.local.com/project/storage-sting/
-			$this->relational_permalink = str_replace( WP_SITEURL, '', $this->permalink );
+			$this->relational_permalink = $this->getRelationalPermalink( $this->permalink );
 
 			// Get Featured Image
 			$this->featured_image = new Image( $this->ID );
         }
 
+        /**
+         * Parse and filter the relational permalink
+         *
+         * @return string
+         */
+        public function getRelationalPermalink( $permalink ){
+        	$relational_permalink = str_replace( WP_SITEURL, '', $this->permalink );
+        	if( $relational_permalink[0] == "/") {
+        		$relational_permalink = substr($relational_permalink, 1);
+        	}
+        	return $relational_permalink; 
+        }
 	}
 
 ?>
