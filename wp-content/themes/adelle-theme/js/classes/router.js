@@ -18,9 +18,11 @@ var Router = {};
             this.home_view.openModal( slug );
         },
         home : function() {
+            console.log( 'Home' );
             this.home_view.closeModal();
         },
         notFound : function(){
+            this.home_view.closeModal();
             console.log( 'Not Found' );
         },
     });
