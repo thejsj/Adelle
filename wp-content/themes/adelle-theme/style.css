@@ -5818,7 +5818,6 @@ body.projects-orientation-horizontal {
 canvas {
   margin: 0;
   width: 0;
-  cursor: pointer;
   margin-top: -4px; }
   canvas:hover {
     background-color: black; }
@@ -5893,22 +5892,23 @@ h1#main-page-title {
     -moz-transition: opacity 5s;
     transition: opacity 5s; }
 
-.home-project-container {
+.home-project-container.available-true {
   cursor: pointer; }
-  .home-project-container .home-content-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+  .home-project-container.available-true canvas {
     cursor: pointer; }
-    .home-project-container .home-content-container h2 {
-      text-align: center;
-      color: white;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      font-weight: bold;
-      margin-top: 2.5em; }
-  .home-project-container canvas {
+  .home-project-container.available-true .home-content-container {
     cursor: pointer; }
+.home-project-container .home-content-container {
+  position: absolute;
+  width: 100%;
+  height: 100%; }
+  .home-project-container .home-content-container h2 {
+    text-align: center;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: bold;
+    margin-top: 2.5em; }
 
 .reveal-modal-bg {
   cursor: pointer; }
@@ -5918,4 +5918,5 @@ h1#main-page-title {
   .single-modal .entry-content h2 {
     text-transform: uppercase;
     text-align: center;
-    letter-spacing: 0.1em; }
+    letter-spacing: 0.35em;
+    padding: 0px 0px 6px; }

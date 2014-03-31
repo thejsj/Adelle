@@ -11,18 +11,6 @@
 			close_on_esc: true,
 			dismiss_modal_class: 'close-reveal-modal',
 			bg_class: 'reveal-modal-bg',
-			open: function () { 
-				console.log('fired from settings'); 
-			},
-			opened: function () { 
-				console.log('fired from settings'); 
-			},
-			close: function () { 
-				console.log('fired from settings'); 
-			},
-			closed: function () { 
-				console.log('fired from settings'); 
-			},
 			bg: $('.reveal-modal-bg'),
 			css: {
 				open: {

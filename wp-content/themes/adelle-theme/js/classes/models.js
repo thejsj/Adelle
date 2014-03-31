@@ -40,14 +40,22 @@ var Models = {};
             video_files: [],
             vimeo_id: "",
             video_loaded: false,
+            available: false,
         },
-        initialize :  function(){
-            // Try to get id here...
-        }
     });
 
     Models.ProjectCollection = Backbone.Collection.extend({
         model: Models.Project,
+        filterAvailable: function( available_projects_ids ){
+            // Get Available Projects
+            var available_projects = _.filter( this.models, function( model ){ 
+                return ( available_projects_ids.indexOf( model.get('ID') ) > -1 ); 
+            });
+            // Set As Available
+            _.each( available_projects, function( value, key ){
+                value.set('available', true);
+            });
+        }
     });
 
 })(jQuery);

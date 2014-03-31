@@ -25,10 +25,10 @@ module.exports = function(grunt) {
 			},
 			mustache : {
 				files: ['templates/*.mustache'],
-				tasks: ['mustache']
+				tasks: ['mustache', 'watchify']
 			},
 			watchify: {
-				files: ['js/app/*.js','js/classes/*.js','bower_components/foundation/js/**/*.js'],
+				files: ['js/app/*.js','js/classes/*.js','bower_components/foundation/js/**/*.js', 'js/templates.js'],
 				tasks: ['watchify']
 			},
 			options: {

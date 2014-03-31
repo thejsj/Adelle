@@ -12,18 +12,6 @@
 			close_on_esc: true,
 			dismiss_modal_class: 'close-reveal-modal',
 			bg_class: 'reveal-modal-bg',
-			open: function () { 
-				console.log('fired from settings'); 
-			},
-			opened: function () { 
-				console.log('fired from settings'); 
-			},
-			close: function () { 
-				console.log('fired from settings'); 
-			},
-			closed: function () { 
-				console.log('fired from settings'); 
-			},
 			bg: $('.reveal-modal-bg'),
 			css: {
 				open: {
@@ -121,6 +109,7 @@ var Global = {};
 
 			// Init Projects
 			__self.projects = new Models.ProjectCollection( projects_array );
+			__self.projects.filterAvailable( [ 251, 224, 207 ] ); 
 
 			self.router = {}; 
 
@@ -141,7 +130,6 @@ var Global = {};
 			// Empty Video Container
 			self.$videos_container.html(''); 
 
-			__self.fallback_view = self.options.get( 'fallback_view' );
 	        __self.orientation   = self.options.get( 'orientation' );
 	        __self.setOrientationClass(); 
 
@@ -316,14 +304,22 @@ var Models = {};
             video_files: [],
             vimeo_id: "",
             video_loaded: false,
+            available: false,
         },
-        initialize :  function(){
-            // Try to get id here...
-        }
     });
 
     Models.ProjectCollection = Backbone.Collection.extend({
         model: Models.Project,
+        filterAvailable: function( available_projects_ids ){
+            // Get Available Projects
+            var available_projects = _.filter( this.models, function( model ){ 
+                return ( available_projects_ids.indexOf( model.get('ID') ) > -1 ); 
+            });
+            // Set As Available
+            _.each( available_projects, function( value, key ){
+                value.set('available', true);
+            });
+        }
     });
 
 })(jQuery);
@@ -350,49 +346,53 @@ var Options = {};
         __self.initOptions = function() {
             __self.global_options.background_color = [ 255, 255, 255 ];
             __self.global_options.video_background_color = [ 255, 255, 255 ];
-            __self.global_options.video_background_color_alpha = 0.009;
-            __self.global_options.speed = 400;
-            __self.global_options.start_on_init = 10;
-            __self.global_options.video_quality = 'high';
-            __self.global_options.canvas_opacity = 1;
-            __self.global_options.video_opacity = 0.2;
+            // View Options
             __self.global_options.orientation = 'horizontal';
+            __self.global_options.start_on_init = 10;
+            // Video Options
+            __self.global_options.speed = 400;
+            __self.global_options.video_quality = 'high';
+            // Available 
+            __self.global_options.canvas_opacity = 1;
+            __self.global_options.video_opacity = 0.67;
+            __self.global_options.video_background_color_alpha = 0.0249;
+            // Unavailable 
+            __self.global_options.canvas_opacity_unavailable = 0.18;
+            __self.global_options.video_opacity_unavailable = 0.04;
+            __self.global_options.video_background_color_alpha_unavailable = 0.0672;
         };
 
         __self.initGui = function(){
         	var gui = new dat.GUI();
-		    var c = [];
-		    c[c.length] = gui.addColor( __self.global_options , 'background_color');
-		    c[c.length] = gui.addColor( __self.global_options , 'video_background_color');
-		    c[c.length] = gui.add( __self.global_options , 'video_background_color_alpha', 0, 0.1 );
-		    c[c.length] = gui.add( __self.global_options , 'speed', 0, 1000);
-		    c[c.length] = gui.add( __self.global_options , 'start_on_init', 0, 10).step(1);
-		    c[c.length] = gui.add( __self.global_options , 'video_quality', ['low', 'medium', 'high']);
-		    c[c.length] = gui.add( __self.global_options , 'canvas_opacity', 0, 1 );
-		    c[c.length] = gui.add( __self.global_options , 'video_opacity', 0, 1 );
-		    c[c.length] = gui.add( __self.global_options , 'orientation', ['horizontal', 'vertical' ] );
-		    c[c.length] = gui.add( __self.global_options , 'fallback_view' );
-		    for(i in c){
-		        c[0].onChange(function(value) {
-		            $("body")
-		                .css("background", __self.global_options.background_color);
-		        });
-		        c[4].onChange(function(value) {
+		    var v1 = [], v2 = [], v3 = [];
+
+		    var v1f = gui.addFolder('Video_Options');
+		    v1[v1.length] = gui.add( __self.global_options , 'speed', 0, 1000);
+		    v1[v1.length] = gui.add( __self.global_options , 'video_quality', ['low', 'medium', 'high']);
+		    v1[v1.length] = gui.add( __self.global_options , 'orientation', ['horizontal', 'vertical' ] );
+
+		    var v2f = gui.addFolder('Available_Video_Options');
+		    v2[v2.length] = gui.add( __self.global_options , 'canvas_opacity', 0, 1 );
+		    v2[v2.length] = gui.add( __self.global_options , 'video_opacity', 0, 1 );
+		    v2[v2.length] = gui.add( __self.global_options , 'video_background_color_alpha', 0, 0.1  );
+
+		    var v3f = gui.addFolder('Unavailable_Video_Options');
+		    v3[v3.length] = gui.add( __self.global_options , 'canvas_opacity_unavailable', 0, 1 );   
+		    v3[v3.length] = gui.add( __self.global_options , 'video_opacity_unavailable', 0, 1 ); 
+		    v3[v3.length] = gui.add( __self.global_options , 'video_background_color_alpha_unavailable', 0, 0.1  );
+		    
+		    v1[1].onChange(function(value) {
 		            global.reInit();
-		        });
-		        c[5].onChange(function(value) {
-		            global.reInit();
-		        });
-		        c[6].onChange(function(value) {
-		            $("canvas").css('opacity', __self.global_options.canvas_opacity);
-		        });
-		        c[8].onChange(function(value) {
-		            global.reInit();
-		        });
-		        c[9].onChange(function(value) {
-		            global.reInit();
-		        });
-		    };
+	        });
+	        v1[2].onChange(function(value) {
+	            global.reInit();
+	        });
+	        v2[0].onChange(function(value) {
+	            $("canvas.available-true").css('opacity', __self.global_options.canvas_opacity );
+	        });
+	        v3[0].onChange(function(value) {
+	            $("canvas.available-false").css('opacity', __self.global_options.canvas_opacity_unavailable );
+	        });
 		}
 
 		self.init = function(){
@@ -642,7 +642,7 @@ var Video;
 	 * @param {} images
 	 * @return self
 	 */
-	Video = function( ID, video_files, fallback_images, parent ){
+	Video = function( model, parent ){
 
 	    // Set Main Containers
 	    var self = {}; // Public
@@ -650,10 +650,10 @@ var Video;
 	    var global = parent.global; 
 
 	    // Set Basic IDS
-	    __self.index = ID;
+	    __self.index = model.get('ID');
 	    __self.canvas_id = 'canvas-' + __self.index;
 	    __self.video_id  = 'video-' + __self.index;
-	    __self.fallback_images = fallback_images;
+	    __self.fallback_images = model.get('fallback_images');
 	    __self.uses_video = !global.get( 'fallback_view' ); 
 	    __self.color = parent.color( __self.index );
 	    __self.bound = false; 
@@ -698,8 +698,16 @@ var Video;
 
 	        __self.$canvas = $("#" + __self.canvas_id);
 	        __self.canvas  = __self.$canvas.get(0);
-	        __self.$canvas.width( __self.canvas_width );
-	        __self.$canvas.height( __self.canvas_height );
+	        __self.$canvas
+	        	.width( __self.canvas_width )
+	        	.height( __self.canvas_height );
+
+	       	if( model.get('available') ){
+	       		__self.$canvas.css('opacity', global.options.get('canvas_opacity'));
+	       	}
+	       	else {
+	       		__self.$canvas.css('opacity', global.options.get('canvas_opacity_unavailable'));
+	       	}
 
 	        if( __self.uses_video ){
 	            __self.init_video( __self.init_canvas ); 
@@ -725,7 +733,7 @@ var Video;
 	        __self.$video.on('canplay', function(){
 	        	__self.video.play();
 	        	if( !__self.bound ){
-	        		parent.registerLoadedProject( ID ); 
+	        		parent.registerLoadedProject( __self.index ); 
 	        	}
 	        });
 	    }
@@ -768,7 +776,7 @@ var Video;
 	                        }
 	                    }
 	                    if( number_of_images_not_loaded === 0 ){
-	                    	parent.registerLoadedProject( ID ); 
+	                    	parent.registerLoadedProject( __self.index ); 
 	                        if( typeof callback !== 'undefined' ){
 	                            callback();
 	                        }
@@ -817,7 +825,14 @@ var Video;
 	    	}
 
 	        // Fade Other Frames Away Slowly
-	        __self.ctx.fillStyle = self.parseArrayToRGBA( __self.color, global.options.get('video_background_color_alpha') );
+	        var video_background_color_alpha; 
+	        if( model.get('available') ){
+	        	video_background_color_alpha = global.options.get('video_background_color_alpha');
+	        }
+	        else {
+	        	video_background_color_alpha = global.options.get('video_background_color_alpha_unavailable')
+	        }
+	        __self.ctx.fillStyle = self.parseArrayToRGBA( __self.color, video_background_color_alpha );
 	       	__self.ctx.fillRect(0,0,__self.canvas.width,__self.canvas.height);
 
 	       	var double_draw    = false; 
@@ -873,7 +888,13 @@ var Video;
 	        
 	        // Draw Image
 	        __self.ctx.save();
-	        __self.ctx.globalAlpha = global.options.get('video_opacity');
+	        if( model.get('available') ){
+	        	__self.ctx.globalAlpha = global.options.get('video_opacity');
+	        }
+	        else {
+	        	__self.ctx.globalAlpha = global.options.get('video_opacity_unavailable');
+	        }
+	        
 
 	        if( __self.uses_video ){
 	            self.draw_element( __self.video, double_draw, double_x_index, double_y_index ); 
@@ -1062,7 +1083,7 @@ var Views = {};
         },
         openModal: function( slug ){
             var self = this; 
-            var current_model_id = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' }).get('ID')
+            var current_model_id = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' }).get('ID');
             var current_video = this.videos[ current_model_id ];
             current_video.setAsViewed();
             var $el =  this.current_modal = current_video.modal.$el; 
@@ -1118,15 +1139,15 @@ var Views = {};
             this.parent.$el.append( this.el );
             this.$el = $("#container-" + this.model.get('ID'));
             this.video = new Video( 
-                this.model.get('ID'), 
-                this.model.get('video_files'), 
-                this.model.get('fallback_images'), 
+                this.model, 
                 this.parent
             );
             return this;
         },
         showProject: function(){
-            this.parent.global.router.navigate( this.model.get('relational_permalink') , true);
+            if( this.model.get('available') ){
+                this.parent.global.router.navigate( this.model.get('relational_permalink') , true);
+            }
         },
         initCanvas: function(){
             this.video.init_canvas(); 
@@ -1149,7 +1170,9 @@ var Views = {};
             this.el = Mustache.render( this.template, this.model.toJSON() ); 
             this.parent.$el.append( this.el );
             this.$el = $("#modal-" + this.model.get('ID'));
-            this.$el.css('border-color', this.color);
+            this.$el
+                .css('border-color', this.color)
+                .find('.change-color').css('color', this.color);
             return this; 
         },
     })
@@ -1160,7 +1183,7 @@ var Views = {};
 module.exports = Views;
 },{"../classes/video-single.js":8,"../templates.js":10,"backbone":11,"d3":12,"mustache":16,"underscore":17}],10:[function(require,module,exports){
 Templates = {
-    "404" : '<div class="row 404-template"><div class="large-8 large-offset-2 columns four-zero-four"><h2>404</h2><p>Sorry, we can&#39;t find the page you are looking for! Perhaps you have entered the wrong URL? Obviously, it&#39;s not our fault!</p></div></div>',"single-project-partial" : '<article class="project single-project-partial-template"><!-- Display Post Title --><h2><a href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Post Content --><div class="entry-content">{{# vimeo_id }}<!-- Vimeo Video --><div class="main-video"><iframe src="//player.vimeo.com/video/88054119" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>{{/ vimeo_id }}{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}<!-- Display Main Content -->{{{ post_content }}}</div></article>',"projects-view" : '{{# posts }}{{> single-project-partial }}{{/ posts }}',"single-project-home" : '<div id="container-{{ ID }}" class="home-project-container single-project-home-template"><div class="home-content-container"><h2>{{ post_title }}</h2><div class="excpert"></div></div><canvas id="canvas-{{ ID }}"></canvas><video id="video-{{ ID }}" controls loop>{{#video_files}}<source src="{{{ url }}}" type="{{ mime_type }}">{{/video_files}}</video></div>',"single-project" : '<div id="modal-{{ ID }}" class="reveal-modal single-modal project-modal single-project-template" data-reveal><article class="project">{{# vimeo_id }}<!-- Vimeo Video --><div class="main-video"><iframe src="//player.vimeo.com/video/88054119" width="596" height="350" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>{{/ vimeo_id }}{{^ vimeo_id }}{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}{{/ vimeo_id }}<!-- Display Post Content --><div class="entry-content"><!-- Display Post Title --><h2><a href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Main Content -->{{{ post_content }}}</div></article><a class="close-reveal-modal">&#215;</a></div>',"single" : '<article class="single single-template"><!-- Display Post Title --><h2><a href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Post Content --><div class="entry-content">{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}<!-- Display Main Content -->{{{ post_content }}}</div></article>',
+    "404" : '<div class="row 404-template"><div class="large-8 large-offset-2 columns four-zero-four"><h2>404</h2><p>Sorry, we can&#39;t find the page you are looking for! Perhaps you have entered the wrong URL? Obviously, it&#39;s not our fault!</p></div></div>',"single-project-partial" : '<article class="project single-project-partial-template"><!-- Display Post Title --><h2><a href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Post Content --><div class="entry-content">{{# vimeo_id }}<!-- Vimeo Video --><div class="main-video"><iframe src="//player.vimeo.com/video/88054119" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>{{/ vimeo_id }}{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}<!-- Display Main Content -->{{{ post_content }}}</div></article>',"projects-view" : '{{# posts }}{{> single-project-partial }}{{/ posts }}',"single-project-home" : '<div id="container-{{ ID }}" class="home-project-container single-project-home-template {{# available }}available-true{{/ available }}{{^ available }}available-false{{/ available }}"><div class="home-content-container"><h2>{{ post_title }}</h2><div class="excpert"></div></div><canvas id="canvas-{{ ID }}" class="{{# available }}available-true{{/ available }}{{^ available }}available-false{{/ available }}"></canvas><video id="video-{{ ID }}" controls loop>{{#video_files}}<source src="{{{ url }}}" type="{{ mime_type }}">{{/video_files}}</video></div>',"single-project" : '<div id="modal-{{ ID }}" class="reveal-modal single-modal project-modal single-project-template" data-reveal><article class="project">{{# vimeo_id }}<!-- Vimeo Video --><div class="main-video"><iframe src="//player.vimeo.com/video/88054119" width="596" height="350" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>{{/ vimeo_id }}{{^ vimeo_id }}{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}{{/ vimeo_id }}<!-- Display Post Content --><div class="entry-content"><!-- Display Post Title --><h2 class="change-color main-project-title"><a class="change-color" href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Main Content -->{{{ post_content }}}</div></article><a class="close-reveal-modal">&#215;</a></div>',"single" : '<article class="single single-template"><!-- Display Post Title --><h2><a href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Post Content --><div class="entry-content">{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}<!-- Display Main Content -->{{{ post_content }}}</div></article>',
     "done": "true"
   }; 
 module.exports = Templates;

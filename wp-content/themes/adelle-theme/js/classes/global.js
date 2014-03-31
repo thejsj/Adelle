@@ -52,6 +52,7 @@ var Global = {};
 
 			// Init Projects
 			__self.projects = new Models.ProjectCollection( projects_array );
+			__self.projects.filterAvailable( [ 251, 224, 207 ] ); 
 
 			self.router = {}; 
 
@@ -72,7 +73,6 @@ var Global = {};
 			// Empty Video Container
 			self.$videos_container.html(''); 
 
-			__self.fallback_view = self.options.get( 'fallback_view' );
 	        __self.orientation   = self.options.get( 'orientation' );
 	        __self.setOrientationClass(); 
 

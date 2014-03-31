@@ -1,9 +1,9 @@
-<div id="container-{{ ID }}" class="home-project-container single-project-home-template">
+<div id="container-{{ ID }}" class="home-project-container single-project-home-template {{# available }}available-true{{/ available }}{{^ available }}available-false{{/ available }}">
 	<div class="home-content-container">
 		<h2>{{ post_title }}</h2>
 		<div class="excpert"></div>
 	</div>
-	<canvas id="canvas-{{ ID }}"></canvas>
+	<canvas id="canvas-{{ ID }}" class="{{# available }}available-true{{/ available }}{{^ available }}available-false{{/ available }}"></canvas>
 	<video id="video-{{ ID }}" controls loop>
 	{{#video_files}}
 		<source src="{{{ url }}}" type="{{ mime_type }}">

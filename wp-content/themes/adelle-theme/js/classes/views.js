@@ -77,7 +77,7 @@ var Views = {};
         },
         openModal: function( slug ){
             var self = this; 
-            var current_model_id = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' }).get('ID')
+            var current_model_id = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' }).get('ID');
             var current_video = this.videos[ current_model_id ];
             current_video.setAsViewed();
             var $el =  this.current_modal = current_video.modal.$el; 
@@ -133,15 +133,15 @@ var Views = {};
             this.parent.$el.append( this.el );
             this.$el = $("#container-" + this.model.get('ID'));
             this.video = new Video( 
-                this.model.get('ID'), 
-                this.model.get('video_files'), 
-                this.model.get('fallback_images'), 
+                this.model, 
                 this.parent
             );
             return this;
         },
         showProject: function(){
-            this.parent.global.router.navigate( this.model.get('relational_permalink') , true);
+            if( this.model.get('available') ){
+                this.parent.global.router.navigate( this.model.get('relational_permalink') , true);
+            }
         },
         initCanvas: function(){
             this.video.init_canvas(); 
@@ -164,7 +164,9 @@ var Views = {};
             this.el = Mustache.render( this.template, this.model.toJSON() ); 
             this.parent.$el.append( this.el );
             this.$el = $("#modal-" + this.model.get('ID'));
-            this.$el.css('border-color', this.color);
+            this.$el
+                .css('border-color', this.color)
+                .find('.change-color').css('color', this.color);
             return this; 
         },
     })

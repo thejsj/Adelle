@@ -8,7 +8,7 @@ var Video;
 	 * @param {} images
 	 * @return self
 	 */
-	Video = function( ID, video_files, fallback_images, parent ){
+	Video = function( model, parent ){
 
 	    // Set Main Containers
 	    var self = {}; // Public
@@ -16,10 +16,10 @@ var Video;
 	    var global = parent.global; 
 
 	    // Set Basic IDS
-	    __self.index = ID;
+	    __self.index = model.get('ID');
 	    __self.canvas_id = 'canvas-' + __self.index;
 	    __self.video_id  = 'video-' + __self.index;
-	    __self.fallback_images = fallback_images;
+	    __self.fallback_images = model.get('fallback_images');
 	    __self.uses_video = !global.get( 'fallback_view' ); 
 	    __self.color = parent.color( __self.index );
 	    __self.bound = false; 
@@ -64,8 +64,16 @@ var Video;
 
 	        __self.$canvas = $("#" + __self.canvas_id);
 	        __self.canvas  = __self.$canvas.get(0);
-	        __self.$canvas.width( __self.canvas_width );
-	        __self.$canvas.height( __self.canvas_height );
+	        __self.$canvas
+	        	.width( __self.canvas_width )
+	        	.height( __self.canvas_height );
+
+	       	if( model.get('available') ){
+	       		__self.$canvas.css('opacity', global.options.get('canvas_opacity'));
+	       	}
+	       	else {
+	       		__self.$canvas.css('opacity', global.options.get('canvas_opacity_unavailable'));
+	       	}
 
 	        if( __self.uses_video ){
 	            __self.init_video( __self.init_canvas ); 
@@ -91,7 +99,7 @@ var Video;
 	        __self.$video.on('canplay', function(){
 	        	__self.video.play();
 	        	if( !__self.bound ){
-	        		parent.registerLoadedProject( ID ); 
+	        		parent.registerLoadedProject( __self.index ); 
 	        	}
 	        });
 	    }
@@ -134,7 +142,7 @@ var Video;
 	                        }
 	                    }
 	                    if( number_of_images_not_loaded === 0 ){
-	                    	parent.registerLoadedProject( ID ); 
+	                    	parent.registerLoadedProject( __self.index ); 
 	                        if( typeof callback !== 'undefined' ){
 	                            callback();
 	                        }
@@ -183,7 +191,14 @@ var Video;
 	    	}
 
 	        // Fade Other Frames Away Slowly
-	        __self.ctx.fillStyle = self.parseArrayToRGBA( __self.color, global.options.get('video_background_color_alpha') );
+	        var video_background_color_alpha; 
+	        if( model.get('available') ){
+	        	video_background_color_alpha = global.options.get('video_background_color_alpha');
+	        }
+	        else {
+	        	video_background_color_alpha = global.options.get('video_background_color_alpha_unavailable')
+	        }
+	        __self.ctx.fillStyle = self.parseArrayToRGBA( __self.color, video_background_color_alpha );
 	       	__self.ctx.fillRect(0,0,__self.canvas.width,__self.canvas.height);
 
 	       	var double_draw    = false; 
@@ -239,7 +254,13 @@ var Video;
 	        
 	        // Draw Image
 	        __self.ctx.save();
-	        __self.ctx.globalAlpha = global.options.get('video_opacity');
+	        if( model.get('available') ){
+	        	__self.ctx.globalAlpha = global.options.get('video_opacity');
+	        }
+	        else {
+	        	__self.ctx.globalAlpha = global.options.get('video_opacity_unavailable');
+	        }
+	        
 
 	        if( __self.uses_video ){
 	            self.draw_element( __self.video, double_draw, double_x_index, double_y_index ); 

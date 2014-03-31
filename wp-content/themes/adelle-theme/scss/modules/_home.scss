@@ -12,13 +12,20 @@
 }
 
 .home-project-container {
-    cursor: pointer;   
+    &.available-true{
+        cursor: pointer; 
+        canvas {
+            cursor: pointer; 
+        }
+        .home-content-container {
+            cursor: pointer; 
+        }
+    }  
     
     .home-content-container {
         position: absolute;
         width: 100%; 
         height: 100%; 
-        cursor: pointer;
         h2 {
             text-align: center;
             color: white;
@@ -28,9 +35,7 @@
             margin-top: 2.5em;
         }
     }
-    canvas {
-        cursor: pointer; 
-    }
+    
 }
 
 .reveal-modal-bg {
