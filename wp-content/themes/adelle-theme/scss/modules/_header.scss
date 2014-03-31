@@ -27,13 +27,13 @@ h1#main-page-title {
     }  
     a {
         border-bottom: 3px solid white;
+        color: white; 
         @include breakpoint( 400 ){
             border-bottom: 7px solid white;
-        }
-        color: white; 
-        &:hover {
-            color: black; 
-            border-color: black;
+            &:hover {
+                color: black; 
+                border-color: black;
+            }
         } 
     }
 }
