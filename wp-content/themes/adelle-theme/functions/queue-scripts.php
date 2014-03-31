@@ -10,7 +10,7 @@ function load_theme_scripts() {
 	wp_register_script( 'foundation', get_template_directory_uri()  . '/bower_components/foundation/js/foundation/foundation.js', array('jquery'), '', true);
 	wp_enqueue_script( 'foundation' );	
 
-	wp_register_script( 'foundation-reveal', get_template_directory_uri()  . '/bower_components/foundation/js/foundation/foundation.reveal.js', array('jquery', 'foundation'), '', true);
+	wp_register_script( 'foundation-reveal', get_template_directory_uri()  . '/js/libs/foundation.reveal.js', array('jquery', 'foundation'), '', true);
 	wp_enqueue_script( 'foundation-reveal' );	
 
 	wp_register_script( 'footer', get_template_directory_uri()  . '/js/footer.js', array('jquery','foundation', 'foundation-reveal'), '', true);
