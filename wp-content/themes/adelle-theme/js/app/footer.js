@@ -6,7 +6,7 @@
 	$(document).foundation({
 		reveal: {
 			animation: 'fade',
-			animation_speed: 200,
+			animation_speed: 600,
 			close_on_background_click: true,
 			close_on_esc: true,
 			dismiss_modal_class: 'close-reveal-modal',

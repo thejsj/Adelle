@@ -1,4 +1,22 @@
 .single-modal {
+
+	.main-video {
+		background-color: black; 
+		height: 350px;
+		width: 596px;
+	}
+
+	&.reveal-modal {
+		.close-reveal-modal {
+			background-color: black;
+			padding: 2px 10px;
+			&.top{
+				top: -2.8rem;
+				right: -2px;
+			}
+		}
+	}
+
 	.entry-content {
 		padding: rem-calc(22) rem-calc(22);
 		h2 {

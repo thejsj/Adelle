@@ -17,7 +17,7 @@
 			$this->fallback_images = $this->get_fallback_images(); 
 
 			// Get Project Relationship
-
+			$this->related_projects = $this->get_related_projects();
 		}
 		
 		/**
@@ -46,6 +46,25 @@
 				array_push( $images_array, new Image( false, $image['id'] ) );
 			}
 			return $images_array; 
+		}
+
+		/**
+		 * Get related videos
+		 *
+		 * @return array
+		 */
+		private function get_related_projects(){
+			$related_projects = array();
+			$all_project_relationships = get_field('project_to_project_relationship', 'option');
+			foreach( $all_project_relationships as $relationship ){
+				if( $relationship['first_project']->ID === $this->ID && $relationship['second_project']->ID !== $this->ID ){
+					array_push($related_projects, $relationship['second_project']->ID);
+				}
+				else if( $relationship['first_project']->ID !== $this->ID && $relationship['second_project']->ID === $this->ID ){
+					array_push($related_projects, $relationship['first_project']->ID);
+				}
+			}
+			return $related_projects;
 		}
 
 

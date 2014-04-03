@@ -23,6 +23,7 @@ var Video;
 	    __self.uses_video = !global.get( 'fallback_view' ); 
 	    __self.color = parent.color( __self.index );
 	    __self.bound = false; 
+	    __self.converted_to_available = false; 
 
 	    __self.element_height = parent.video_quality_heights[ global.options.get('video_quality') ];
 	    __self.element_width  = parent.video_quality_widths[ global.options.get('video_quality') ];
@@ -69,6 +70,7 @@ var Video;
 	        	.height( __self.canvas_height );
 
 	       	if( model.get('available') ){
+	       		__self.converted_to_available = true; 
 	       		__self.$canvas.css('opacity', global.options.get('canvas_opacity'));
 	       	}
 	       	else {
@@ -189,6 +191,14 @@ var Video;
 				requestAnimationFrame(self.draw);
 				return false; 
 	    	}
+
+	    	// Check if this model has been made avaialble
+	    	if( !__self.converted_to_available && model.get('available') ){
+	    		__self.converted_to_available = true; 
+	    		console.log('CONVERTED TO AVAILABLE');
+	    		console.log( model.get('post_title') );
+	       		__self.$canvas.css('opacity', global.options.get('canvas_opacity'));
+	       	}
 
 	        // Fade Other Frames Away Slowly
 	        var video_background_color_alpha; 

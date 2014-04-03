@@ -7,7 +7,7 @@
 	$(document).foundation({
 		reveal: {
 			animation: 'fade',
-			animation_speed: 200,
+			animation_speed: 600,
 			close_on_background_click: true,
 			close_on_esc: true,
 			dismiss_modal_class: 'close-reveal-modal',
@@ -661,6 +661,7 @@ var Video;
 	    __self.uses_video = !global.get( 'fallback_view' ); 
 	    __self.color = parent.color( __self.index );
 	    __self.bound = false; 
+	    __self.converted_to_available = false; 
 
 	    __self.element_height = parent.video_quality_heights[ global.options.get('video_quality') ];
 	    __self.element_width  = parent.video_quality_widths[ global.options.get('video_quality') ];
@@ -707,6 +708,7 @@ var Video;
 	        	.height( __self.canvas_height );
 
 	       	if( model.get('available') ){
+	       		__self.converted_to_available = true; 
 	       		__self.$canvas.css('opacity', global.options.get('canvas_opacity'));
 	       	}
 	       	else {
@@ -827,6 +829,14 @@ var Video;
 				requestAnimationFrame(self.draw);
 				return false; 
 	    	}
+
+	    	// Check if this model has been made avaialble
+	    	if( !__self.converted_to_available && model.get('available') ){
+	    		__self.converted_to_available = true; 
+	    		console.log('CONVERTED TO AVAILABLE');
+	    		console.log( model.get('post_title') );
+	       		__self.$canvas.css('opacity', global.options.get('canvas_opacity'));
+	       	}
 
 	        // Fade Other Frames Away Slowly
 	        var video_background_color_alpha; 
@@ -1086,20 +1096,35 @@ var Views = {};
             }, 500);
         },
         openModal: function( slug ){
-            var self = this; 
             var current_model_id = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' }).get('ID');
-            var current_video = this.videos[ current_model_id ];
-            current_video.setAsViewed();
-            var $el =  this.current_modal = current_video.modal.$el; 
-            $el.foundation('reveal', 'open');
-            $el.find('.close-reveal-modal').click(function(){
-                self.global.router.navigate( '/', true);
-            });
+            this.current_video    = this.videos[ current_model_id ];
+
+            // Set As Viewed
+            this.current_video.setAsViewed();
+
+            // Set Related Videos as available
+            this.setRelatedAsAvailable( current_model_id );
+
+            // Open As Model
+            var $current_modal = this.current_video.modal.$el; 
+            (function(self){
+                $current_modal
+                    .foundation('reveal', 'open')
+                    .find('.close-reveal-modal').click(function(){
+                        self.global.router.navigate( '/', true);
+                    });
+            })(this);
         },
         closeModal: function( ){
-            if( this.current_modal ){
-                this.current_modal.foundation('reveal', 'close');
-                this.current_modal = null; 
+            // Remove Vimdeo Video
+            if( this.current_video ){
+                this.current_video.modal.removeVideo(); 
+                // Close Modal
+                var $current_modal = this.current_video.modal.$el; 
+                if( $current_modal ){
+                    $current_modal.foundation('reveal', 'close');
+                    $current_modal = null; 
+                }
             }
         },
         registerLoadedProject: function( ID ){
@@ -1120,6 +1145,20 @@ var Views = {};
                     video.initCanvas(); 
                 }, time[ ii ]);
                 ii++;
+            });
+        },
+        setRelatedAsAvailable: function( current_model_id ){
+            var newly_available = _.filter( this.coll.models , function(model){
+                if( typeof model !== 'undefined' ){
+                    return _.indexOf(model.get('related_projects'), current_model_id) > -1; 
+                }
+                else {
+                    return false; 
+                }
+            }); 
+            _.each(newly_available, function(model){
+                console.log( 'New: ' + model.get('post_title') );
+                model.set('available', true);
             });
         },
     });
@@ -1158,12 +1197,19 @@ var Views = {};
         },
         setAsViewed: function(){
             this.viewed = true; 
+            // Render Video
+            (function(modal){
+                setTimeout(function(){
+                    modal.renderVideo();
+                }, 800);
+            })(this.modal);
             // Invoke Node Map
         }
     });
 
     Views.SingleProjectModal = Backbone.View.extend({
         template: Templates['single-project'],
+        video_template: Templates['vimeo-video'],
         initialize: function( project, parent ){
             this.model = project;   
             this.parent = parent;
@@ -1177,7 +1223,19 @@ var Views = {};
             this.$el
                 .css('border-color', this.color)
                 .find('.change-color').css('color', this.color);
+            this.$el
+                .find('.change-bg-color').css('background-color', this.color);
             return this; 
+        },
+        renderVideo: function(){
+            this.$el
+                .find('.main-video')
+                .html( Mustache.render( this.video_template, this.model.toJSON() ));
+        },
+        removeVideo: function(){
+            this.$el
+                .find('.main-video')
+                .html( '' );
         },
     })
 
@@ -1187,7 +1245,7 @@ var Views = {};
 module.exports = Views;
 },{"../classes/video-single.js":8,"../templates.js":10,"backbone":11,"d3":12,"mustache":16,"underscore":17}],10:[function(require,module,exports){
 Templates = {
-    "404" : '<div class="row 404-template"><div class="large-8 large-offset-2 columns four-zero-four"><h2>404</h2><p>Sorry, we can&#39;t find the page you are looking for! Perhaps you have entered the wrong URL? Obviously, it&#39;s not our fault!</p></div></div>',"single-project-partial" : '<article class="project single-project-partial-template"><!-- Display Post Title --><h2><a href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Post Content --><div class="entry-content">{{# vimeo_id }}<!-- Vimeo Video --><div class="main-video"><iframe src="//player.vimeo.com/video/88054119" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>{{/ vimeo_id }}{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}<!-- Display Main Content -->{{{ post_content }}}</div></article>',"projects-view" : '{{# posts }}{{> single-project-partial }}{{/ posts }}',"single-project-home" : '<div id="container-{{ ID }}" class="home-project-container single-project-home-template {{# available }}available-true{{/ available }}{{^ available }}available-false{{/ available }}"><div class="home-content-container"><h2>{{ post_title }}</h2><div class="excpert"></div></div><canvas id="canvas-{{ ID }}" class="{{# available }}available-true{{/ available }}{{^ available }}available-false{{/ available }}"></canvas><video id="video-{{ ID }}" controls loop>{{#video_files}}<source src="{{{ url }}}" type="{{ mime_type }}">{{/video_files}}</video></div>',"single-project" : '<div id="modal-{{ ID }}" class="reveal-modal single-modal project-modal single-project-template" data-reveal><article class="project">{{# vimeo_id }}<!-- Vimeo Video --><div class="main-video"><iframe src="//player.vimeo.com/video/88054119" width="596" height="350" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>{{/ vimeo_id }}{{^ vimeo_id }}{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}{{/ vimeo_id }}<!-- Display Post Content --><div class="entry-content"><!-- Display Post Title --><h2 class="change-color main-project-title"><a class="change-color" href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Main Content -->{{{ post_content }}}</div></article><a class="close-reveal-modal">&#215;</a></div>',"single" : '<article class="single single-template"><!-- Display Post Title --><h2><a href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Post Content --><div class="entry-content">{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}<!-- Display Main Content -->{{{ post_content }}}</div></article>',
+    "404" : '<div class="row 404-template"><div class="large-8 large-offset-2 columns four-zero-four"><h2>404</h2><p>Sorry, we can&#39;t find the page you are looking for! Perhaps you have entered the wrong URL? Obviously, it&#39;s not our fault!</p></div></div>',"single-project-partial" : '<article class="project single-project-partial-template"><!-- Display Post Title --><h2><a href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Post Content --><div class="entry-content">{{# vimeo_id }}<!-- Vimeo Video --><div class="main-video"><iframe src="//player.vimeo.com/video/88054119" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>{{/ vimeo_id }}{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}<!-- Display Main Content -->{{{ post_content }}}</div></article>',"projects-view" : '{{# posts }}{{> single-project-partial }}{{/ posts }}',"single-project-home" : '<div id="container-{{ ID }}" class="home-project-container single-project-home-template {{# available }}available-true{{/ available }}{{^ available }}available-false{{/ available }}"><div class="home-content-container"><h2>{{ post_title }}</h2><div class="excpert"></div></div><canvas id="canvas-{{ ID }}" class="{{# available }}available-true{{/ available }}{{^ available }}available-false{{/ available }}"></canvas><video id="video-{{ ID }}" controls loop>{{#video_files}}<source src="{{{ url }}}" type="{{ mime_type }}">{{/video_files}}</video></div>',"single-project" : '<div id="modal-{{ ID }}" class="reveal-modal single-modal project-modal single-project-template" data-reveal><article class="project">{{# vimeo_id }}<!-- Vimeo Video --><div class="main-video"></div>{{/ vimeo_id }}{{^ vimeo_id }}{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}{{/ vimeo_id }}<!-- Display Post Content --><div class="entry-content"><!-- Display Post Title --><h2 class="change-color main-project-title"><a class="change-color" href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Main Content -->{{{ post_content }}}</div></article><a class="close-reveal-modal top change-bg-color">&#215;</a></div>',"single" : '<article class="single single-template"><!-- Display Post Title --><h2><a href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Post Content --><div class="entry-content">{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}<!-- Display Main Content -->{{{ post_content }}}</div></article>',"vimeo-video" : '<iframe src="//player.vimeo.com/video/{{ vimeo_id }}" width="596" height="350" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> ',
     "done": "true"
   }; 
 module.exports = Templates;

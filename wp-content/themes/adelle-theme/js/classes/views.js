@@ -76,20 +76,35 @@ var Views = {};
             }, 500);
         },
         openModal: function( slug ){
-            var self = this; 
             var current_model_id = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' }).get('ID');
-            var current_video = this.videos[ current_model_id ];
-            current_video.setAsViewed();
-            var $el =  this.current_modal = current_video.modal.$el; 
-            $el.foundation('reveal', 'open');
-            $el.find('.close-reveal-modal').click(function(){
-                self.global.router.navigate( '/', true);
-            });
+            this.current_video    = this.videos[ current_model_id ];
+
+            // Set As Viewed
+            this.current_video.setAsViewed();
+
+            // Set Related Videos as available
+            this.setRelatedAsAvailable( current_model_id );
+
+            // Open As Model
+            var $current_modal = this.current_video.modal.$el; 
+            (function(self){
+                $current_modal
+                    .foundation('reveal', 'open')
+                    .find('.close-reveal-modal').click(function(){
+                        self.global.router.navigate( '/', true);
+                    });
+            })(this);
         },
         closeModal: function( ){
-            if( this.current_modal ){
-                this.current_modal.foundation('reveal', 'close');
-                this.current_modal = null; 
+            // Remove Vimdeo Video
+            if( this.current_video ){
+                this.current_video.modal.removeVideo(); 
+                // Close Modal
+                var $current_modal = this.current_video.modal.$el; 
+                if( $current_modal ){
+                    $current_modal.foundation('reveal', 'close');
+                    $current_modal = null; 
+                }
             }
         },
         registerLoadedProject: function( ID ){
@@ -110,6 +125,20 @@ var Views = {};
                     video.initCanvas(); 
                 }, time[ ii ]);
                 ii++;
+            });
+        },
+        setRelatedAsAvailable: function( current_model_id ){
+            var newly_available = _.filter( this.coll.models , function(model){
+                if( typeof model !== 'undefined' ){
+                    return _.indexOf(model.get('related_projects'), current_model_id) > -1; 
+                }
+                else {
+                    return false; 
+                }
+            }); 
+            _.each(newly_available, function(model){
+                console.log( 'New: ' + model.get('post_title') );
+                model.set('available', true);
             });
         },
     });
@@ -148,12 +177,19 @@ var Views = {};
         },
         setAsViewed: function(){
             this.viewed = true; 
+            // Render Video
+            (function(modal){
+                setTimeout(function(){
+                    modal.renderVideo();
+                }, 800);
+            })(this.modal);
             // Invoke Node Map
         }
     });
 
     Views.SingleProjectModal = Backbone.View.extend({
         template: Templates['single-project'],
+        video_template: Templates['vimeo-video'],
         initialize: function( project, parent ){
             this.model = project;   
             this.parent = parent;
@@ -167,7 +203,19 @@ var Views = {};
             this.$el
                 .css('border-color', this.color)
                 .find('.change-color').css('color', this.color);
+            this.$el
+                .find('.change-bg-color').css('background-color', this.color);
             return this; 
+        },
+        renderVideo: function(){
+            this.$el
+                .find('.main-video')
+                .html( Mustache.render( this.video_template, this.model.toJSON() ));
+        },
+        removeVideo: function(){
+            this.$el
+                .find('.main-video')
+                .html( '' );
         },
     })
 
