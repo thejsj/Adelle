@@ -85,6 +85,9 @@ var Views = {};
             // Set Related Videos as available
             this.setRelatedAsAvailable( current_model_id );
 
+            // Add To Cookie
+            this.global.cookieHandler.addNewProject( current_model_id );
+
             // Open As Model
             var $current_modal = this.current_video.modal.$el; 
             (function(self){

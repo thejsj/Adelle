@@ -76,7 +76,7 @@ var Video;
 	       	else {
 	       		__self.$canvas.css('opacity', global.options.get('canvas_opacity_unavailable'));
 	       	}
-
+	       	console.log( 'USES VIDEO : ' + __self.uses_video );
 	        if( __self.uses_video ){
 	            __self.init_video( __self.init_canvas ); 
 	        }
@@ -195,9 +195,13 @@ var Video;
 	    	// Check if this model has been made avaialble
 	    	if( !__self.converted_to_available && model.get('available') ){
 	    		__self.converted_to_available = true; 
-	    		console.log('CONVERTED TO AVAILABLE');
-	    		console.log( model.get('post_title') );
-	       		__self.$canvas.css('opacity', global.options.get('canvas_opacity'));
+	       		__self.$canvas
+	       			.css('opacity', global.options.get('canvas_opacity'))
+	       			.removeClass('available-' + !model.get('available'))
+	       			.addClass('available-' + model.get('available'))
+	       			.parent()
+	       				.removeClass('available-' + !model.get('available'))
+	       				.addClass('available-' + model.get('available'));
 	       	}
 
 	        // Fade Other Frames Away Slowly

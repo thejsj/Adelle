@@ -73,6 +73,21 @@ module.exports = function(grunt) {
 		// For Production
 
 		uglify: {
+			dependencies: {
+				options: {
+					report : 'gzip',
+					compress: true,
+					preserveComments : false,
+					mangle: true,
+				},
+				files: {
+					'js/libs/footer-libs.js': [
+						'bower_components/foundation/js/foundation/foundation.js',
+						'js/libs/foundation.reveal.js',
+						'bower_components/jquery.cookie/jquery.cookie.js'
+					],
+				}
+			},
 			dev: {
 				options: {
 					beautify: true,

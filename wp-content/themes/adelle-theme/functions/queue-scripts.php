@@ -7,13 +7,10 @@ function load_theme_scripts() {
 	wp_register_script('header', get_template_directory_uri()  . '/js/header.js', array(), '', false);
 	wp_enqueue_script('header');
 
-	wp_register_script( 'foundation', get_template_directory_uri()  . '/bower_components/foundation/js/foundation/foundation.js', array('jquery'), '', true);
-	wp_enqueue_script( 'foundation' );	
+	wp_register_script( 'footer-libs', get_template_directory_uri()  . '/js/libs/footer-libs.js', array('jquery'), '', true);
+	wp_enqueue_script( 'footer-libs' );	
 
-	wp_register_script( 'foundation-reveal', get_template_directory_uri()  . '/js/libs/foundation.reveal.js', array('jquery', 'foundation'), '', true);
-	wp_enqueue_script( 'foundation-reveal' );	
-
-	wp_register_script( 'footer', get_template_directory_uri()  . '/js/footer.js', array('jquery','foundation', 'foundation-reveal'), '', true);
+	wp_register_script( 'footer', get_template_directory_uri()  . '/js/footer.js', array('jquery','footer-libs'), '', true);
 	wp_enqueue_script( 'footer' );	
 
 	// declare the URL to the file that handles the AJAX request (wp-admin/admin-ajax.php)

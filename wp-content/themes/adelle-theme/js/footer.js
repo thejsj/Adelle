@@ -54,18 +54,419 @@
 
 
 
-},{"../classes/global.js":2}],2:[function(require,module,exports){
+},{"../classes/global.js":6}],2:[function(require,module,exports){
+var _        = require('underscore');
+var Mustache = require('mustache');
 var Backbone = require('backbone');
 Backbone.$   = jQuery;
 
-var Options = require('../classes/options.js');
-var Router  = require('../classes/router.js');
-var Models  = require('../classes/models.js');
-var Views   = require('../classes/views.js');
+var Models = {}; 
+
+(function($){
+
+    Models.Project = Backbone.Model.extend({
+        defaults: {
+            ID: null, 
+            comment_count: "",
+            comment_status: "",
+            fallback_images: [],
+            featured_image: {},
+            filter: "raw",
+            guid: "",
+            menu_order: 0,
+            permalink: "",
+            ping_status: "",
+            pinged: "",
+            post_author: "",
+            post_content: "",
+            post_content_filtered: "",
+            post_date: "",
+            post_date_gmt: "",
+            post_excerpt: "",
+            post_mime_type: "",
+            post_modified: "",
+            post_modified_gmt: "",
+            post_name: "",
+            post_parent: 0,
+            post_password: "",
+            post_status: "",
+            post_title: "",
+            post_type: "",
+            template_name: "",
+            to_ping: "",
+            video_files: [],
+            vimeo_id: "",
+            video_loaded: false,
+            available: false,
+        },
+    });
+
+    Models.ProjectCollection = Backbone.Collection.extend({
+        model: Models.Project,
+        filterAvailable: function( available_projects_ids ){
+            // Get Available Projects
+            var available_projects = _.filter( this.models, function( model ){ 
+                return ( available_projects_ids.indexOf( model.get('ID') ) > -1 ); 
+            });
+            // Set As Available
+            _.each( available_projects, function( value, key ){
+                value.set('available', true);
+            });
+        }
+    });
+
+})(jQuery);
+
+module.exports = Models;
+},{"backbone":13,"mustache":18,"underscore":19}],3:[function(require,module,exports){
+var Backbone = require('backbone');
+Backbone.$   = jQuery;
+
+var Router = {}; 
+
+(function($){
+
+    Router = Backbone.Router.extend({
+        routes : {
+            "project/:slug/" : "project",
+            ".*"   : "notFound",
+            '*path': 'home', // Our last resort, go home
+        },
+        initialize: function( home_view ){
+            this.home_view = home_view; 
+        },
+        project : function(slug){
+            this.home_view.openModal( slug );
+        },
+        home : function() {
+            console.log( 'Home' );
+            this.home_view.closeModal();
+        },
+        notFound : function(){
+            this.home_view.closeModal();
+            console.log( 'Not Found' );
+        },
+    });
+
+})(jQuery);
+
+module.exports = Router;
+},{"backbone":13}],4:[function(require,module,exports){
+var _          = require('underscore');
+var Mustache   = require('mustache');
+var Backbone   = require('backbone');
+Backbone.$     = jQuery;
+var D3         = require('d3');
+var Video      = require('../classes/video-single.js');
+var Templates  = require('../templates.js');
+
+var Views = {}; 
+
+(function( $ ){
+
+    // List of Projects in Home Page
+    Views.ProjectHome = Backbone.View.extend({
+        // Object in which this Model will be rendered
+        el: '#project-home-container',
+        // Template used for this (in index.html). Parsed by undersocre
+        initialize: function( project_collection, global ){
+            // Tie this view to the allMovies collection
+            this.coll = project_collection;
+            // Keep a copy of the global object
+            this.global = global;
+            // Render on init
+            this.render();
+        },
+        render: function(){
+            // Empty the container (Pure and simple Jquery here)
+            this.$el.html('');
+            this.videos = {};
+            // Render (with underscore) and append (with Jquery) each item in this collction
+            this.coll.each(function(project, i){
+                // Pass variables to the template throuth the 'movie' variable
+                this.videos[ project.get('ID') ] = ( new Views.SingleProjectVideo( project, this ) );
+            }, this);
+            // Get all Widths
+            if( !this.global.isOrientationHorizontal() ){
+                // Get Width
+                var total_width = 0; 
+                for( i in this.videos ){
+                    total_width += this.videos[i].getWidth(); 
+                }
+                this.global.setTotalWidth( total_width );
+            }
+            return this;
+        },
+        video_quality_heights: {
+            'low' : 80,
+            'medium' : 160,
+            'high' : 240,
+        },
+        video_quality_widths: {
+            'low' : 80,
+            'medium' : 160,
+            'high' : 240,
+        },
+        color: D3.scale.category10(), 
+        getNewVideoId: function(){
+            var i = -1; 
+            return function( reset ){
+                if( reset === true ){
+                    i = -1; 
+                    return true; 
+                }
+                return i += 1;
+            }
+        },
+        reInitAllVideos: function(){
+            var self = this; 
+            if( typeof self.re_init !== 'undefined' ){
+                clearTimeout( self.re_init );
+            }
+            re_init = setTimeout(function(){
+                // Start
+                self.videos = [];
+                self.render(); 
+            }, 500);
+        },
+        openModal: function( slug ){
+            var current_model_id = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' }).get('ID');
+            this.current_video    = this.videos[ current_model_id ];
+
+            // Set As Viewed
+            this.current_video.setAsViewed();
+
+            // Set Related Videos as available
+            this.setRelatedAsAvailable( current_model_id );
+
+            // Add To Cookie
+            this.global.cookieHandler.addNewProject( current_model_id );
+
+            // Open As Model
+            var $current_modal = this.current_video.modal.$el; 
+            (function(self){
+                $current_modal
+                    .foundation('reveal', 'open')
+                    .find('.close-reveal-modal').click(function(){
+                        self.global.router.navigate( '/', true);
+                    });
+            })(this);
+        },
+        closeModal: function( ){
+            // Remove Vimdeo Video
+            if( this.current_video ){
+                this.current_video.modal.removeVideo(); 
+                // Close Modal
+                var $current_modal = this.current_video.modal.$el; 
+                if( $current_modal ){
+                    $current_modal.foundation('reveal', 'close');
+                    $current_modal = null; 
+                }
+            }
+        },
+        registerLoadedProject: function( ID ){
+            // Set this one
+            this.coll.findWhere({ 'ID' : ID }).set('video_loaded', true);
+            // See if all are set
+            if( this.coll.where({ 'video_loaded' : false }).length == 0){
+                this.initVideos();
+            }
+        },
+        initVideos: function(){
+            var time = {};
+            this.$el.addClass('visible');
+            var ii = 0; 
+            $.each(this.videos, function(i,video){
+                time[ ii ] = ii * 700;
+                setTimeout(function(){
+                    video.initCanvas(); 
+                }, time[ ii ]);
+                ii++;
+            });
+        },
+        setRelatedAsAvailable: function( current_model_id ){
+            var newly_available = _.filter( this.coll.models , function(model){
+                if( typeof model !== 'undefined' ){
+                    return _.indexOf(model.get('related_projects'), current_model_id) > -1; 
+                }
+                else {
+                    return false; 
+                }
+            }); 
+            _.each(newly_available, function(model){
+                console.log( 'New: ' + model.get('post_title') );
+                model.set('available', true);
+            });
+        },
+    });
+
+    // Single Project In Home Page
+    Views.SingleProjectVideo = Backbone.View.extend({
+        template: Templates['single-project-home'],
+        initialize: function( project, parent ){
+            this.viewed = false; 
+            this.model  = project;   
+            this.parent = parent;
+            this.modal  = new Views.SingleProjectModal( this.model, this.parent );
+            this.render(); 
+        },
+        events: {
+            'click': 'showProject',
+        },
+        render: function(i){
+            this.el = Mustache.render( this.template, this.model.toJSON() ); 
+            // Add it to the DOM
+            this.parent.$el.append( this.el );
+            this.$el = $("#container-" + this.model.get('ID'));
+            this.video = new Video( 
+                this.model, 
+                this.parent
+            );
+            return this;
+        },
+        showProject: function(){
+            if( this.model.get('available') ){
+                this.parent.global.router.navigate( this.model.get('relational_permalink') , true);
+            }
+        },
+        initCanvas: function(){
+            this.video.init_canvas(); 
+        },
+        setAsViewed: function(){
+            this.viewed = true; 
+            // Render Video
+            (function(modal){
+                setTimeout(function(){
+                    modal.renderVideo();
+                }, 800);
+            })(this.modal);
+            // Invoke Node Map
+        }
+    });
+
+    Views.SingleProjectModal = Backbone.View.extend({
+        template: Templates['single-project'],
+        video_template: Templates['vimeo-video'],
+        initialize: function( project, parent ){
+            this.model = project;   
+            this.parent = parent;
+            this.color = this.parent.color( this.model.get('ID') );
+            this.render(); 
+        },
+        render: function(i){
+            this.el = Mustache.render( this.template, this.model.toJSON() ); 
+            this.parent.$el.append( this.el );
+            this.$el = $("#modal-" + this.model.get('ID'));
+            this.$el
+                .css('border-color', this.color)
+                .find('.change-color').css('color', this.color);
+            this.$el
+                .find('.change-bg-color').css('background-color', this.color);
+            return this; 
+        },
+        renderVideo: function(){
+            this.$el
+                .find('.main-video')
+                .html( Mustache.render( this.video_template, this.model.toJSON() ));
+        },
+        removeVideo: function(){
+            this.$el
+                .find('.main-video')
+                .html( '' );
+        },
+    })
+
+
+})( jQuery );
+
+module.exports = Views;
+},{"../classes/video-single.js":11,"../templates.js":12,"backbone":13,"d3":14,"mustache":18,"underscore":19}],5:[function(require,module,exports){
+var NodeMap = require('../classes/nodemap-handler.js');
+
+var CookieHandler = {}; 
+
+(function($){
+
+	CookieHandler = function( all_project_ids, projects, node_map_options ){
+
+		var self = {}, __self = {}; 
+
+		self.init = function( all_project_ids, projects, node_map_options ){
+
+			
+
+			__self.cookie_name = "AdelleLinSiteAvailableProjects";
+			__self.cookie_value = $.cookie( __self.cookie_name); 
+
+			if( typeof __self.cookie_value !== 'undefined' && __self.cookie_value !== "" ){
+				// Get Saved Projects
+				__self.availableProjects = __self.cookie_value.split(',');
+				for( var i = 0; i < __self.availableProjects.length; i++ ){
+					__self.availableProjects[i] = Number(__self.availableProjects[i]);
+				}
+			}
+			else {
+				// Generate New Project ID
+				__self.randomlySortArray( all_project_ids );
+				__self.availableProjects = [ all_project_ids[0], all_project_ids[1], all_project_ids[2] ];
+			}
+			$.cookie( __self.cookie_name , __self.availableProjects.join(','), { expires: 30, path: '/' });
+
+			setTimeout(function(){
+				__self.node_map = new NodeMap(projects, node_map_options); 
+			});
+		}
+
+		self.getAvailableProjects = function(){
+			return __self.availableProjects; 
+		}
+
+		self.addNewProject = function( project_id ){
+			__self.availableProjects.push( project_id );
+			$.cookie( __self.cookie_name, __self.availableProjects, { expires: 30, path: '/' });
+		}
+
+		self.deleteCookie = function(){
+			$.removeCookie( __self.cookie_name , { path: '/' });
+		}
+
+		__self.randomlySortArray = function( array ){
+			for (var tmp, cur, top=array.length; top--;){
+				cur = (Math.random() * (top + 1)) << 0;
+				tmp = array[cur]; array[cur] = array[top]; array[top] = tmp;
+			}
+			return array;
+		}
+
+		self.init( all_project_ids, projects, node_map_options ); 
+		return self; 
+	}
+
+})(jQuery);
+
+module.exports = CookieHandler;
+},{"../classes/nodemap-handler.js":7}],6:[function(require,module,exports){
+var _        = require('underscore');
+var Backbone = require('backbone');
+Backbone.$   = jQuery;
+
+var Router  = require('../backbone/router.js');
+var Models  = require('../backbone/models.js');
+var Views   = require('../backbone/views.js');
+
+var Options = require('../classes/options-handler.js');
 var VideoHandler = require('../classes/video-handler.js');
 var ScrollHandler = require('../classes/scroll-handler.js');
+var CookieHandler = require('../classes/cookie-handler.js');
 
 var Global = {};
+
+if( Modernizr.video ){
+	console.log( "Has Video" );
+}
+else {
+	console.log( "No Video" );
+}
 
 (function($){
 
@@ -91,7 +492,7 @@ var Global = {};
 	        
 	        // Get Options
 	        self.options = new Options( self );
-	        __self.fallback_view = Modernizr.video; 
+	        __self.fallback_view = !Modernizr.video; 
 	        __self.orientation   = self.options.get( 'orientation' );
 
 	        // Elements
@@ -109,7 +510,16 @@ var Global = {};
 
 			// Init Projects
 			__self.projects = new Models.ProjectCollection( projects_array );
-			__self.projects.filterAvailable( [ 251, 224, 207 ] ); 
+
+			// Init Cookie Handler (Pass all IDs)
+			self.cookieHandler = new CookieHandler( 
+				__self.getAllProjectIds( __self.projects ), 
+				__self.projects,
+				self.options 
+			);
+
+			// Filter Availble Projects
+			__self.projects.filterAvailable( self.cookieHandler.getAvailableProjects() ); 
 
 			self.router = {}; 
 
@@ -201,7 +611,7 @@ var Global = {};
 		 * @return this
 		 */
 		__self.bindDebugging = function(){
-			__self.debug_mode = false; 
+			__self.debug_mode = true; 
 			__self.paused     = false; 
 
 			$(document).keypress(function(event){
@@ -213,6 +623,9 @@ var Global = {};
 				else if( event.keyCode === 13 ){
 				    __self.paused = !__self.paused; 
 				    console.log( 'Pasued : ' + __self.paused );
+				}else if( event.keyCode === 100 ){
+				    self.cookieHandler.deleteCookie(); 
+				    console.log( 'Available Deleted ' );
 				}
 				else {
 				    console.log( event.keyCode );
@@ -220,6 +633,19 @@ var Global = {};
 			});
 			return self; 
 		};
+
+		/**
+		 * Go through a list of projects and get their ids
+		 *
+		 * @return Array
+		 */
+		__self.getAllProjectIds = function( collection ){
+			var all_project_ids = []; 
+			collection.forEach(function(model){
+				all_project_ids.push( model.get('ID') );
+			})
+			return all_project_ids;
+		}
 
 		/* * * * * * * * * * * * * *
 		 *                         *
@@ -261,71 +687,178 @@ var Global = {};
 })(window.jQuery);
 
 module.exports = Global;
-},{"../classes/models.js":3,"../classes/options.js":4,"../classes/router.js":5,"../classes/scroll-handler.js":6,"../classes/video-handler.js":7,"../classes/views.js":9,"backbone":11}],3:[function(require,module,exports){
-var _        = require('underscore');
-var Mustache = require('mustache');
-var Backbone = require('backbone');
-Backbone.$   = jQuery;
+},{"../backbone/models.js":2,"../backbone/router.js":3,"../backbone/views.js":4,"../classes/cookie-handler.js":5,"../classes/options-handler.js":8,"../classes/scroll-handler.js":9,"../classes/video-handler.js":10,"backbone":13,"underscore":19}],7:[function(require,module,exports){
+var d3 = require('d3');
 
-var Models = {}; 
+var NodeMap;
 
 (function($){
 
-    Models.Project = Backbone.Model.extend({
-        defaults: {
-            ID: null, 
-            comment_count: "",
-            comment_status: "",
-            fallback_images: [],
-            featured_image: {},
-            filter: "raw",
-            guid: "",
-            menu_order: 0,
-            permalink: "",
-            ping_status: "",
-            pinged: "",
-            post_author: "",
-            post_content: "",
-            post_content_filtered: "",
-            post_date: "",
-            post_date_gmt: "",
-            post_excerpt: "",
-            post_mime_type: "",
-            post_modified: "",
-            post_modified_gmt: "",
-            post_name: "",
-            post_parent: 0,
-            post_password: "",
-            post_status: "",
-            post_title: "",
-            post_type: "",
-            template_name: "",
-            to_ping: "",
-            video_files: [],
-            vimeo_id: "",
-            video_loaded: false,
-            available: false,
-        },
-    });
+	NodeMap = function( projects, node_map_options ){
 
-    Models.ProjectCollection = Backbone.Collection.extend({
-        model: Models.Project,
-        filterAvailable: function( available_projects_ids ){
-            // Get Available Projects
-            var available_projects = _.filter( this.models, function( model ){ 
-                return ( available_projects_ids.indexOf( model.get('ID') ) > -1 ); 
-            });
-            // Set As Available
-            _.each( available_projects, function( value, key ){
-                value.set('available', true);
-            });
-        }
-    });
+		console.log( projects, node_map_options );
 
+		var body = document.getElementsByTagName("body")[0];
+
+		var self = {}, __self = {};
+
+		var width = 250, height = 250;
+
+		var color = d3.scale.category10();
+		var nodes = [],links = [];
+		var color = d3.scale.category20();
+
+		var force = d3.layout.force()
+			.nodes(nodes)
+			.links(links)
+			.charge(node_map_options.charge)
+			.linkDistance(node_map_options.linkDistance)
+			.size([width, height])
+			.on("tick", function(){
+				self.tick();
+			});
+
+		var svg = d3.select("body").append("svg")
+			.attr("width", width)
+			.attr("height", height);
+
+		var node = svg.selectAll(".node"),
+			link = svg.selectAll(".link");
+
+		self.i = 0;
+
+		self.init = function(){
+			projects.forEach(function(project){
+				console.log( project );
+				console.log( project.get('ID') );
+				console.log( project.get('post_title') );
+				console.log( project.get('available') );
+			});
+		}
+
+		self.start = function() {
+
+			force
+				.charge(node_map_options.charge)
+				.linkDistance(node_map_options.linkDistance)
+
+			link = link.data(force.links(), function(d) { 
+				return d.source.id + "-" + d.target.id; 
+			});
+
+			link
+				.enter()
+				.insert("line", ".node")
+				.attr("class", "link");
+
+			link
+				.exit()
+				.remove();
+
+			node = node.data(force.nodes(), function(d) { return d.id;});
+
+			node
+				.enter()
+				.append("circle")
+				.attr("class", function(d) { 
+					return "node " + d.id; })
+				.attr("r", node_map_options.radius)
+				.attr("fill", function(d, i) { return color(d.id); })
+				.on("click", function(d){
+					console.log(d.id + " - " + d.title);
+					alert(d.id + " - " + d.title);
+				})
+
+			node
+				.exit()
+				.remove();
+
+			node
+				.attr("r", node_map_options.radius);
+
+			force.start();
+		}
+
+		self.tick = function() {
+			node
+				.attr("cx", function(d) { return d.x; })
+				.attr("cy", function(d) { return d.y; })
+
+			link
+				.attr("x1", function(d) { return d.source.x; })
+				.attr("y1", function(d) { return d.source.y; })
+				.attr("x2", function(d) { return d.target.x; })
+				.attr("y2", function(d) { return d.target.y; });
+		}
+
+		self.addNode = function(node_object){
+			try{
+				if(_.where(nodes, { id: node_object.id }).length === 0) {
+					// Add Node
+					var new_node = {
+						id: node_object.id,
+						title: node_object.title
+					};
+					nodes.push(new_node);
+					self.start();
+
+					// Find Links
+					var new_links = _.where(project_relationships, { source: node_object.id });
+					var new_links = _.union(new_links, _.where(project_relationships, { target: node_object.id }));
+					for(i in new_links){
+						if(_.where(nodes, {id: new_links[i].source}).length > 0
+						&& _.where(nodes, {id: new_links[i].target}).length > 0 ){
+							var source = _.where(nodes, {id: new_links[i].source})[0];
+							var target = _.where(nodes, {id: new_links[i].target})[0];
+							var source_index = _.indexOf(nodes, source);
+							var target_index = _.indexOf(nodes, target);
+							links.push({source: source_index, target: target_index});
+							self.start();
+						}
+					}
+				}
+			}
+			catch(err){
+				console.error("Error - Could Not Add Node");
+			}
+		}
+
+		self.deleteNode = function(){
+			nodes.splice(1, 1); // remove b
+			links.shift(); // remove a-b
+			links.pop(); // remove b-c
+			self.start();
+		}
+
+		self.print = function(){
+			console.log("nodes:");
+			console.log(nodes);
+			console.log("links:");
+			console.log(links);
+		}
+
+		function spliceLinksForNode(node) {
+			toSplice = links.filter(function(l) { 
+				return (l.source === node) || (l.target === node); 
+			});
+			toSplice.map(function(l) {
+				links.splice(links.indexOf(l), 1); 
+			});
+		}
+
+		setInterval(function(){
+			force.alpha(node_map_options.alpha);
+		}, 100);
+
+		self.init(); 
+		return self; 
+	}
 })(jQuery);
 
-module.exports = Models;
-},{"backbone":11,"mustache":16,"underscore":17}],4:[function(require,module,exports){
+module.exports = NodeMap; 
+
+
+},{"d3":14}],8:[function(require,module,exports){
 var dat = require('dat-gui');
 
 var Options = {};
@@ -346,20 +879,30 @@ var Options = {};
         __self.initOptions = function() {
             __self.global_options.background_color = [ 255, 255, 255 ];
             __self.global_options.video_background_color = [ 255, 255, 255 ];
+
             // View Options
             __self.global_options.orientation = 'horizontal';
             __self.global_options.start_on_init = 10;
+
             // Video Options
             __self.global_options.speed = 400;
             __self.global_options.video_quality = 'high';
+
             // Available 
             __self.global_options.canvas_opacity = 1;
             __self.global_options.video_opacity = 0.67;
             __self.global_options.video_background_color_alpha = 0.0249;
+
             // Unavailable 
             __self.global_options.canvas_opacity_unavailable = 0.18;
             __self.global_options.video_opacity_unavailable = 0.04;
             __self.global_options.video_background_color_alpha_unavailable = 0.0672;
+
+            // Nodemap
+            __self.global_options.charge = -58;
+			__self.global_options.linkDistance = 30;
+			__self.global_options.radius = 5.5;
+			__self.global_options.alpha = 0.3;
         };
 
         __self.initGui = function(){
@@ -381,6 +924,12 @@ var Options = {};
 		    v3[v3.length] = gui.add( __self.global_options , 'video_opacity_unavailable', 0, 1 ); 
 		    v3[v3.length] = gui.add( __self.global_options , 'video_background_color_alpha_unavailable', 0, 0.1  );
 		    
+		    var v4f = gui.addFolder('Node_Map');
+			v4f[v4f.length] = gui.add( __self.global_options, 'charge', -400, 0);
+			v4f[v4f.length] = gui.add( __self.global_options, 'linkDistance', 0, 30);
+			v4f[v4f.length] = gui.add( __self.global_options, 'radius', 0, 16);
+			v4f[v4f.length] = gui.add( __self.global_options, 'alpha', 0, 2);
+
 		    v1[1].onChange(function(value) {
 		            global.reInit();
 	        });
@@ -417,40 +966,7 @@ var Options = {};
 })(window.jQuery);
 
 module.exports = Options;
-},{"dat-gui":13}],5:[function(require,module,exports){
-var Backbone = require('backbone');
-Backbone.$   = jQuery;
-
-var Router = {}; 
-
-(function($){
-
-    Router = Backbone.Router.extend({
-        routes : {
-            "project/:slug/" : "project",
-            ".*"   : "notFound",
-            '*path': 'home', // Our last resort, go home
-        },
-        initialize: function( home_view ){
-            this.home_view = home_view; 
-        },
-        project : function(slug){
-            this.home_view.openModal( slug );
-        },
-        home : function() {
-            console.log( 'Home' );
-            this.home_view.closeModal();
-        },
-        notFound : function(){
-            this.home_view.closeModal();
-            console.log( 'Not Found' );
-        },
-    });
-
-})(jQuery);
-
-module.exports = Router;
-},{"backbone":11}],6:[function(require,module,exports){
+},{"dat-gui":15}],9:[function(require,module,exports){
 var ScrollHandler = {}; 
 
 (function($){
@@ -513,7 +1029,7 @@ var ScrollHandler = {};
 
 module.exports = ScrollHandler;
 
-},{}],7:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var Global = require('../classes/video-single.js');
 
 var VideoHandler = {}; 
@@ -635,7 +1151,7 @@ var VideoHandler = {};
 })(window.jQuery);
 
 module.exports = VideoHandler;
-},{"../classes/video-single.js":8}],8:[function(require,module,exports){
+},{"../classes/video-single.js":11}],11:[function(require,module,exports){
 var Video; 
 
 (function($){
@@ -714,7 +1230,7 @@ var Video;
 	       	else {
 	       		__self.$canvas.css('opacity', global.options.get('canvas_opacity_unavailable'));
 	       	}
-
+	       	console.log( 'USES VIDEO : ' + __self.uses_video );
 	        if( __self.uses_video ){
 	            __self.init_video( __self.init_canvas ); 
 	        }
@@ -833,9 +1349,13 @@ var Video;
 	    	// Check if this model has been made avaialble
 	    	if( !__self.converted_to_available && model.get('available') ){
 	    		__self.converted_to_available = true; 
-	    		console.log('CONVERTED TO AVAILABLE');
-	    		console.log( model.get('post_title') );
-	       		__self.$canvas.css('opacity', global.options.get('canvas_opacity'));
+	       		__self.$canvas
+	       			.css('opacity', global.options.get('canvas_opacity'))
+	       			.removeClass('available-' + !model.get('available'))
+	       			.addClass('available-' + model.get('available'))
+	       			.parent()
+	       				.removeClass('available-' + !model.get('available'))
+	       				.addClass('available-' + model.get('available'));
 	       	}
 
 	        // Fade Other Frames Away Slowly
@@ -1017,239 +1537,13 @@ var Video;
 })(window.jQuery);
 
 module.exports = Video;
-},{}],9:[function(require,module,exports){
-var _          = require('underscore');
-var Mustache   = require('mustache');
-var Backbone   = require('backbone');
-Backbone.$     = jQuery;
-var D3         = require('d3');
-var Video      = require('../classes/video-single.js');
-var Templates  = require('../templates.js');
-
-var Views = {}; 
-
-(function( $ ){
-
-    // List of Projects in Home Page
-    Views.ProjectHome = Backbone.View.extend({
-        // Object in which this Model will be rendered
-        el: '#project-home-container',
-        // Template used for this (in index.html). Parsed by undersocre
-        initialize: function( project_collection, global ){
-            // Tie this view to the allMovies collection
-            this.coll = project_collection;
-            // Keep a copy of the global object
-            this.global = global;
-            // Render on init
-            this.render();
-        },
-        render: function(){
-            // Empty the container (Pure and simple Jquery here)
-            this.$el.html('');
-            this.videos = {};
-            // Render (with underscore) and append (with Jquery) each item in this collction
-            this.coll.each(function(project, i){
-                // Pass variables to the template throuth the 'movie' variable
-                this.videos[ project.get('ID') ] = ( new Views.SingleProjectVideo( project, this ) );
-            }, this);
-            // Get all Widths
-            if( !this.global.isOrientationHorizontal() ){
-                // Get Width
-                var total_width = 0; 
-                for( i in this.videos ){
-                    total_width += this.videos[i].getWidth(); 
-                }
-                this.global.setTotalWidth( total_width );
-            }
-            return this;
-        },
-        video_quality_heights: {
-            'low' : 80,
-            'medium' : 160,
-            'high' : 240,
-        },
-        video_quality_widths: {
-            'low' : 80,
-            'medium' : 160,
-            'high' : 240,
-        },
-        color: D3.scale.category10(), 
-        getNewVideoId: function(){
-            var i = -1; 
-            return function( reset ){
-                if( reset === true ){
-                    i = -1; 
-                    return true; 
-                }
-                return i += 1;
-            }
-        },
-        reInitAllVideos: function(){
-            var self = this; 
-            if( typeof self.re_init !== 'undefined' ){
-                clearTimeout( self.re_init );
-            }
-            re_init = setTimeout(function(){
-                // Start
-                self.videos = [];
-                self.render(); 
-            }, 500);
-        },
-        openModal: function( slug ){
-            var current_model_id = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' }).get('ID');
-            this.current_video    = this.videos[ current_model_id ];
-
-            // Set As Viewed
-            this.current_video.setAsViewed();
-
-            // Set Related Videos as available
-            this.setRelatedAsAvailable( current_model_id );
-
-            // Open As Model
-            var $current_modal = this.current_video.modal.$el; 
-            (function(self){
-                $current_modal
-                    .foundation('reveal', 'open')
-                    .find('.close-reveal-modal').click(function(){
-                        self.global.router.navigate( '/', true);
-                    });
-            })(this);
-        },
-        closeModal: function( ){
-            // Remove Vimdeo Video
-            if( this.current_video ){
-                this.current_video.modal.removeVideo(); 
-                // Close Modal
-                var $current_modal = this.current_video.modal.$el; 
-                if( $current_modal ){
-                    $current_modal.foundation('reveal', 'close');
-                    $current_modal = null; 
-                }
-            }
-        },
-        registerLoadedProject: function( ID ){
-            // Set this one
-            this.coll.findWhere({ 'ID' : ID }).set('video_loaded', true);
-            // See if all are set
-            if( this.coll.where({ 'video_loaded' : false }).length == 0){
-                this.initVideos();
-            }
-        },
-        initVideos: function(){
-            var time = {};
-            this.$el.addClass('visible');
-            var ii = 0; 
-            $.each(this.videos, function(i,video){
-                time[ ii ] = ii * 700;
-                setTimeout(function(){
-                    video.initCanvas(); 
-                }, time[ ii ]);
-                ii++;
-            });
-        },
-        setRelatedAsAvailable: function( current_model_id ){
-            var newly_available = _.filter( this.coll.models , function(model){
-                if( typeof model !== 'undefined' ){
-                    return _.indexOf(model.get('related_projects'), current_model_id) > -1; 
-                }
-                else {
-                    return false; 
-                }
-            }); 
-            _.each(newly_available, function(model){
-                console.log( 'New: ' + model.get('post_title') );
-                model.set('available', true);
-            });
-        },
-    });
-
-    // Single Project In Home Page
-    Views.SingleProjectVideo = Backbone.View.extend({
-        template: Templates['single-project-home'],
-        initialize: function( project, parent ){
-            this.viewed = false; 
-            this.model  = project;   
-            this.parent = parent;
-            this.modal  = new Views.SingleProjectModal( this.model, this.parent );
-            this.render(); 
-        },
-        events: {
-            'click': 'showProject',
-        },
-        render: function(i){
-            this.el = Mustache.render( this.template, this.model.toJSON() ); 
-            // Add it to the DOM
-            this.parent.$el.append( this.el );
-            this.$el = $("#container-" + this.model.get('ID'));
-            this.video = new Video( 
-                this.model, 
-                this.parent
-            );
-            return this;
-        },
-        showProject: function(){
-            if( this.model.get('available') ){
-                this.parent.global.router.navigate( this.model.get('relational_permalink') , true);
-            }
-        },
-        initCanvas: function(){
-            this.video.init_canvas(); 
-        },
-        setAsViewed: function(){
-            this.viewed = true; 
-            // Render Video
-            (function(modal){
-                setTimeout(function(){
-                    modal.renderVideo();
-                }, 800);
-            })(this.modal);
-            // Invoke Node Map
-        }
-    });
-
-    Views.SingleProjectModal = Backbone.View.extend({
-        template: Templates['single-project'],
-        video_template: Templates['vimeo-video'],
-        initialize: function( project, parent ){
-            this.model = project;   
-            this.parent = parent;
-            this.color = this.parent.color( this.model.get('ID') );
-            this.render(); 
-        },
-        render: function(i){
-            this.el = Mustache.render( this.template, this.model.toJSON() ); 
-            this.parent.$el.append( this.el );
-            this.$el = $("#modal-" + this.model.get('ID'));
-            this.$el
-                .css('border-color', this.color)
-                .find('.change-color').css('color', this.color);
-            this.$el
-                .find('.change-bg-color').css('background-color', this.color);
-            return this; 
-        },
-        renderVideo: function(){
-            this.$el
-                .find('.main-video')
-                .html( Mustache.render( this.video_template, this.model.toJSON() ));
-        },
-        removeVideo: function(){
-            this.$el
-                .find('.main-video')
-                .html( '' );
-        },
-    })
-
-
-})( jQuery );
-
-module.exports = Views;
-},{"../classes/video-single.js":8,"../templates.js":10,"backbone":11,"d3":12,"mustache":16,"underscore":17}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 Templates = {
     "404" : '<div class="row 404-template"><div class="large-8 large-offset-2 columns four-zero-four"><h2>404</h2><p>Sorry, we can&#39;t find the page you are looking for! Perhaps you have entered the wrong URL? Obviously, it&#39;s not our fault!</p></div></div>',"single-project-partial" : '<article class="project single-project-partial-template"><!-- Display Post Title --><h2><a href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Post Content --><div class="entry-content">{{# vimeo_id }}<!-- Vimeo Video --><div class="main-video"><iframe src="//player.vimeo.com/video/88054119" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>{{/ vimeo_id }}{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}<!-- Display Main Content -->{{{ post_content }}}</div></article>',"projects-view" : '{{# posts }}{{> single-project-partial }}{{/ posts }}',"single-project-home" : '<div id="container-{{ ID }}" class="home-project-container single-project-home-template {{# available }}available-true{{/ available }}{{^ available }}available-false{{/ available }}"><div class="home-content-container"><h2>{{ post_title }}</h2><div class="excpert"></div></div><canvas id="canvas-{{ ID }}" class="{{# available }}available-true{{/ available }}{{^ available }}available-false{{/ available }}"></canvas><video id="video-{{ ID }}" controls loop>{{#video_files}}<source src="{{{ url }}}" type="{{ mime_type }}">{{/video_files}}</video></div>',"single-project" : '<div id="modal-{{ ID }}" class="reveal-modal single-modal project-modal single-project-template" data-reveal><article class="project">{{# vimeo_id }}<!-- Vimeo Video --><div class="main-video"></div>{{/ vimeo_id }}{{^ vimeo_id }}{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}{{/ vimeo_id }}<!-- Display Post Content --><div class="entry-content"><!-- Display Post Title --><h2 class="change-color main-project-title"><a class="change-color" href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Main Content -->{{{ post_content }}}</div></article><a class="close-reveal-modal top change-bg-color">&#215;</a></div>',"single" : '<article class="single single-template"><!-- Display Post Title --><h2><a href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Post Content --><div class="entry-content">{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}<!-- Display Main Content -->{{{ post_content }}}</div></article>',"vimeo-video" : '<iframe src="//player.vimeo.com/video/{{ vimeo_id }}" width="596" height="350" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> ',
     "done": "true"
   }; 
 module.exports = Templates;
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -2859,7 +3153,7 @@ module.exports = Templates;
 
 }));
 
-},{"underscore":17}],12:[function(require,module,exports){
+},{"underscore":19}],14:[function(require,module,exports){
 !function() {
   var d3 = {
     version: "3.4.4"
@@ -12154,10 +12448,10 @@ module.exports = Templates;
     this.d3 = d3;
   }
 }();
-},{}],13:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = require('./vendor/dat.gui')
 module.exports.color = require('./vendor/dat.color')
-},{"./vendor/dat.color":14,"./vendor/dat.gui":15}],14:[function(require,module,exports){
+},{"./vendor/dat.color":16,"./vendor/dat.gui":17}],16:[function(require,module,exports){
 /**
  * dat-gui JavaScript Controller Library
  * http://code.google.com/p/dat-gui
@@ -12913,7 +13207,7 @@ dat.color.math = (function () {
 })(),
 dat.color.toString,
 dat.utils.common);
-},{}],15:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /**
  * dat-gui JavaScript Controller Library
  * http://code.google.com/p/dat-gui
@@ -16574,7 +16868,7 @@ dat.dom.CenteredDiv = (function (dom, common) {
 dat.utils.common),
 dat.dom.dom,
 dat.utils.common);
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /*!
  * mustache.js - Logic-less {{mustache}} templates with JavaScript
  * http://github.com/janl/mustache.js
@@ -17146,7 +17440,7 @@ dat.utils.common);
 
 }));
 
-},{}],17:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 //     Underscore.js 1.6.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors

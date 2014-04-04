@@ -18,20 +18,30 @@ var Options = {};
         __self.initOptions = function() {
             __self.global_options.background_color = [ 255, 255, 255 ];
             __self.global_options.video_background_color = [ 255, 255, 255 ];
+
             // View Options
             __self.global_options.orientation = 'horizontal';
             __self.global_options.start_on_init = 10;
+
             // Video Options
             __self.global_options.speed = 400;
             __self.global_options.video_quality = 'high';
+
             // Available 
             __self.global_options.canvas_opacity = 1;
             __self.global_options.video_opacity = 0.67;
             __self.global_options.video_background_color_alpha = 0.0249;
+
             // Unavailable 
             __self.global_options.canvas_opacity_unavailable = 0.18;
             __self.global_options.video_opacity_unavailable = 0.04;
             __self.global_options.video_background_color_alpha_unavailable = 0.0672;
+
+            // Nodemap
+            __self.global_options.charge = -58;
+			__self.global_options.linkDistance = 30;
+			__self.global_options.radius = 5.5;
+			__self.global_options.alpha = 0.3;
         };
 
         __self.initGui = function(){
@@ -53,6 +63,12 @@ var Options = {};
 		    v3[v3.length] = gui.add( __self.global_options , 'video_opacity_unavailable', 0, 1 ); 
 		    v3[v3.length] = gui.add( __self.global_options , 'video_background_color_alpha_unavailable', 0, 0.1  );
 		    
+		    var v4f = gui.addFolder('Node_Map');
+			v4f[v4f.length] = gui.add( __self.global_options, 'charge', -400, 0);
+			v4f[v4f.length] = gui.add( __self.global_options, 'linkDistance', 0, 30);
+			v4f[v4f.length] = gui.add( __self.global_options, 'radius', 0, 16);
+			v4f[v4f.length] = gui.add( __self.global_options, 'alpha', 0, 2);
+
 		    v1[1].onChange(function(value) {
 		            global.reInit();
 	        });

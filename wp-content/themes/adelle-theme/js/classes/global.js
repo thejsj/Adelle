@@ -1,14 +1,24 @@
+var _        = require('underscore');
 var Backbone = require('backbone');
 Backbone.$   = jQuery;
 
-var Options = require('../classes/options.js');
-var Router  = require('../classes/router.js');
-var Models  = require('../classes/models.js');
-var Views   = require('../classes/views.js');
+var Router  = require('../backbone/router.js');
+var Models  = require('../backbone/models.js');
+var Views   = require('../backbone/views.js');
+
+var Options = require('../classes/options-handler.js');
 var VideoHandler = require('../classes/video-handler.js');
 var ScrollHandler = require('../classes/scroll-handler.js');
+var CookieHandler = require('../classes/cookie-handler.js');
 
 var Global = {};
+
+if( Modernizr.video ){
+	console.log( "Has Video" );
+}
+else {
+	console.log( "No Video" );
+}
 
 (function($){
 
@@ -34,7 +44,7 @@ var Global = {};
 	        
 	        // Get Options
 	        self.options = new Options( self );
-	        __self.fallback_view = Modernizr.video; 
+	        __self.fallback_view = !Modernizr.video; 
 	        __self.orientation   = self.options.get( 'orientation' );
 
 	        // Elements
@@ -52,7 +62,16 @@ var Global = {};
 
 			// Init Projects
 			__self.projects = new Models.ProjectCollection( projects_array );
-			__self.projects.filterAvailable( [ 251, 224, 207 ] ); 
+
+			// Init Cookie Handler (Pass all IDs)
+			self.cookieHandler = new CookieHandler( 
+				__self.getAllProjectIds( __self.projects ), 
+				__self.projects,
+				self.options 
+			);
+
+			// Filter Availble Projects
+			__self.projects.filterAvailable( self.cookieHandler.getAvailableProjects() ); 
 
 			self.router = {}; 
 
@@ -144,7 +163,7 @@ var Global = {};
 		 * @return this
 		 */
 		__self.bindDebugging = function(){
-			__self.debug_mode = false; 
+			__self.debug_mode = true; 
 			__self.paused     = false; 
 
 			$(document).keypress(function(event){
@@ -156,6 +175,9 @@ var Global = {};
 				else if( event.keyCode === 13 ){
 				    __self.paused = !__self.paused; 
 				    console.log( 'Pasued : ' + __self.paused );
+				}else if( event.keyCode === 100 ){
+				    self.cookieHandler.deleteCookie(); 
+				    console.log( 'Available Deleted ' );
 				}
 				else {
 				    console.log( event.keyCode );
@@ -163,6 +185,19 @@ var Global = {};
 			});
 			return self; 
 		};
+
+		/**
+		 * Go through a list of projects and get their ids
+		 *
+		 * @return Array
+		 */
+		__self.getAllProjectIds = function( collection ){
+			var all_project_ids = []; 
+			collection.forEach(function(model){
+				all_project_ids.push( model.get('ID') );
+			})
+			return all_project_ids;
+		}
 
 		/* * * * * * * * * * * * * *
 		 *                         *
