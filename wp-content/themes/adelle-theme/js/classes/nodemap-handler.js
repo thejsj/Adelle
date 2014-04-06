@@ -79,8 +79,6 @@ var NodeMap;
 
 		__self.start = function() {
 
-			console.log("NH Start");
-
 			force
 				.charge(node_map_options.get('charge'))
 				.linkDistance(node_map_options.get('linkDistance'))
@@ -100,14 +98,11 @@ var NodeMap;
 
 			node = node.data(force.nodes(), function(d) { return d.id; });
 
-			console.log('node:');
-			console.log(node);
-
 			node
 				.enter()
 				.append("circle")
 				.attr("r", node_map_options.get('radius'))
-				.attr("fill", function(d, i) { return d.model.get('color'); })
+				.attr("fill", function(d) { return d.model.get('color'); })
 				.on("click", function(d){
 					alert(d.id + " - " + d.model.get('post_title'));
 				})
@@ -118,11 +113,20 @@ var NodeMap;
 
 			node
 				.attr("class", function(d) { 
-					console.log( 'Model : ' + d.model.get('ID') );
-					console.log( d.model.get('viewed') + " / " + d.model.get('currently_viewing') );
 					return "node node-" + d.id + " viewed-" + d.model.get('viewed') + " currently-viewing-" + d.model.get('currently_viewing'); 
 				})
-				.attr("r", node_map_options.get('radius'));
+				.attr("r", function(d){
+					var radius = node_map_options.get('radius');
+					if( d.model.get('currently_viewing') ){
+						return radius * 1.2;
+					}
+					else if( d.model.get('viewed') ){
+						return radius;
+					}
+					else {
+						return radius * 0.8;
+					}
+				});
 
 			force.start();
 		}
@@ -184,7 +188,6 @@ var NodeMap;
 		}
 
 		self.update = function(){
-			console.log('NH update!!');
 			__self.start();
 		}
 

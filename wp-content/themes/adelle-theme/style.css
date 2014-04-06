@@ -5961,4 +5961,4 @@ svg#node_map {
     svg#node_map .node.viewed-true {
       opacity: 0.9; }
     svg#node_map .node.viewed-true.currently-viewing-true {
-      stroke-width: 3px; }
+      stroke-width: 2px; }

@@ -71,25 +71,21 @@ var Options = {};
 
 			for( var i = 0; i < v1.length; i++ ){
 				v1[i].onChange(function(value) {
-					console.log('V update!!');
 			        global.update();
 		        });
 			}
 			for( var i = 0; i < v2.length; i++ ){
 				v2[i].onChange(function(value) {
-					console.log('V update!!');
 			        global.update();
 		        });
 			}
 			for( var i = 0; i < v3.length; i++ ){
 				v3[i].onChange(function(value) {
-					console.log('V update!!');
 			        global.update();
 		        });
 			}
 			for( var i = 0; i < v4.length; i++ ){
 				v4[i].onChange(function(value) {
-					console.log('V update!!');
 			        global.update();
 		        });
 			}

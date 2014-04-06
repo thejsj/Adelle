@@ -79,15 +79,10 @@ var Views = {};
             }, 500);
         },
         openModal: function( slug ){
-            console.log( 'Open: ' + slug );
-            this.current_model = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' });
-
-            console.log('Set Current Video');
+            this.current_model = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' })
 
             // Set Current Video
             this.current_video    = this.videos[ this.current_model.get('ID') ];
-
-            console.log('Set As Viewed');
 
             // Set As Viewed
             this.current_model.set('viewed', true);
@@ -108,7 +103,6 @@ var Views = {};
             })(this);
 
             // Update Global
-            console.log( 'Update Global - Open Modal : ' + this.current_model.get('ID') );
             this.global.update(); 
         },
         closeModal: function( ){           
@@ -123,8 +117,6 @@ var Views = {};
                 
                 // Unset Variables
                 this.current_model.set('currently_viewing', false);
-                console.log( '1. Update Global - Close Modal : ' + this.current_model.get('ID') );
-                console.log( '2. Update Global - Close Modal : ' + this.current_model.get('currently_viewing') );
                 this.current_model = null;
                 this.current_video = null; 
 

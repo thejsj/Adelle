@@ -243,15 +243,10 @@ var Views = {};
             }, 500);
         },
         openModal: function( slug ){
-            console.log( 'Open: ' + slug );
-            this.current_model = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' });
-
-            console.log('Set Current Video');
+            this.current_model = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' })
 
             // Set Current Video
             this.current_video    = this.videos[ this.current_model.get('ID') ];
-
-            console.log('Set As Viewed');
 
             // Set As Viewed
             this.current_model.set('viewed', true);
@@ -272,7 +267,6 @@ var Views = {};
             })(this);
 
             // Update Global
-            console.log( 'Update Global - Open Modal : ' + this.current_model.get('ID') );
             this.global.update(); 
         },
         closeModal: function( ){           
@@ -287,8 +281,6 @@ var Views = {};
                 
                 // Unset Variables
                 this.current_model.set('currently_viewing', false);
-                console.log( '1. Update Global - Close Modal : ' + this.current_model.get('ID') );
-                console.log( '2. Update Global - Close Modal : ' + this.current_model.get('currently_viewing') );
                 this.current_model = null;
                 this.current_video = null; 
 
@@ -816,8 +808,6 @@ var NodeMap;
 
 		__self.start = function() {
 
-			console.log("NH Start");
-
 			force
 				.charge(node_map_options.get('charge'))
 				.linkDistance(node_map_options.get('linkDistance'))
@@ -837,14 +827,11 @@ var NodeMap;
 
 			node = node.data(force.nodes(), function(d) { return d.id; });
 
-			console.log('node:');
-			console.log(node);
-
 			node
 				.enter()
 				.append("circle")
 				.attr("r", node_map_options.get('radius'))
-				.attr("fill", function(d, i) { return d.model.get('color'); })
+				.attr("fill", function(d) { return d.model.get('color'); })
 				.on("click", function(d){
 					alert(d.id + " - " + d.model.get('post_title'));
 				})
@@ -855,11 +842,20 @@ var NodeMap;
 
 			node
 				.attr("class", function(d) { 
-					console.log( 'Model : ' + d.model.get('ID') );
-					console.log( d.model.get('viewed') + " / " + d.model.get('currently_viewing') );
 					return "node node-" + d.id + " viewed-" + d.model.get('viewed') + " currently-viewing-" + d.model.get('currently_viewing'); 
 				})
-				.attr("r", node_map_options.get('radius'));
+				.attr("r", function(d){
+					var radius = node_map_options.get('radius');
+					if( d.model.get('currently_viewing') ){
+						return radius * 1.2;
+					}
+					else if( d.model.get('viewed') ){
+						return radius;
+					}
+					else {
+						return radius * 0.8;
+					}
+				});
 
 			force.start();
 		}
@@ -921,7 +917,6 @@ var NodeMap;
 		}
 
 		self.update = function(){
-			console.log('NH update!!');
 			__self.start();
 		}
 
@@ -1011,25 +1006,21 @@ var Options = {};
 
 			for( var i = 0; i < v1.length; i++ ){
 				v1[i].onChange(function(value) {
-					console.log('V update!!');
 			        global.update();
 		        });
 			}
 			for( var i = 0; i < v2.length; i++ ){
 				v2[i].onChange(function(value) {
-					console.log('V update!!');
 			        global.update();
 		        });
 			}
 			for( var i = 0; i < v3.length; i++ ){
 				v3[i].onChange(function(value) {
-					console.log('V update!!');
 			        global.update();
 		        });
 			}
 			for( var i = 0; i < v4.length; i++ ){
 				v4[i].onChange(function(value) {
-					console.log('V update!!');
 			        global.update();
 		        });
 			}
