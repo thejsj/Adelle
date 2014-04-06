@@ -15,6 +15,8 @@ var Views = {};
     Views.ProjectHome = Backbone.View.extend({
         // Object in which this Model will be rendered
         el: '#project-home-container',
+        current_model: null, 
+        current_video: null,
         // Template used for this (in index.html). Parsed by undersocre
         initialize: function( project_collection, global ){
             // Tie this view to the allMovies collection
@@ -78,14 +80,22 @@ var Views = {};
         },
         openModal: function( slug ){
             console.log( 'Open: ' + slug );
-            var current_model_id = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' }).get('ID');
-            this.current_video    = this.videos[ current_model_id ];
+            this.current_model = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' });
+
+            console.log('Set Current Video');
+
+            // Set Current Video
+            this.current_video    = this.videos[ this.current_model.get('ID') ];
+
+            console.log('Set As Viewed');
 
             // Set As Viewed
-            this.current_video.setAsViewed();
+            this.current_model.set('viewed', true);
+            this.current_model.set('currently_viewing', true);
+            this.current_video.setAsViewed(); 
 
             // Set Related Videos as available
-            this.setRelatedAsAvailable( current_model_id );
+            this.setRelatedAsAvailable( this.current_model.get('ID') );
 
             // Open As Model
             var $current_modal = this.current_video.modal.$el; 
@@ -96,17 +106,28 @@ var Views = {};
                         self.global.router.navigate( '/', true);
                     });
             })(this);
+
+            // Update Global
+            console.log( 'Update Global - Open Modal : ' + this.current_model.get('ID') );
+            this.global.update(); 
         },
-        closeModal: function( ){
-            // Remove Vimdeo Video
-            if( this.current_video ){
+        closeModal: function( ){           
+            if( this.current_model !== null && this.current_video !== null ){
+                // Remove Vimdeo Video
                 this.current_video.modal.removeVideo(); 
                 // Close Modal
                 var $current_modal = this.current_video.modal.$el; 
                 if( $current_modal ){
                     $current_modal.foundation('reveal', 'close');
-                    $current_modal = null; 
                 }
+                // Unset Variables
+                this.current_model.set('currently_viewing', false);
+                this.current_model = null;
+                this.current_video = null; 
+
+                // Update Global
+                console.log( 'Update Global - Close Modal : ' + this.current_model.get('ID') );
+                this.global.update(); 
             }
         },
         registerLoadedProject: function( ID ){

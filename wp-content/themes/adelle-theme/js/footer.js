@@ -100,6 +100,8 @@ var Models = {};
             vimeo_id: "",
             video_loaded: false,
             available: false,
+            viewed: false,
+            currently_viewing: false,
         },
     });
 
@@ -177,6 +179,8 @@ var Views = {};
     Views.ProjectHome = Backbone.View.extend({
         // Object in which this Model will be rendered
         el: '#project-home-container',
+        current_model: null, 
+        current_video: null,
         // Template used for this (in index.html). Parsed by undersocre
         initialize: function( project_collection, global ){
             // Tie this view to the allMovies collection
@@ -240,14 +244,22 @@ var Views = {};
         },
         openModal: function( slug ){
             console.log( 'Open: ' + slug );
-            var current_model_id = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' }).get('ID');
-            this.current_video    = this.videos[ current_model_id ];
+            this.current_model = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' });
+
+            console.log('Set Current Video');
+
+            // Set Current Video
+            this.current_video    = this.videos[ this.current_model.get('ID') ];
+
+            console.log('Set As Viewed');
 
             // Set As Viewed
-            this.current_video.setAsViewed();
+            this.current_model.set('viewed', true);
+            this.current_model.set('currently_viewing', true);
+            this.current_video.setAsViewed(); 
 
             // Set Related Videos as available
-            this.setRelatedAsAvailable( current_model_id );
+            this.setRelatedAsAvailable( this.current_model.get('ID') );
 
             // Open As Model
             var $current_modal = this.current_video.modal.$el; 
@@ -258,17 +270,28 @@ var Views = {};
                         self.global.router.navigate( '/', true);
                     });
             })(this);
+
+            // Update Global
+            console.log( 'Update Global - Open Modal : ' + this.current_model.get('ID') );
+            this.global.update(); 
         },
-        closeModal: function( ){
-            // Remove Vimdeo Video
-            if( this.current_video ){
+        closeModal: function( ){           
+            if( this.current_model !== null && this.current_video !== null ){
+                // Remove Vimdeo Video
                 this.current_video.modal.removeVideo(); 
                 // Close Modal
                 var $current_modal = this.current_video.modal.$el; 
                 if( $current_modal ){
                     $current_modal.foundation('reveal', 'close');
-                    $current_modal = null; 
                 }
+                // Unset Variables
+                this.current_model.set('currently_viewing', false);
+                this.current_model = null;
+                this.current_video = null; 
+
+                // Update Global
+                console.log( 'Update Global - Close Modal : ' + this.current_model.get('ID') );
+                this.global.update(); 
             }
         },
         registerLoadedProject: function( ID ){
@@ -420,7 +443,7 @@ var CookieHandler = {};
 				__self.randomlySortArray( all_project_ids );
 				__self.availableProjects = [ all_project_ids[0], all_project_ids[1], all_project_ids[2] ];
 			}
-			$.cookie( __self.cookie_name , __self.availableProjects.join(','), { expires: 30, path: '/' });
+			// $.cookie( __self.cookie_name , __self.availableProjects.join(','), { expires: 30, path: '/' });
 
 			setTimeout(function(){
 				__self.node_map = new NodeMap(projects, node_map_options); 
@@ -432,9 +455,8 @@ var CookieHandler = {};
 		}
 
 		self.addNewProject = function( project_id ){
-			console.log( 'addNewProject : ' + project_id );
 			__self.availableProjects.push( project_id );
-			$.cookie( __self.cookie_name, __self.availableProjects, { expires: 30, path: '/' });
+			// $.cookie( __self.cookie_name, __self.availableProjects, { expires: 30, path: '/' });
 			if( typeof __self.node_map !== 'undefined' ){
 				__self.node_map.addNode( project_id );
 			}
@@ -442,6 +464,12 @@ var CookieHandler = {};
 
 		self.deleteCookie = function(){
 			$.removeCookie( __self.cookie_name , { path: '/' });
+		}
+
+		self.update = function(){
+			if( typeof __self.node_map !== 'undefined'){
+				__self.node_map.update(); 
+			}
 		}
 
 		__self.randomlySortArray = function( array ){
@@ -553,6 +581,16 @@ var Global = {};
 			self.options.reInit(); 	
 			__self.home_view.reInitAllVideos(); 
 			self.scroll_handler.reInit(); 
+		}
+
+		/**
+		 * Update View. Triggered by changes in options or views
+		 *
+		 * @return this
+		 */
+		self.update = function(){
+			self.cookieHandler.update();
+			return self;
 		}
 
 		/**
@@ -707,7 +745,7 @@ var NodeMap;
 		var self = {}, __self = {};
 
 		__self.project_relationships = [];
-		__self.width = 250, __self.height = 250;
+		__self.width = 200, __self.height = 200;
 
 		__self.nodes = [],__self.links = [];
 
@@ -776,6 +814,8 @@ var NodeMap;
 
 		__self.start = function() {
 
+			console.log("NH Start");
+
 			force
 				.charge(node_map_options.get('charge'))
 				.linkDistance(node_map_options.get('linkDistance'))
@@ -799,11 +839,14 @@ var NodeMap;
 				.enter()
 				.append("circle")
 				.attr("class", function(d) { 
-					return "node " + d.id; })
+					console.log( 'Model : ' + d.model.get('ID') );
+					console.log( d.model.get('viewed') + " / " + d.model.get('currently_viewing') );
+					return "node node-" + d.id + " viewed-" + d.model.get('viewed') + " currently-viewing-" + d.model.get('currently_viewing'); 
+				})
 				.attr("r", node_map_options.get('radius'))
-				.attr("fill", function(d, i) { return d.color; })
+				.attr("fill", function(d, i) { return d.model.get('color'); })
 				.on("click", function(d){
-					alert(d.id + " - " + d.post_title);
+					alert(d.id + " - " + d.model.get('post_title'));
 				})
 
 			node
@@ -836,8 +879,7 @@ var NodeMap;
 					// Add Node
 					var new_node = {
 						id: node_object.get('id'),
-						post_title: node_object.get('post_title'),
-						color: node_object.get('color'),
+						model: node_object
 					};
 
 					__self.nodes.push(new_node);
@@ -870,6 +912,11 @@ var NodeMap;
 			__self.nodes.splice(1, 1); // remove b
 			__self.links.shift(); // remove a-b
 			__self.links.pop(); // remove b-c
+			__self.start();
+		}
+
+		self.update = function(){
+			console.log('NH update!!');
 			__self.start();
 		}
 
@@ -926,39 +973,64 @@ var Options = {};
             __self.global_options.video_background_color_alpha_unavailable = 0.0672;
 
             // Nodemap
-            __self.global_options.charge = -58;
-			__self.global_options.linkDistance = 30;
+            __self.global_options.charge = -69;
+			__self.global_options.linkDistance = 28;
 			__self.global_options.radius = 5.5;
-			__self.global_options.alpha = 0.3;
+			__self.global_options.alpha = 1.4;
         };
 
         __self.initGui = function(){
         	var gui = new dat.GUI();
-		    var v1 = [], v2 = [], v3 = [];
+		    var v1 = [], v2 = [], v3 = [], v4 = [];
 
 		    var v1f = gui.addFolder('Video_Options');
-		    v1[v1.length] = gui.add( __self.global_options , 'speed', 0, 1000);
-		    v1[v1.length] = gui.add( __self.global_options , 'video_quality', ['low', 'medium', 'high']);
-		    v1[v1.length] = gui.add( __self.global_options , 'orientation', ['horizontal', 'vertical' ] );
+		    v1[v1.length] = v1f.add( __self.global_options , 'speed', 0, 1000);
+		    v1[v1.length] = v1f.add( __self.global_options , 'video_quality', ['low', 'medium', 'high']);
+		    v1[v1.length] = v1f.add( __self.global_options , 'orientation', ['horizontal', 'vertical' ] );
 
 		    var v2f = gui.addFolder('Available_Video_Options');
-		    v2[v2.length] = gui.add( __self.global_options , 'canvas_opacity', 0, 1 );
-		    v2[v2.length] = gui.add( __self.global_options , 'video_opacity', 0, 1 );
-		    v2[v2.length] = gui.add( __self.global_options , 'video_background_color_alpha', 0, 0.1  );
+		    v2[v2.length] = v2f.add( __self.global_options , 'canvas_opacity', 0, 1 );
+		    v2[v2.length] = v2f.add( __self.global_options , 'video_opacity', 0, 1 );
+		    v2[v2.length] = v2f.add( __self.global_options , 'video_background_color_alpha', 0, 0.1  );
 
 		    var v3f = gui.addFolder('Unavailable_Video_Options');
-		    v3[v3.length] = gui.add( __self.global_options , 'canvas_opacity_unavailable', 0, 1 );   
-		    v3[v3.length] = gui.add( __self.global_options , 'video_opacity_unavailable', 0, 1 ); 
-		    v3[v3.length] = gui.add( __self.global_options , 'video_background_color_alpha_unavailable', 0, 0.1  );
+		    v3[v3.length] = v3f.add( __self.global_options , 'canvas_opacity_unavailable', 0, 1 );   
+		    v3[v3.length] = v3f.add( __self.global_options , 'video_opacity_unavailable', 0, 1 ); 
+		    v3[v3.length] = v3f.add( __self.global_options , 'video_background_color_alpha_unavailable', 0, 0.1  );
 		    
 		    var v4f = gui.addFolder('Node_Map');
-			v4f[v4f.length] = gui.add( __self.global_options, 'charge', -400, 0);
-			v4f[v4f.length] = gui.add( __self.global_options, 'linkDistance', 0, 30);
-			v4f[v4f.length] = gui.add( __self.global_options, 'radius', 0, 16);
-			v4f[v4f.length] = gui.add( __self.global_options, 'alpha', 0, 2);
+			v4[v4.length] = v4f.add( __self.global_options, 'charge', -400, 0);
+			v4[v4.length] = v4f.add( __self.global_options, 'linkDistance', 0, 60);
+			v4[v4.length] = v4f.add( __self.global_options, 'radius', 0, 16);
+			v4[v4.length] = v4f.add( __self.global_options, 'alpha', 0, 2);
+
+			for( var i = 0; i < v1.length; i++ ){
+				v1[i].onChange(function(value) {
+					console.log('V update!!');
+			        global.update();
+		        });
+			}
+			for( var i = 0; i < v2.length; i++ ){
+				v2[i].onChange(function(value) {
+					console.log('V update!!');
+			        global.update();
+		        });
+			}
+			for( var i = 0; i < v3.length; i++ ){
+				v3[i].onChange(function(value) {
+					console.log('V update!!');
+			        global.update();
+		        });
+			}
+			for( var i = 0; i < v4.length; i++ ){
+				v4[i].onChange(function(value) {
+					console.log('V update!!');
+			        global.update();
+		        });
+			}
 
 		    v1[1].onChange(function(value) {
-		            global.reInit();
+		        global.reInit();
 	        });
 	        v1[2].onChange(function(value) {
 	            global.reInit();
@@ -976,7 +1048,6 @@ var Options = {};
 			if( global.get('window_width') > 500 ){
 				__self.initGui();
 			}
-			
 		}
 
 		self.reInit = function(){

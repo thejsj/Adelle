@@ -5944,7 +5944,7 @@ h1#main-page-title {
 svg#node_map {
   position: fixed;
   z-index: 9999;
-  top: 0;
+  bottom: 0;
   left: 0;
   /*.node.node-0 { fill: #1f77b4; }
 	.node.node-1 { fill: #ff7f0e; }
@@ -5957,4 +5957,8 @@ svg#node_map {
     /*fill: #000;*/
     stroke: white;
     stroke-width: 1.5px;
-    opacity: 0.9; }
+    opacity: 0.5; }
+    svg#node_map .node.viewed-true {
+      opacity: 0.9; }
+    svg#node_map .node.viewed-true.currently-viewing-true {
+      stroke-width: 3px; }

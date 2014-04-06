@@ -94,6 +94,16 @@ var Global = {};
 		}
 
 		/**
+		 * Update View. Triggered by changes in options or views
+		 *
+		 * @return this
+		 */
+		self.update = function(){
+			self.cookieHandler.update();
+			return self;
+		}
+
+		/**
 		 * Set the global with variable and update the width of the video container object with jQuery
 		 *
 		 * @method setTotalWidth

@@ -10,7 +10,7 @@ var NodeMap;
 		var self = {}, __self = {};
 
 		__self.project_relationships = [];
-		__self.width = 250, __self.height = 250;
+		__self.width = 200, __self.height = 200;
 
 		__self.nodes = [],__self.links = [];
 
@@ -79,6 +79,8 @@ var NodeMap;
 
 		__self.start = function() {
 
+			console.log("NH Start");
+
 			force
 				.charge(node_map_options.get('charge'))
 				.linkDistance(node_map_options.get('linkDistance'))
@@ -102,11 +104,14 @@ var NodeMap;
 				.enter()
 				.append("circle")
 				.attr("class", function(d) { 
-					return "node " + d.id; })
+					console.log( 'Model : ' + d.model.get('ID') );
+					console.log( d.model.get('viewed') + " / " + d.model.get('currently_viewing') );
+					return "node node-" + d.id + " viewed-" + d.model.get('viewed') + " currently-viewing-" + d.model.get('currently_viewing'); 
+				})
 				.attr("r", node_map_options.get('radius'))
-				.attr("fill", function(d, i) { return d.color; })
+				.attr("fill", function(d, i) { return d.model.get('color'); })
 				.on("click", function(d){
-					alert(d.id + " - " + d.post_title);
+					alert(d.id + " - " + d.model.get('post_title'));
 				})
 
 			node
@@ -139,8 +144,7 @@ var NodeMap;
 					// Add Node
 					var new_node = {
 						id: node_object.get('id'),
-						post_title: node_object.get('post_title'),
-						color: node_object.get('color'),
+						model: node_object
 					};
 
 					__self.nodes.push(new_node);
@@ -173,6 +177,11 @@ var NodeMap;
 			__self.nodes.splice(1, 1); // remove b
 			__self.links.shift(); // remove a-b
 			__self.links.pop(); // remove b-c
+			__self.start();
+		}
+
+		self.update = function(){
+			console.log('NH update!!');
 			__self.start();
 		}
 

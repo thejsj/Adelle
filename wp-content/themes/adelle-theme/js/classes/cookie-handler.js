@@ -37,7 +37,6 @@ var CookieHandler = {};
 		}
 
 		self.addNewProject = function( project_id ){
-			console.log( 'addNewProject : ' + project_id );
 			__self.availableProjects.push( project_id );
 			$.cookie( __self.cookie_name, __self.availableProjects, { expires: 30, path: '/' });
 			if( typeof __self.node_map !== 'undefined' ){
@@ -47,6 +46,12 @@ var CookieHandler = {};
 
 		self.deleteCookie = function(){
 			$.removeCookie( __self.cookie_name , { path: '/' });
+		}
+
+		self.update = function(){
+			if( typeof __self.node_map !== 'undefined'){
+				__self.node_map.update(); 
+			}
 		}
 
 		__self.randomlySortArray = function( array ){

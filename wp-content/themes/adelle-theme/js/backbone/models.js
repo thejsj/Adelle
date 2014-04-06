@@ -43,6 +43,8 @@ var Models = {};
             vimeo_id: "",
             video_loaded: false,
             available: false,
+            viewed: false,
+            currently_viewing: false,
         },
     });
 

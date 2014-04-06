@@ -38,39 +38,64 @@ var Options = {};
             __self.global_options.video_background_color_alpha_unavailable = 0.0672;
 
             // Nodemap
-            __self.global_options.charge = -58;
-			__self.global_options.linkDistance = 30;
+            __self.global_options.charge = -69;
+			__self.global_options.linkDistance = 28;
 			__self.global_options.radius = 5.5;
-			__self.global_options.alpha = 0.3;
+			__self.global_options.alpha = 1.4;
         };
 
         __self.initGui = function(){
         	var gui = new dat.GUI();
-		    var v1 = [], v2 = [], v3 = [];
+		    var v1 = [], v2 = [], v3 = [], v4 = [];
 
 		    var v1f = gui.addFolder('Video_Options');
-		    v1[v1.length] = gui.add( __self.global_options , 'speed', 0, 1000);
-		    v1[v1.length] = gui.add( __self.global_options , 'video_quality', ['low', 'medium', 'high']);
-		    v1[v1.length] = gui.add( __self.global_options , 'orientation', ['horizontal', 'vertical' ] );
+		    v1[v1.length] = v1f.add( __self.global_options , 'speed', 0, 1000);
+		    v1[v1.length] = v1f.add( __self.global_options , 'video_quality', ['low', 'medium', 'high']);
+		    v1[v1.length] = v1f.add( __self.global_options , 'orientation', ['horizontal', 'vertical' ] );
 
 		    var v2f = gui.addFolder('Available_Video_Options');
-		    v2[v2.length] = gui.add( __self.global_options , 'canvas_opacity', 0, 1 );
-		    v2[v2.length] = gui.add( __self.global_options , 'video_opacity', 0, 1 );
-		    v2[v2.length] = gui.add( __self.global_options , 'video_background_color_alpha', 0, 0.1  );
+		    v2[v2.length] = v2f.add( __self.global_options , 'canvas_opacity', 0, 1 );
+		    v2[v2.length] = v2f.add( __self.global_options , 'video_opacity', 0, 1 );
+		    v2[v2.length] = v2f.add( __self.global_options , 'video_background_color_alpha', 0, 0.1  );
 
 		    var v3f = gui.addFolder('Unavailable_Video_Options');
-		    v3[v3.length] = gui.add( __self.global_options , 'canvas_opacity_unavailable', 0, 1 );   
-		    v3[v3.length] = gui.add( __self.global_options , 'video_opacity_unavailable', 0, 1 ); 
-		    v3[v3.length] = gui.add( __self.global_options , 'video_background_color_alpha_unavailable', 0, 0.1  );
+		    v3[v3.length] = v3f.add( __self.global_options , 'canvas_opacity_unavailable', 0, 1 );   
+		    v3[v3.length] = v3f.add( __self.global_options , 'video_opacity_unavailable', 0, 1 ); 
+		    v3[v3.length] = v3f.add( __self.global_options , 'video_background_color_alpha_unavailable', 0, 0.1  );
 		    
 		    var v4f = gui.addFolder('Node_Map');
-			v4f[v4f.length] = gui.add( __self.global_options, 'charge', -400, 0);
-			v4f[v4f.length] = gui.add( __self.global_options, 'linkDistance', 0, 30);
-			v4f[v4f.length] = gui.add( __self.global_options, 'radius', 0, 16);
-			v4f[v4f.length] = gui.add( __self.global_options, 'alpha', 0, 2);
+			v4[v4.length] = v4f.add( __self.global_options, 'charge', -400, 0);
+			v4[v4.length] = v4f.add( __self.global_options, 'linkDistance', 0, 60);
+			v4[v4.length] = v4f.add( __self.global_options, 'radius', 0, 16);
+			v4[v4.length] = v4f.add( __self.global_options, 'alpha', 0, 2);
+
+			for( var i = 0; i < v1.length; i++ ){
+				v1[i].onChange(function(value) {
+					console.log('V update!!');
+			        global.update();
+		        });
+			}
+			for( var i = 0; i < v2.length; i++ ){
+				v2[i].onChange(function(value) {
+					console.log('V update!!');
+			        global.update();
+		        });
+			}
+			for( var i = 0; i < v3.length; i++ ){
+				v3[i].onChange(function(value) {
+					console.log('V update!!');
+			        global.update();
+		        });
+			}
+			for( var i = 0; i < v4.length; i++ ){
+				v4[i].onChange(function(value) {
+					console.log('V update!!');
+			        global.update();
+		        });
+			}
 
 		    v1[1].onChange(function(value) {
-		            global.reInit();
+		        global.reInit();
 	        });
 	        v1[2].onChange(function(value) {
 	            global.reInit();
@@ -88,7 +113,6 @@ var Options = {};
 			if( global.get('window_width') > 500 ){
 				__self.initGui();
 			}
-			
 		}
 
 		self.reInit = function(){
