@@ -284,13 +284,15 @@ var Views = {};
                 if( $current_modal ){
                     $current_modal.foundation('reveal', 'close');
                 }
+                
                 // Unset Variables
                 this.current_model.set('currently_viewing', false);
+                console.log( '1. Update Global - Close Modal : ' + this.current_model.get('ID') );
+                console.log( '2. Update Global - Close Modal : ' + this.current_model.get('currently_viewing') );
                 this.current_model = null;
                 this.current_video = null; 
 
                 // Update Global
-                console.log( 'Update Global - Close Modal : ' + this.current_model.get('ID') );
                 this.global.update(); 
             }
         },
@@ -443,7 +445,7 @@ var CookieHandler = {};
 				__self.randomlySortArray( all_project_ids );
 				__self.availableProjects = [ all_project_ids[0], all_project_ids[1], all_project_ids[2] ];
 			}
-			// $.cookie( __self.cookie_name , __self.availableProjects.join(','), { expires: 30, path: '/' });
+			$.cookie( __self.cookie_name , __self.availableProjects.join(','), { expires: 30, path: '/' });
 
 			setTimeout(function(){
 				__self.node_map = new NodeMap(projects, node_map_options); 
@@ -456,7 +458,7 @@ var CookieHandler = {};
 
 		self.addNewProject = function( project_id ){
 			__self.availableProjects.push( project_id );
-			// $.cookie( __self.cookie_name, __self.availableProjects, { expires: 30, path: '/' });
+			$.cookie( __self.cookie_name, __self.availableProjects, { expires: 30, path: '/' });
 			if( typeof __self.node_map !== 'undefined' ){
 				__self.node_map.addNode( project_id );
 			}
@@ -835,14 +837,12 @@ var NodeMap;
 
 			node = node.data(force.nodes(), function(d) { return d.id; });
 
+			console.log('node:');
+			console.log(node);
+
 			node
 				.enter()
 				.append("circle")
-				.attr("class", function(d) { 
-					console.log( 'Model : ' + d.model.get('ID') );
-					console.log( d.model.get('viewed') + " / " + d.model.get('currently_viewing') );
-					return "node node-" + d.id + " viewed-" + d.model.get('viewed') + " currently-viewing-" + d.model.get('currently_viewing'); 
-				})
 				.attr("r", node_map_options.get('radius'))
 				.attr("fill", function(d, i) { return d.model.get('color'); })
 				.on("click", function(d){
@@ -854,6 +854,11 @@ var NodeMap;
 				.remove();
 
 			node
+				.attr("class", function(d) { 
+					console.log( 'Model : ' + d.model.get('ID') );
+					console.log( d.model.get('viewed') + " / " + d.model.get('currently_viewing') );
+					return "node node-" + d.id + " viewed-" + d.model.get('viewed') + " currently-viewing-" + d.model.get('currently_viewing'); 
+				})
 				.attr("r", node_map_options.get('radius'));
 
 			force.start();

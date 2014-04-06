@@ -100,14 +100,12 @@ var NodeMap;
 
 			node = node.data(force.nodes(), function(d) { return d.id; });
 
+			console.log('node:');
+			console.log(node);
+
 			node
 				.enter()
 				.append("circle")
-				.attr("class", function(d) { 
-					console.log( 'Model : ' + d.model.get('ID') );
-					console.log( d.model.get('viewed') + " / " + d.model.get('currently_viewing') );
-					return "node node-" + d.id + " viewed-" + d.model.get('viewed') + " currently-viewing-" + d.model.get('currently_viewing'); 
-				})
 				.attr("r", node_map_options.get('radius'))
 				.attr("fill", function(d, i) { return d.model.get('color'); })
 				.on("click", function(d){
@@ -119,6 +117,11 @@ var NodeMap;
 				.remove();
 
 			node
+				.attr("class", function(d) { 
+					console.log( 'Model : ' + d.model.get('ID') );
+					console.log( d.model.get('viewed') + " / " + d.model.get('currently_viewing') );
+					return "node node-" + d.id + " viewed-" + d.model.get('viewed') + " currently-viewing-" + d.model.get('currently_viewing'); 
+				})
 				.attr("r", node_map_options.get('radius'));
 
 			force.start();

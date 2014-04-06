@@ -120,13 +120,15 @@ var Views = {};
                 if( $current_modal ){
                     $current_modal.foundation('reveal', 'close');
                 }
+                
                 // Unset Variables
                 this.current_model.set('currently_viewing', false);
+                console.log( '1. Update Global - Close Modal : ' + this.current_model.get('ID') );
+                console.log( '2. Update Global - Close Modal : ' + this.current_model.get('currently_viewing') );
                 this.current_model = null;
                 this.current_video = null; 
 
                 // Update Global
-                console.log( 'Update Global - Close Modal : ' + this.current_model.get('ID') );
                 this.global.update(); 
             }
         },
