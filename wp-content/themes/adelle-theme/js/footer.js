@@ -60,6 +60,8 @@ var Mustache = require('mustache');
 var Backbone = require('backbone');
 Backbone.$   = jQuery;
 
+var D3 = require('d3');
+
 var Models = {}; 
 
 (function($){
@@ -112,13 +114,19 @@ var Models = {};
             _.each( available_projects, function( value, key ){
                 value.set('available', true);
             });
+        },
+        assignColor: function( ){
+            var color = D3.scale.category10(); 
+            this.forEach(function(project, i){
+                project.set('color', color(i) );
+            })
         }
     });
 
 })(jQuery);
 
 module.exports = Models;
-},{"backbone":13,"mustache":18,"underscore":19}],3:[function(require,module,exports){
+},{"backbone":12,"d3":13,"mustache":17,"underscore":18}],3:[function(require,module,exports){
 var Backbone = require('backbone');
 Backbone.$   = jQuery;
 
@@ -151,11 +159,12 @@ var Router = {};
 })(jQuery);
 
 module.exports = Router;
-},{"backbone":13}],4:[function(require,module,exports){
+},{"backbone":12}],4:[function(require,module,exports){
 var _          = require('underscore');
 var Mustache   = require('mustache');
 var Backbone   = require('backbone');
 Backbone.$     = jQuery;
+
 var D3         = require('d3');
 var Video      = require('../classes/video-single.js');
 var Templates  = require('../templates.js');
@@ -230,6 +239,7 @@ var Views = {};
             }, 500);
         },
         openModal: function( slug ){
+            console.log( 'Open: ' + slug );
             var current_model_id = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' }).get('ID');
             this.current_video    = this.videos[ current_model_id ];
 
@@ -238,9 +248,6 @@ var Views = {};
 
             // Set Related Videos as available
             this.setRelatedAsAvailable( current_model_id );
-
-            // Add To Cookie
-            this.global.cookieHandler.addNewProject( current_model_id );
 
             // Open As Model
             var $current_modal = this.current_video.modal.$el; 
@@ -285,6 +292,7 @@ var Views = {};
             });
         },
         setRelatedAsAvailable: function( current_model_id ){
+
             var newly_available = _.filter( this.coll.models , function(model){
                 if( typeof model !== 'undefined' ){
                     return _.indexOf(model.get('related_projects'), current_model_id) > -1; 
@@ -293,9 +301,14 @@ var Views = {};
                     return false; 
                 }
             }); 
+
+            var this_model = this.coll.where( { ID : current_model_id } )[0];
+            var that = this; 
             _.each(newly_available, function(model){
-                console.log( 'New: ' + model.get('post_title') );
+                // Set as Available
                 model.set('available', true);
+                // Add To Cookie
+                that.global.cookieHandler.addNewProject( model.get('ID') );
             });
         },
     });
@@ -350,7 +363,6 @@ var Views = {};
         initialize: function( project, parent ){
             this.model = project;   
             this.parent = parent;
-            this.color = this.parent.color( this.model.get('ID') );
             this.render(); 
         },
         render: function(i){
@@ -358,10 +370,10 @@ var Views = {};
             this.parent.$el.append( this.el );
             this.$el = $("#modal-" + this.model.get('ID'));
             this.$el
-                .css('border-color', this.color)
-                .find('.change-color').css('color', this.color);
+                .css('border-color', this.model.get('color'))
+                .find('.change-color').css('color', this.model.get('color'));
             this.$el
-                .find('.change-bg-color').css('background-color', this.color);
+                .find('.change-bg-color').css('background-color', this.model.get('color'));
             return this; 
         },
         renderVideo: function(){
@@ -380,7 +392,7 @@ var Views = {};
 })( jQuery );
 
 module.exports = Views;
-},{"../classes/video-single.js":11,"../templates.js":12,"backbone":13,"d3":14,"mustache":18,"underscore":19}],5:[function(require,module,exports){
+},{"../classes/video-single.js":10,"../templates.js":11,"backbone":12,"d3":13,"mustache":17,"underscore":18}],5:[function(require,module,exports){
 var NodeMap = require('../classes/nodemap-handler.js');
 
 var CookieHandler = {}; 
@@ -391,9 +403,7 @@ var CookieHandler = {};
 
 		var self = {}, __self = {}; 
 
-		self.init = function( all_project_ids, projects, node_map_options ){
-
-			
+		self.init = function( all_project_ids, projects, node_map_options ){			
 
 			__self.cookie_name = "AdelleLinSiteAvailableProjects";
 			__self.cookie_value = $.cookie( __self.cookie_name); 
@@ -422,8 +432,12 @@ var CookieHandler = {};
 		}
 
 		self.addNewProject = function( project_id ){
+			console.log( 'addNewProject : ' + project_id );
 			__self.availableProjects.push( project_id );
 			$.cookie( __self.cookie_name, __self.availableProjects, { expires: 30, path: '/' });
+			if( typeof __self.node_map !== 'undefined' ){
+				__self.node_map.addNode( project_id );
+			}
 		}
 
 		self.deleteCookie = function(){
@@ -455,18 +469,10 @@ var Models  = require('../backbone/models.js');
 var Views   = require('../backbone/views.js');
 
 var Options = require('../classes/options-handler.js');
-var VideoHandler = require('../classes/video-handler.js');
 var ScrollHandler = require('../classes/scroll-handler.js');
 var CookieHandler = require('../classes/cookie-handler.js');
 
 var Global = {};
-
-if( Modernizr.video ){
-	console.log( "Has Video" );
-}
-else {
-	console.log( "No Video" );
-}
 
 (function($){
 
@@ -510,6 +516,7 @@ else {
 
 			// Init Projects
 			__self.projects = new Models.ProjectCollection( projects_array );
+			__self.projects.assignColor(); 
 
 			// Init Cookie Handler (Pass all IDs)
 			self.cookieHandler = new CookieHandler( 
@@ -687,8 +694,9 @@ else {
 })(window.jQuery);
 
 module.exports = Global;
-},{"../backbone/models.js":2,"../backbone/router.js":3,"../backbone/views.js":4,"../classes/cookie-handler.js":5,"../classes/options-handler.js":8,"../classes/scroll-handler.js":9,"../classes/video-handler.js":10,"backbone":13,"underscore":19}],7:[function(require,module,exports){
-var d3 = require('d3');
+},{"../backbone/models.js":2,"../backbone/router.js":3,"../backbone/views.js":4,"../classes/cookie-handler.js":5,"../classes/options-handler.js":8,"../classes/scroll-handler.js":9,"backbone":12,"underscore":18}],7:[function(require,module,exports){
+var D3 = require('d3');
+var _  = require('underscore');
 
 var NodeMap;
 
@@ -696,51 +704,81 @@ var NodeMap;
 
 	NodeMap = function( projects, node_map_options ){
 
-		console.log( projects, node_map_options );
-
-		var body = document.getElementsByTagName("body")[0];
-
 		var self = {}, __self = {};
 
-		var width = 250, height = 250;
+		__self.project_relationships = [];
+		__self.width = 250, __self.height = 250;
 
-		var color = d3.scale.category10();
-		var nodes = [],links = [];
-		var color = d3.scale.category20();
+		__self.nodes = [],__self.links = [];
 
-		var force = d3.layout.force()
-			.nodes(nodes)
-			.links(links)
-			.charge(node_map_options.charge)
-			.linkDistance(node_map_options.linkDistance)
-			.size([width, height])
+		var force = D3.layout.force()
+			.nodes(__self.nodes)
+			.links(__self.links)
+			.charge(node_map_options.get('charge'))
+			.linkDistance(node_map_options.get('linkDistance'))
+			.size([__self.width, __self.height])
 			.on("tick", function(){
-				self.tick();
+				__self.tick();
 			});
 
-		var svg = d3.select("body").append("svg")
-			.attr("width", width)
-			.attr("height", height);
+		var svg = D3.select("body").append("svg")
+			.attr("width", __self.width)
+			.attr("height", __self.height)
+			.attr("id", "node_map");
 
 		var node = svg.selectAll(".node"),
 			link = svg.selectAll(".link");
 
-		self.i = 0;
+		__self.init = function(){
 
-		self.init = function(){
+			projects.forEach(function(project, i){
+				project.set('id', i);
+			});
+
+			// Add Project Relationships
 			projects.forEach(function(project){
-				console.log( project );
-				console.log( project.get('ID') );
-				console.log( project.get('post_title') );
-				console.log( project.get('available') );
+				// Get related projects, by project IDs
+				var related_projects = _.clone( project.get('related_projects') );
+
+				// Substitute the project ID by the local id (index), used by D3
+				for( var i = 0; i < related_projects.length; i++ ){
+					var related_project = projects.findWhere( { ID: related_projects[i] } );
+					related_projects[i] = related_project.get('id');
+				}
+
+				// Generate a list of all project relationships
+				for( var i = 0; i < related_projects.length; i++ ){
+					var existing_links = _.where(__self.project_relationships, { 
+						source: project.get('id'), 
+						target: related_projects[i]
+					});
+					var existing_links = _.union(existing_links, _.where(__self.project_relationships, { 
+						source: related_projects[i], 
+						target: project.get('id')
+					}));
+					// If this link doesn't exists, create it
+					if( existing_links.length === 0 ){
+						__self.project_relationships.push({
+							source: project.get('id'), 
+							target: related_projects[i]
+						})
+					}
+				}
+			});
+
+			// Add available nodes
+			projects.forEach(function(project, i){
+				if( project.get('available') ){
+					self.addNode( project.get('ID') );
+				}
 			});
 		}
 
-		self.start = function() {
+		__self.start = function() {
 
 			force
-				.charge(node_map_options.charge)
-				.linkDistance(node_map_options.linkDistance)
+				.charge(node_map_options.get('charge'))
+				.linkDistance(node_map_options.get('linkDistance'))
 
 			link = link.data(force.links(), function(d) { 
 				return d.source.id + "-" + d.target.id; 
@@ -755,18 +793,17 @@ var NodeMap;
 				.exit()
 				.remove();
 
-			node = node.data(force.nodes(), function(d) { return d.id;});
+			node = node.data(force.nodes(), function(d) { return d.id; });
 
 			node
 				.enter()
 				.append("circle")
 				.attr("class", function(d) { 
 					return "node " + d.id; })
-				.attr("r", node_map_options.radius)
-				.attr("fill", function(d, i) { return color(d.id); })
+				.attr("r", node_map_options.get('radius'))
+				.attr("fill", function(d, i) { return d.color; })
 				.on("click", function(d){
-					console.log(d.id + " - " + d.title);
-					alert(d.id + " - " + d.title);
+					alert(d.id + " - " + d.post_title);
 				})
 
 			node
@@ -774,12 +811,12 @@ var NodeMap;
 				.remove();
 
 			node
-				.attr("r", node_map_options.radius);
+				.attr("r", node_map_options.get('radius'));
 
 			force.start();
 		}
 
-		self.tick = function() {
+		__self.tick = function() {
 			node
 				.attr("cx", function(d) { return d.x; })
 				.attr("cy", function(d) { return d.y; })
@@ -791,29 +828,35 @@ var NodeMap;
 				.attr("y2", function(d) { return d.target.y; });
 		}
 
-		self.addNode = function(node_object){
-			try{
-				if(_.where(nodes, { id: node_object.id }).length === 0) {
+		self.addNode = function( node_id ){
+			var node_object = projects.findWhere( { ID: node_id } );
+
+			try {
+				if( _.where(__self.nodes, { id: node_object.id }).length === 0) {
 					// Add Node
 					var new_node = {
-						id: node_object.id,
-						title: node_object.title
+						id: node_object.get('id'),
+						post_title: node_object.get('post_title'),
+						color: node_object.get('color'),
 					};
-					nodes.push(new_node);
-					self.start();
 
+					__self.nodes.push(new_node);
+					__self.start();
 					// Find Links
-					var new_links = _.where(project_relationships, { source: node_object.id });
-					var new_links = _.union(new_links, _.where(project_relationships, { target: node_object.id }));
+					var new_links = _.where(__self.project_relationships, { source: node_object.id });
+					var new_links = _.union(new_links, _.where(__self.project_relationships, { target: node_object.id }));
+
 					for(i in new_links){
-						if(_.where(nodes, {id: new_links[i].source}).length > 0
-						&& _.where(nodes, {id: new_links[i].target}).length > 0 ){
-							var source = _.where(nodes, {id: new_links[i].source})[0];
-							var target = _.where(nodes, {id: new_links[i].target})[0];
-							var source_index = _.indexOf(nodes, source);
-							var target_index = _.indexOf(nodes, target);
-							links.push({source: source_index, target: target_index});
-							self.start();
+						if(_.where(__self.nodes, {id: new_links[i].source}).length > 0
+						&& _.where(__self.nodes, {id: new_links[i].target}).length > 0 ){
+
+							var source = _.where(__self.nodes, {id: new_links[i].source})[0];
+							var target = _.where(__self.nodes, {id: new_links[i].target})[0];
+							
+							var source_index = _.indexOf(__self.nodes, source);
+							var target_index = _.indexOf(__self.nodes, target);
+							__self.links.push({source: source_index, target: target_index});
+							__self.start();
 						}
 					}
 				}
@@ -824,33 +867,17 @@ var NodeMap;
 		}
 
 		self.deleteNode = function(){
-			nodes.splice(1, 1); // remove b
-			links.shift(); // remove a-b
-			links.pop(); // remove b-c
-			self.start();
-		}
-
-		self.print = function(){
-			console.log("nodes:");
-			console.log(nodes);
-			console.log("links:");
-			console.log(links);
-		}
-
-		function spliceLinksForNode(node) {
-			toSplice = links.filter(function(l) { 
-				return (l.source === node) || (l.target === node); 
-			});
-			toSplice.map(function(l) {
-				links.splice(links.indexOf(l), 1); 
-			});
+			__self.nodes.splice(1, 1); // remove b
+			__self.links.shift(); // remove a-b
+			__self.links.pop(); // remove b-c
+			__self.start();
 		}
 
 		setInterval(function(){
-			force.alpha(node_map_options.alpha);
+			force.alpha(node_map_options.get('alpha'));
 		}, 100);
 
-		self.init(); 
+		__self.init(); 
 		return self; 
 	}
 })(jQuery);
@@ -858,7 +885,7 @@ var NodeMap;
 module.exports = NodeMap; 
 
 
-},{"d3":14}],8:[function(require,module,exports){
+},{"d3":13,"underscore":18}],8:[function(require,module,exports){
 var dat = require('dat-gui');
 
 var Options = {};
@@ -966,7 +993,7 @@ var Options = {};
 })(window.jQuery);
 
 module.exports = Options;
-},{"dat-gui":15}],9:[function(require,module,exports){
+},{"dat-gui":14}],9:[function(require,module,exports){
 var ScrollHandler = {}; 
 
 (function($){
@@ -1030,128 +1057,6 @@ var ScrollHandler = {};
 module.exports = ScrollHandler;
 
 },{}],10:[function(require,module,exports){
-var Global = require('../classes/video-single.js');
-
-var VideoHandler = {}; 
-
-(function($){
-
-    /**
-     * Description
-     * @param {} global
-     * @return self
-     */
-    VideoHandler = function( global ){
-
-        var __self = {}, self = {};
-
-        self.video_quality_heights = {
-            'low' : 80,
-            'medium' : 160,
-            'high' : 240,
-        };
-
-        self.video_quality_widths = {
-            'low' : 80,
-            'medium' : 160,
-            'high' : 240,
-        };
-
-        __self.videos = [];
-
-        __self.project_names = [
-            'asa-asha-why-cant-we-official-music-video-hd',
-            'benny-sings-big-brown-eyes-official-video',
-            'benny-sings-little-donna-official-video',
-            'broken-social-scene-7-4-shoreline',
-            'citydream-sd',
-            'foodfuneral-hd',
-            'weepingwalls-hd',
-            'wordofmouthgameplay-sd',
-            'mathieu-chedid-je-dis-aime',
-            'mathieu-chedid-qui-de-nous-deux',
-        ];
-
-        self.color = d3.scale.category10();
-
-        /**
-         * Init All Videos
-         * @method init
-         * @return 
-         */
-        self.init = function(){
-            __self.initAllVideos(); 
-        }
-
-        /**
-         * Description
-         * @method init
-         * @return 
-         */
-        self.reInit = function(){
-            __self.reInitAllVideos(); 
-        }
-
-        /**
-         * Create a counter by which to keep tracks of video ids
-         * @method getNewVideoId
-         * @return Number
-         */
-        self.getNewVideoId = function(){
-            var i = -1; 
-            return function( reset ){
-                if( reset === true ){
-                    i = -1; 
-                    return true; 
-                }
-                return i += 1;
-            }
-        }()
-
-        /**
-         * Description
-         * @method initAllVideos
-         * @return 
-         */
-        __self.initAllVideos = function(){
-            for(i in __self.project_names){
-                __self.videos.push( Video(__self.project_names[i], global, self ) );
-            }
-            if( !global.isOrientationHorizontal() ){
-                // Get Width
-                var total_width = 0; 
-                for( i in __self.videos ){
-                    total_width += __self.videos[i].getWidth(); 
-                }
-                global.setTotalWidth( total_width );
-            }
-        }
-
-        /**
-         * Description
-         * @method ReInitAllVideos
-         * @return 
-         */
-        __self.reInitAllVideos = function(){
-            if( typeof __self.re_init !== 'undefined' ){
-                clearTimeout( __self.re_init );
-            }
-            re_init = setTimeout(function(){
-                // Start
-                __self.videos = [];
-                self.getNewVideoId(true);
-                __self.initAllVideos(); 
-            }, 500);
-        }
-
-        self.init(); 
-        return self; 
-    }
-
-})(window.jQuery);
-
-module.exports = VideoHandler;
-},{"../classes/video-single.js":11}],11:[function(require,module,exports){
 var Video; 
 
 (function($){
@@ -1230,7 +1135,7 @@ var Video;
 	       	else {
 	       		__self.$canvas.css('opacity', global.options.get('canvas_opacity_unavailable'));
 	       	}
-	       	console.log( 'USES VIDEO : ' + __self.uses_video );
+
 	        if( __self.uses_video ){
 	            __self.init_video( __self.init_canvas ); 
 	        }
@@ -1537,13 +1442,13 @@ var Video;
 })(window.jQuery);
 
 module.exports = Video;
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 Templates = {
     "404" : '<div class="row 404-template"><div class="large-8 large-offset-2 columns four-zero-four"><h2>404</h2><p>Sorry, we can&#39;t find the page you are looking for! Perhaps you have entered the wrong URL? Obviously, it&#39;s not our fault!</p></div></div>',"single-project-partial" : '<article class="project single-project-partial-template"><!-- Display Post Title --><h2><a href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Post Content --><div class="entry-content">{{# vimeo_id }}<!-- Vimeo Video --><div class="main-video"><iframe src="//player.vimeo.com/video/88054119" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>{{/ vimeo_id }}{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}<!-- Display Main Content -->{{{ post_content }}}</div></article>',"projects-view" : '{{# posts }}{{> single-project-partial }}{{/ posts }}',"single-project-home" : '<div id="container-{{ ID }}" class="home-project-container single-project-home-template {{# available }}available-true{{/ available }}{{^ available }}available-false{{/ available }}"><div class="home-content-container"><h2>{{ post_title }}</h2><div class="excpert"></div></div><canvas id="canvas-{{ ID }}" class="{{# available }}available-true{{/ available }}{{^ available }}available-false{{/ available }}"></canvas><video id="video-{{ ID }}" controls loop>{{#video_files}}<source src="{{{ url }}}" type="{{ mime_type }}">{{/video_files}}</video></div>',"single-project" : '<div id="modal-{{ ID }}" class="reveal-modal single-modal project-modal single-project-template" data-reveal><article class="project">{{# vimeo_id }}<!-- Vimeo Video --><div class="main-video"></div>{{/ vimeo_id }}{{^ vimeo_id }}{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}{{/ vimeo_id }}<!-- Display Post Content --><div class="entry-content"><!-- Display Post Title --><h2 class="change-color main-project-title"><a class="change-color" href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Main Content -->{{{ post_content }}}</div></article><a class="close-reveal-modal top change-bg-color">&#215;</a></div>',"single" : '<article class="single single-template"><!-- Display Post Title --><h2><a href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Post Content --><div class="entry-content">{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}<!-- Display Main Content -->{{{ post_content }}}</div></article>',"vimeo-video" : '<iframe src="//player.vimeo.com/video/{{ vimeo_id }}" width="596" height="350" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> ',
     "done": "true"
   }; 
 module.exports = Templates;
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -3153,7 +3058,7 @@ module.exports = Templates;
 
 }));
 
-},{"underscore":19}],14:[function(require,module,exports){
+},{"underscore":18}],13:[function(require,module,exports){
 !function() {
   var d3 = {
     version: "3.4.4"
@@ -12448,10 +12353,10 @@ module.exports = Templates;
     this.d3 = d3;
   }
 }();
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = require('./vendor/dat.gui')
 module.exports.color = require('./vendor/dat.color')
-},{"./vendor/dat.color":16,"./vendor/dat.gui":17}],16:[function(require,module,exports){
+},{"./vendor/dat.color":15,"./vendor/dat.gui":16}],15:[function(require,module,exports){
 /**
  * dat-gui JavaScript Controller Library
  * http://code.google.com/p/dat-gui
@@ -13207,7 +13112,7 @@ dat.color.math = (function () {
 })(),
 dat.color.toString,
 dat.utils.common);
-},{}],17:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /**
  * dat-gui JavaScript Controller Library
  * http://code.google.com/p/dat-gui
@@ -16868,7 +16773,7 @@ dat.dom.CenteredDiv = (function (dom, common) {
 dat.utils.common),
 dat.dom.dom,
 dat.utils.common);
-},{}],18:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /*!
  * mustache.js - Logic-less {{mustache}} templates with JavaScript
  * http://github.com/janl/mustache.js
@@ -17440,7 +17345,7 @@ dat.utils.common);
 
 }));
 
-},{}],19:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 //     Underscore.js 1.6.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors

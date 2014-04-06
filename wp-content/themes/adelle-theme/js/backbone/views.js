@@ -2,6 +2,7 @@ var _          = require('underscore');
 var Mustache   = require('mustache');
 var Backbone   = require('backbone');
 Backbone.$     = jQuery;
+
 var D3         = require('d3');
 var Video      = require('../classes/video-single.js');
 var Templates  = require('../templates.js');
@@ -76,6 +77,7 @@ var Views = {};
             }, 500);
         },
         openModal: function( slug ){
+            console.log( 'Open: ' + slug );
             var current_model_id = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' }).get('ID');
             this.current_video    = this.videos[ current_model_id ];
 
@@ -84,9 +86,6 @@ var Views = {};
 
             // Set Related Videos as available
             this.setRelatedAsAvailable( current_model_id );
-
-            // Add To Cookie
-            this.global.cookieHandler.addNewProject( current_model_id );
 
             // Open As Model
             var $current_modal = this.current_video.modal.$el; 
@@ -131,6 +130,7 @@ var Views = {};
             });
         },
         setRelatedAsAvailable: function( current_model_id ){
+
             var newly_available = _.filter( this.coll.models , function(model){
                 if( typeof model !== 'undefined' ){
                     return _.indexOf(model.get('related_projects'), current_model_id) > -1; 
@@ -139,9 +139,14 @@ var Views = {};
                     return false; 
                 }
             }); 
+
+            var this_model = this.coll.where( { ID : current_model_id } )[0];
+            var that = this; 
             _.each(newly_available, function(model){
-                console.log( 'New: ' + model.get('post_title') );
+                // Set as Available
                 model.set('available', true);
+                // Add To Cookie
+                that.global.cookieHandler.addNewProject( model.get('ID') );
             });
         },
     });
@@ -196,7 +201,6 @@ var Views = {};
         initialize: function( project, parent ){
             this.model = project;   
             this.parent = parent;
-            this.color = this.parent.color( this.model.get('ID') );
             this.render(); 
         },
         render: function(i){
@@ -204,10 +208,10 @@ var Views = {};
             this.parent.$el.append( this.el );
             this.$el = $("#modal-" + this.model.get('ID'));
             this.$el
-                .css('border-color', this.color)
-                .find('.change-color').css('color', this.color);
+                .css('border-color', this.model.get('color'))
+                .find('.change-color').css('color', this.model.get('color'));
             this.$el
-                .find('.change-bg-color').css('background-color', this.color);
+                .find('.change-bg-color').css('background-color', this.model.get('color'));
             return this; 
         },
         renderVideo: function(){

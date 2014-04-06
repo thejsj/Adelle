@@ -5940,3 +5940,21 @@ h1#main-page-title {
     text-align: center;
     letter-spacing: 0.35em;
     padding: 0px 0px 6px; }
+
+svg#node_map {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  /*.node.node-0 { fill: #1f77b4; }
+	.node.node-1 { fill: #ff7f0e; }
+	.node.node-2 { fill: #2ca02c; }*/ }
+  svg#node_map .link {
+    stroke: white;
+    stroke-width: 1.5px;
+    opacity: 0.5; }
+  svg#node_map .node {
+    /*fill: #000;*/
+    stroke: white;
+    stroke-width: 1.5px;
+    opacity: 0.9; }

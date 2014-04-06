@@ -92,6 +92,11 @@ var NodeMap = function(){
 			.linkDistance(node_map_options.linkDistance)
 
 		link = link.data(force.links(), function(d) { 
+			console.log( d );
+			console.log( 'd.source' );
+			console.log( d.source.id );
+			console.log( 'd.target' );
+			console.log( d.target.id );
 			return d.source.id + "-" + d.target.id; 
 		});
 
@@ -162,7 +167,9 @@ var NodeMap = function(){
 						var source_index = _.indexOf(nodes, source);
 						var target_index = _.indexOf(nodes, target);
 						links.push({source: source_index, target: target_index});
-						this.start();
+						console.log( 'links' );
+						console.log( links );
+						//this.start();
 					}
 				}
 			}

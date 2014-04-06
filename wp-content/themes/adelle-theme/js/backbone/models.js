@@ -3,6 +3,8 @@ var Mustache = require('mustache');
 var Backbone = require('backbone');
 Backbone.$   = jQuery;
 
+var D3 = require('d3');
+
 var Models = {}; 
 
 (function($){
@@ -55,6 +57,12 @@ var Models = {};
             _.each( available_projects, function( value, key ){
                 value.set('available', true);
             });
+        },
+        assignColor: function( ){
+            var color = D3.scale.category10(); 
+            this.forEach(function(project, i){
+                project.set('color', color(i) );
+            })
         }
     });
 

@@ -1,4 +1,5 @@
-var d3 = require('d3');
+var D3 = require('d3');
+var _  = require('underscore');
 
 var NodeMap;
 
@@ -6,51 +7,81 @@ var NodeMap;
 
 	NodeMap = function( projects, node_map_options ){
 
-		console.log( projects, node_map_options );
-
-		var body = document.getElementsByTagName("body")[0];
-
 		var self = {}, __self = {};
 
-		var width = 250, height = 250;
+		__self.project_relationships = [];
+		__self.width = 250, __self.height = 250;
 
-		var color = d3.scale.category10();
-		var nodes = [],links = [];
-		var color = d3.scale.category20();
+		__self.nodes = [],__self.links = [];
 
-		var force = d3.layout.force()
-			.nodes(nodes)
-			.links(links)
-			.charge(node_map_options.charge)
-			.linkDistance(node_map_options.linkDistance)
-			.size([width, height])
+		var force = D3.layout.force()
+			.nodes(__self.nodes)
+			.links(__self.links)
+			.charge(node_map_options.get('charge'))
+			.linkDistance(node_map_options.get('linkDistance'))
+			.size([__self.width, __self.height])
 			.on("tick", function(){
-				self.tick();
+				__self.tick();
 			});
 
-		var svg = d3.select("body").append("svg")
-			.attr("width", width)
-			.attr("height", height);
+		var svg = D3.select("body").append("svg")
+			.attr("width", __self.width)
+			.attr("height", __self.height)
+			.attr("id", "node_map");
 
 		var node = svg.selectAll(".node"),
 			link = svg.selectAll(".link");
 
-		self.i = 0;
+		__self.init = function(){
 
-		self.init = function(){
+			projects.forEach(function(project, i){
+				project.set('id', i);
+			});
+
+			// Add Project Relationships
 			projects.forEach(function(project){
-				console.log( project );
-				console.log( project.get('ID') );
-				console.log( project.get('post_title') );
-				console.log( project.get('available') );
+				// Get related projects, by project IDs
+				var related_projects = _.clone( project.get('related_projects') );
+
+				// Substitute the project ID by the local id (index), used by D3
+				for( var i = 0; i < related_projects.length; i++ ){
+					var related_project = projects.findWhere( { ID: related_projects[i] } );
+					related_projects[i] = related_project.get('id');
+				}
+
+				// Generate a list of all project relationships
+				for( var i = 0; i < related_projects.length; i++ ){
+					var existing_links = _.where(__self.project_relationships, { 
+						source: project.get('id'), 
+						target: related_projects[i]
+					});
+					var existing_links = _.union(existing_links, _.where(__self.project_relationships, { 
+						source: related_projects[i], 
+						target: project.get('id')
+					}));
+					// If this link doesn't exists, create it
+					if( existing_links.length === 0 ){
+						__self.project_relationships.push({
+							source: project.get('id'), 
+							target: related_projects[i]
+						})
+					}
+				}
+			});
+
+			// Add available nodes
+			projects.forEach(function(project, i){
+				if( project.get('available') ){
+					self.addNode( project.get('ID') );
+				}
 			});
 		}
 
-		self.start = function() {
+		__self.start = function() {
 
 			force
-				.charge(node_map_options.charge)
-				.linkDistance(node_map_options.linkDistance)
+				.charge(node_map_options.get('charge'))
+				.linkDistance(node_map_options.get('linkDistance'))
 
 			link = link.data(force.links(), function(d) { 
 				return d.source.id + "-" + d.target.id; 
@@ -65,18 +96,17 @@ var NodeMap;
 				.exit()
 				.remove();
 
-			node = node.data(force.nodes(), function(d) { return d.id;});
+			node = node.data(force.nodes(), function(d) { return d.id; });
 
 			node
 				.enter()
 				.append("circle")
 				.attr("class", function(d) { 
 					return "node " + d.id; })
-				.attr("r", node_map_options.radius)
-				.attr("fill", function(d, i) { return color(d.id); })
+				.attr("r", node_map_options.get('radius'))
+				.attr("fill", function(d, i) { return d.color; })
 				.on("click", function(d){
-					console.log(d.id + " - " + d.title);
-					alert(d.id + " - " + d.title);
+					alert(d.id + " - " + d.post_title);
 				})
 
 			node
@@ -84,12 +114,12 @@ var NodeMap;
 				.remove();
 
 			node
-				.attr("r", node_map_options.radius);
+				.attr("r", node_map_options.get('radius'));
 
 			force.start();
 		}
 
-		self.tick = function() {
+		__self.tick = function() {
 			node
 				.attr("cx", function(d) { return d.x; })
 				.attr("cy", function(d) { return d.y; })
@@ -101,29 +131,35 @@ var NodeMap;
 				.attr("y2", function(d) { return d.target.y; });
 		}
 
-		self.addNode = function(node_object){
-			try{
-				if(_.where(nodes, { id: node_object.id }).length === 0) {
+		self.addNode = function( node_id ){
+			var node_object = projects.findWhere( { ID: node_id } );
+
+			try {
+				if( _.where(__self.nodes, { id: node_object.id }).length === 0) {
 					// Add Node
 					var new_node = {
-						id: node_object.id,
-						title: node_object.title
+						id: node_object.get('id'),
+						post_title: node_object.get('post_title'),
+						color: node_object.get('color'),
 					};
-					nodes.push(new_node);
-					self.start();
 
+					__self.nodes.push(new_node);
+					__self.start();
 					// Find Links
-					var new_links = _.where(project_relationships, { source: node_object.id });
-					var new_links = _.union(new_links, _.where(project_relationships, { target: node_object.id }));
+					var new_links = _.where(__self.project_relationships, { source: node_object.id });
+					var new_links = _.union(new_links, _.where(__self.project_relationships, { target: node_object.id }));
+
 					for(i in new_links){
-						if(_.where(nodes, {id: new_links[i].source}).length > 0
-						&& _.where(nodes, {id: new_links[i].target}).length > 0 ){
-							var source = _.where(nodes, {id: new_links[i].source})[0];
-							var target = _.where(nodes, {id: new_links[i].target})[0];
-							var source_index = _.indexOf(nodes, source);
-							var target_index = _.indexOf(nodes, target);
-							links.push({source: source_index, target: target_index});
-							self.start();
+						if(_.where(__self.nodes, {id: new_links[i].source}).length > 0
+						&& _.where(__self.nodes, {id: new_links[i].target}).length > 0 ){
+
+							var source = _.where(__self.nodes, {id: new_links[i].source})[0];
+							var target = _.where(__self.nodes, {id: new_links[i].target})[0];
+							
+							var source_index = _.indexOf(__self.nodes, source);
+							var target_index = _.indexOf(__self.nodes, target);
+							__self.links.push({source: source_index, target: target_index});
+							__self.start();
 						}
 					}
 				}
@@ -134,33 +170,17 @@ var NodeMap;
 		}
 
 		self.deleteNode = function(){
-			nodes.splice(1, 1); // remove b
-			links.shift(); // remove a-b
-			links.pop(); // remove b-c
-			self.start();
-		}
-
-		self.print = function(){
-			console.log("nodes:");
-			console.log(nodes);
-			console.log("links:");
-			console.log(links);
-		}
-
-		function spliceLinksForNode(node) {
-			toSplice = links.filter(function(l) { 
-				return (l.source === node) || (l.target === node); 
-			});
-			toSplice.map(function(l) {
-				links.splice(links.indexOf(l), 1); 
-			});
+			__self.nodes.splice(1, 1); // remove b
+			__self.links.shift(); // remove a-b
+			__self.links.pop(); // remove b-c
+			__self.start();
 		}
 
 		setInterval(function(){
-			force.alpha(node_map_options.alpha);
+			force.alpha(node_map_options.get('alpha'));
 		}, 100);
 
-		self.init(); 
+		__self.init(); 
 		return self; 
 	}
 })(jQuery);

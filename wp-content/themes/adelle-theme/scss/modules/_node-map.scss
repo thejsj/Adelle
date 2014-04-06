@@ -1,0 +1,27 @@
+svg#node_map{
+	position: fixed;
+	z-index: 9999;
+	top: 0;
+	left: 0;
+	// background: rgba(255,255,255,0.1);
+	// border: solid 1px #c7c7c7;
+
+	.link {
+		stroke: #fff;
+		stroke-width: 1.5px;
+		opacity: 0.5;
+	}
+
+	.node {
+		/*fill: #000;*/
+		stroke: #fff;
+		stroke-width: 1.5px;
+		opacity: 0.9;
+	}
+
+	/*.node.node-0 { fill: #1f77b4; }
+	.node.node-1 { fill: #ff7f0e; }
+	.node.node-2 { fill: #2ca02c; }*/
+
+}
+

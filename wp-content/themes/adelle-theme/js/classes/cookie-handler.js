@@ -8,9 +8,7 @@ var CookieHandler = {};
 
 		var self = {}, __self = {}; 
 
-		self.init = function( all_project_ids, projects, node_map_options ){
-
-			
+		self.init = function( all_project_ids, projects, node_map_options ){			
 
 			__self.cookie_name = "AdelleLinSiteAvailableProjects";
 			__self.cookie_value = $.cookie( __self.cookie_name); 
@@ -39,8 +37,12 @@ var CookieHandler = {};
 		}
 
 		self.addNewProject = function( project_id ){
+			console.log( 'addNewProject : ' + project_id );
 			__self.availableProjects.push( project_id );
 			$.cookie( __self.cookie_name, __self.availableProjects, { expires: 30, path: '/' });
+			if( typeof __self.node_map !== 'undefined' ){
+				__self.node_map.addNode( project_id );
+			}
 		}
 
 		self.deleteCookie = function(){

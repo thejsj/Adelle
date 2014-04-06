@@ -76,7 +76,7 @@ var Video;
 	       	else {
 	       		__self.$canvas.css('opacity', global.options.get('canvas_opacity_unavailable'));
 	       	}
-	       	console.log( 'USES VIDEO : ' + __self.uses_video );
+
 	        if( __self.uses_video ){
 	            __self.init_video( __self.init_canvas ); 
 	        }

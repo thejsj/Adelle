@@ -7,18 +7,10 @@ var Models  = require('../backbone/models.js');
 var Views   = require('../backbone/views.js');
 
 var Options = require('../classes/options-handler.js');
-var VideoHandler = require('../classes/video-handler.js');
 var ScrollHandler = require('../classes/scroll-handler.js');
 var CookieHandler = require('../classes/cookie-handler.js');
 
 var Global = {};
-
-if( Modernizr.video ){
-	console.log( "Has Video" );
-}
-else {
-	console.log( "No Video" );
-}
 
 (function($){
 
@@ -62,6 +54,7 @@ else {
 
 			// Init Projects
 			__self.projects = new Models.ProjectCollection( projects_array );
+			__self.projects.assignColor(); 
 
 			// Init Cookie Handler (Pass all IDs)
 			self.cookieHandler = new CookieHandler( 
