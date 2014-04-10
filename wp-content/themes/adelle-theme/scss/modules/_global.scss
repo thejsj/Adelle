@@ -1,8 +1,14 @@
+html {
+    overflow-y: -moz-scrollbars-vertical;
+    overflow-y: scroll;
+}
+
+
 html, body {
     margin: 0;
     padding: 0;
     font-family: 'Open Sans', 'Source Sans Pro', sans-serif;
-    background-color: black;
+    background-color: white;
 }
 
 body{

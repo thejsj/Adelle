@@ -42,6 +42,7 @@ var Global = {};
 	        // Elements
 	        self.$body             = $('body');
 	        self.$videos_container = $("#videos-container");
+	        self.$main_content     = $("#main-content");
 
 	        // Manipulate DOM
 	        self.$body.addClass( 'projects-orientation-' + __self.orientation );
@@ -200,6 +201,31 @@ var Global = {};
 				all_project_ids.push( model.get('ID') );
 			})
 			return all_project_ids;
+		}
+
+		/**
+		 * Get the current scroll position of the main-container and convert it to a fixed element
+		 *
+		 * @return this
+		 */
+		self.freezeContainer = function(){
+			__self.paused = true; 
+			__self.scroll_top = self.$body.scrollTop();
+			self.$main_content
+				.css( 'position', 'fixed' )
+				.css( 'margin-top', -__self.scroll_top + 'px' );
+		}
+
+		/**
+		 * Reverse freezeConatiner and return it to normal
+		 *
+		 * @return this
+		 */
+		self.unFreezeContainer = function(){
+			__self.paused = false; 
+			self.$main_content
+				.css('position', 'static')
+				.css('margin-top', '0px');
 		}
 
 		/* * * * * * * * * * * * * *

@@ -32,4 +32,4 @@
 			)); ?> 
 		</nav>
 	</header>
-	<div class="main-content">
+	<div id="main-content" class="main-content">

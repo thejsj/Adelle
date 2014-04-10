@@ -24,18 +24,18 @@ var Options = {};
             __self.global_options.start_on_init = 10;
 
             // Video Options
-            __self.global_options.speed = 400;
+            __self.global_options.speed = 170;
             __self.global_options.video_quality = 'high';
 
             // Available 
             __self.global_options.canvas_opacity = 1;
-            __self.global_options.video_opacity = 0.67;
-            __self.global_options.video_background_color_alpha = 0.0249;
+            __self.global_options.video_opacity = 0.6;
+            __self.global_options.video_background_color_alpha = 0.006;
 
             // Unavailable 
-            __self.global_options.canvas_opacity_unavailable = 0.18;
-            __self.global_options.video_opacity_unavailable = 0.04;
-            __self.global_options.video_background_color_alpha_unavailable = 0.0672;
+            __self.global_options.canvas_opacity_unavailable = 0.1;
+            __self.global_options.video_opacity_unavailable = 0.739;
+            __self.global_options.video_background_color_alpha_unavailable = 0.006;
 
             // Nodemap
             __self.global_options.charge = -69;

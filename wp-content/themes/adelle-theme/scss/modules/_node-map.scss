@@ -14,14 +14,15 @@ svg#node_map{
 
 	.node {
 		/*fill: #000;*/
-		stroke: #fff;
-		stroke-width: 1.5px;
+		// stroke: #fff;
+		// stroke-width: 1.5px;
 		opacity: 0.5;
 		&.viewed-true {
 			opacity: 0.9;
 		}
 		&.viewed-true.currently-viewing-true {
-			stroke-width: 2px; 
+			stroke: #fff;
+			stroke-width: 1.5px; 
 		}
 	}
 

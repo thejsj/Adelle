@@ -79,6 +79,10 @@ var Views = {};
             }, 500);
         },
         openModal: function( slug ){
+
+            // Freeze Container
+            this.global.freezeContainer(); 
+
             this.current_model = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' })
 
             // Set Current Video
@@ -107,6 +111,7 @@ var Views = {};
         },
         closeModal: function( ){           
             if( this.current_model !== null && this.current_video !== null ){
+
                 // Remove Vimdeo Video
                 this.current_video.modal.removeVideo(); 
                 // Close Modal
@@ -119,6 +124,9 @@ var Views = {};
                 this.current_model.set('currently_viewing', false);
                 this.current_model = null;
                 this.current_video = null; 
+
+                // UnFreeze Container
+                this.global.unFreezeContainer(); 
 
                 // Update Global
                 this.global.update(); 
