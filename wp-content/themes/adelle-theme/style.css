@@ -5795,7 +5795,7 @@ th.hide-for-touch {
 .touch th.show-for-touch {
   display: table-cell !important; }
 
-html {
+body {
   overflow-y: -moz-scrollbars-vertical;
   overflow-y: scroll; }
 
@@ -5840,7 +5840,7 @@ h1#main-page-title {
   text-transform: uppercase;
   position: fixed;
   font-weight: bold;
-  color: white;
+  color: black;
   letter-spacing: 0.2em;
   margin: auto;
   display: inline-block;
@@ -5855,7 +5855,11 @@ h1#main-page-title {
   overflow: visible;
   z-index: 100;
   cursor: pointer;
-  font-size: 3em; }
+  font-size: 3em;
+  -webkit-transition: color 5s;
+  /* For Safari 3.1 to 6.0 */
+  -moz-transition: color 5s;
+  transition: color 5s; }
   @media all and (min-width: 400px) {
     h1#main-page-title {
       font-size: 6em;
@@ -5864,14 +5868,33 @@ h1#main-page-title {
       top: 0;
       line-height: 0.8em; } }
   h1#main-page-title a {
-    border-bottom: 3px solid white;
-    color: white; }
+    -webkit-transition: color 5s;
+    /* For Safari 3.1 to 6.0 */
+    -moz-transition: color 5s;
+    transition: color 5s;
+    border-bottom: 3px solid black;
+    color: black; }
     @media all and (min-width: 400px) {
       h1#main-page-title a {
-        border-bottom: 7px solid white; }
+        border-bottom: 7px solid black; }
         h1#main-page-title a:hover {
           color: black;
           border-color: black; } }
+  h1#main-page-title.active {
+    -webkit-transition: color 5s;
+    /* For Safari 3.1 to 6.0 */
+    -moz-transition: color 5s;
+    transition: color 5s; }
+    h1#main-page-title.active a {
+      -webkit-transition: color 5s;
+      /* For Safari 3.1 to 6.0 */
+      -moz-transition: color 5s;
+      transition: color 5s;
+      color: white;
+      border-color: white; }
+      h1#main-page-title.active a:hover {
+        color: white;
+        border-color: white; }
 
 #header {
   position: fixed; }

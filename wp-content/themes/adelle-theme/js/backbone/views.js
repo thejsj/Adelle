@@ -86,7 +86,7 @@ var Views = {};
             this.current_model = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' })
 
             // Set Current Video
-            this.current_video    = this.videos[ this.current_model.get('ID') ];
+            this.current_video = this.videos[ this.current_model.get('ID') ];
 
             // Set As Viewed
             this.current_model.set('viewed', true);
@@ -97,6 +97,7 @@ var Views = {};
             this.setRelatedAsAvailable( this.current_model.get('ID') );
 
             // Open As Model
+            this.current_video.modal.render(); 
             var $current_modal = this.current_video.modal.$el; 
             (function(self){
                 $current_modal
@@ -141,6 +142,11 @@ var Views = {};
             }
         },
         initVideos: function(){
+
+            // Change Class On Header
+            $("#main-page-title").addClass('active');
+
+            // Init Videos
             var time = {};
             this.$el.addClass('visible');
             var ii = 0; 
@@ -224,7 +230,6 @@ var Views = {};
         initialize: function( project, parent ){
             this.model = project;   
             this.parent = parent;
-            this.render(); 
         },
         render: function(i){
             this.el = Mustache.render( this.template, this.model.toJSON() ); 

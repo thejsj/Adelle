@@ -6,9 +6,10 @@ var Router  = require('../backbone/router.js');
 var Models  = require('../backbone/models.js');
 var Views   = require('../backbone/views.js');
 
-var Options = require('../classes/options-handler.js');
-var ScrollHandler = require('../classes/scroll-handler.js');
-var CookieHandler = require('../classes/cookie-handler.js');
+var Options          = require('../classes/options-handler.js');
+var ScrollHandler    = require('../classes/scroll-handler.js');
+var CookieHandler    = require('../classes/cookie-handler.js');
+var MainTitleHandler = require('../classes/main-title-handler.js');
 
 var Global = {};
 
@@ -40,9 +41,10 @@ var Global = {};
 	        __self.orientation   = self.options.get( 'orientation' );
 
 	        // Elements
-	        self.$body             = $('body');
-	        self.$videos_container = $("#videos-container");
-	        self.$main_content     = $("#main-content");
+	        self.$body              = $('body');
+	        self.$videos_container  = $("#videos-container");
+	        self.$main_content      = $("#main-content");
+	        self.main_title_handler = new MainTitleHandler();
 
 	        // Manipulate DOM
 	        self.$body.addClass( 'projects-orientation-' + __self.orientation );

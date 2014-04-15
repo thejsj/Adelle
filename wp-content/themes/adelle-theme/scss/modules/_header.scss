@@ -2,7 +2,7 @@ h1#main-page-title {
     text-transform: uppercase;
     position: fixed;
     font-weight: bold;
-    color: white;
+    color: black;
     letter-spacing: 0.2em;
     margin: auto;
     display: inline-block;
@@ -25,16 +25,38 @@ h1#main-page-title {
         top: 0;
         line-height: 0.8em;
     }  
+    -webkit-transition: color 5s; /* For Safari 3.1 to 6.0 */
+    -moz-transition: color 5s;
+    transition: color 5s;
     a {
-        border-bottom: 3px solid white;
-        color: white; 
+        -webkit-transition: color 5s; /* For Safari 3.1 to 6.0 */
+        -moz-transition: color 5s;
+        transition: color 5s;
+        border-bottom: 3px solid black;
+        color: black; 
         @include breakpoint( 400 ){
-            border-bottom: 7px solid white;
+            border-bottom: 7px solid black;
             &:hover {
                 color: black; 
                 border-color: black;
             }
         } 
+    }
+    &.active {
+        -webkit-transition: color 5s; /* For Safari 3.1 to 6.0 */
+        -moz-transition: color 5s;
+        transition: color 5s;
+        a {
+            -webkit-transition: color 5s; /* For Safari 3.1 to 6.0 */
+            -moz-transition: color 5s;
+            transition: color 5s;
+            color: white; 
+            border-color: white; 
+            &:hover {
+                color: white; 
+                border-color: white; 
+            }
+        }
     }
 }
 

@@ -128,7 +128,7 @@ var Models = {};
 })(jQuery);
 
 module.exports = Models;
-},{"backbone":12,"d3":13,"mustache":17,"underscore":18}],3:[function(require,module,exports){
+},{"backbone":13,"d3":14,"mustache":18,"underscore":19}],3:[function(require,module,exports){
 var Backbone = require('backbone');
 Backbone.$   = jQuery;
 
@@ -161,7 +161,7 @@ var Router = {};
 })(jQuery);
 
 module.exports = Router;
-},{"backbone":12}],4:[function(require,module,exports){
+},{"backbone":13}],4:[function(require,module,exports){
 var _          = require('underscore');
 var Mustache   = require('mustache');
 var Backbone   = require('backbone');
@@ -250,7 +250,7 @@ var Views = {};
             this.current_model = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' })
 
             // Set Current Video
-            this.current_video    = this.videos[ this.current_model.get('ID') ];
+            this.current_video = this.videos[ this.current_model.get('ID') ];
 
             // Set As Viewed
             this.current_model.set('viewed', true);
@@ -261,6 +261,7 @@ var Views = {};
             this.setRelatedAsAvailable( this.current_model.get('ID') );
 
             // Open As Model
+            this.current_video.modal.render(); 
             var $current_modal = this.current_video.modal.$el; 
             (function(self){
                 $current_modal
@@ -305,6 +306,11 @@ var Views = {};
             }
         },
         initVideos: function(){
+
+            // Change Class On Header
+            $("#main-page-title").addClass('active');
+
+            // Init Videos
             var time = {};
             this.$el.addClass('visible');
             var ii = 0; 
@@ -388,7 +394,6 @@ var Views = {};
         initialize: function( project, parent ){
             this.model = project;   
             this.parent = parent;
-            this.render(); 
         },
         render: function(i){
             this.el = Mustache.render( this.template, this.model.toJSON() ); 
@@ -417,7 +422,7 @@ var Views = {};
 })( jQuery );
 
 module.exports = Views;
-},{"../classes/video-single.js":10,"../templates.js":11,"backbone":12,"d3":13,"mustache":17,"underscore":18}],5:[function(require,module,exports){
+},{"../classes/video-single.js":11,"../templates.js":12,"backbone":13,"d3":14,"mustache":18,"underscore":19}],5:[function(require,module,exports){
 var NodeMap = require('../classes/nodemap-handler.js');
 
 var CookieHandler = {}; 
@@ -489,7 +494,7 @@ var CookieHandler = {};
 })(jQuery);
 
 module.exports = CookieHandler;
-},{"../classes/nodemap-handler.js":7}],6:[function(require,module,exports){
+},{"../classes/nodemap-handler.js":8}],6:[function(require,module,exports){
 var _        = require('underscore');
 var Backbone = require('backbone');
 Backbone.$   = jQuery;
@@ -498,9 +503,10 @@ var Router  = require('../backbone/router.js');
 var Models  = require('../backbone/models.js');
 var Views   = require('../backbone/views.js');
 
-var Options = require('../classes/options-handler.js');
-var ScrollHandler = require('../classes/scroll-handler.js');
-var CookieHandler = require('../classes/cookie-handler.js');
+var Options          = require('../classes/options-handler.js');
+var ScrollHandler    = require('../classes/scroll-handler.js');
+var CookieHandler    = require('../classes/cookie-handler.js');
+var MainTitleHandler = require('../classes/main-title-handler.js');
 
 var Global = {};
 
@@ -532,9 +538,10 @@ var Global = {};
 	        __self.orientation   = self.options.get( 'orientation' );
 
 	        // Elements
-	        self.$body             = $('body');
-	        self.$videos_container = $("#videos-container");
-	        self.$main_content     = $("#main-content");
+	        self.$body              = $('body');
+	        self.$videos_container  = $("#videos-container");
+	        self.$main_content      = $("#main-content");
+	        self.main_title_handler = new MainTitleHandler();
 
 	        // Manipulate DOM
 	        self.$body.addClass( 'projects-orientation-' + __self.orientation );
@@ -760,7 +767,77 @@ var Global = {};
 })(window.jQuery);
 
 module.exports = Global;
-},{"../backbone/models.js":2,"../backbone/router.js":3,"../backbone/views.js":4,"../classes/cookie-handler.js":5,"../classes/options-handler.js":8,"../classes/scroll-handler.js":9,"backbone":12,"underscore":18}],7:[function(require,module,exports){
+},{"../backbone/models.js":2,"../backbone/router.js":3,"../backbone/views.js":4,"../classes/cookie-handler.js":5,"../classes/main-title-handler.js":7,"../classes/options-handler.js":9,"../classes/scroll-handler.js":10,"backbone":13,"underscore":19}],7:[function(require,module,exports){
+var D3 = require('d3');
+
+var MainTitleHandler; 
+
+(function($){
+
+	MainTitleHandler = function(){
+
+		var self = {}, __self = {}; 
+
+		self.init = function(){
+
+			__self.color = D3.scale.category10();
+			__self.index = 0; 
+			__self.$main_page_title = $("#main-page-title");
+
+			__self.title_length = __self.breakIntoSpans(); 
+
+			__self.$main_page_title
+				.addClass('spanned')
+				.hover( __self.hoverOn, __self.hoverOff );
+		}
+
+		__self.hoverOn = function(){
+			if( __self.$main_page_title.hasClass('active') ){
+				// Animate
+				__self.animation_interval = setInterval(function(){
+					// Animate Letters
+					__self.$main_page_title.find(".letter").each(function(i){
+						$(this)
+							.css('color', __self.color( (i + __self.index) % __self.title_length ) );
+					})
+					// Update Index
+					__self.index += 1
+					__self.index = Math.min( __self.index , __self.title_length );
+					if( __self.index === __self.title_length ){
+						__self.index = 0; 
+					}
+				}, 50);
+			}
+		}
+
+		__self.hoverOff = function(){
+			clearInterval( __self.animation_interval );
+			__self.$main_page_title.find(".letter").each(function(i){
+				$(this)
+					.css('color', "#fff" );
+			})
+		}
+
+		__self.breakIntoSpans = function(){
+			var letters = __self.$main_page_title.text();
+			var letters = letters.split('');
+			for(var i = 0; i < letters.length; i++){
+				letters[i] = "<span class='letter letter-" + i + "'>" + letters[i] + "</span>";
+			}
+			var length = letters.length;
+			__self.$main_page_title.html( letters.join('') );
+			return length;
+		}
+
+		self.init(); 
+		return self; 
+	}
+
+
+})(window.jQuery);
+
+module.exports = MainTitleHandler;
+},{"d3":14}],8:[function(require,module,exports){
 var D3 = require('d3');
 var _  = require('underscore');
 
@@ -966,7 +1043,7 @@ var NodeMap;
 module.exports = NodeMap; 
 
 
-},{"d3":13,"underscore":18}],8:[function(require,module,exports){
+},{"d3":14,"underscore":19}],9:[function(require,module,exports){
 var dat = require('dat-gui');
 
 var Options = {};
@@ -1094,7 +1171,7 @@ var Options = {};
 })(window.jQuery);
 
 module.exports = Options;
-},{"dat-gui":14}],9:[function(require,module,exports){
+},{"dat-gui":15}],10:[function(require,module,exports){
 var ScrollHandler = {}; 
 
 (function($){
@@ -1157,7 +1234,7 @@ var ScrollHandler = {};
 
 module.exports = ScrollHandler;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var Video; 
 
 (function($){
@@ -1543,13 +1620,13 @@ var Video;
 })(window.jQuery);
 
 module.exports = Video;
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 Templates = {
     "404" : '<div class="row 404-template"><div class="large-8 large-offset-2 columns four-zero-four"><h2>404</h2><p>Sorry, we can&#39;t find the page you are looking for! Perhaps you have entered the wrong URL? Obviously, it&#39;s not our fault!</p></div></div>',"single-project-partial" : '<article class="project single-project-partial-template"><!-- Display Post Title --><h2><a href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Post Content --><div class="entry-content">{{# vimeo_id }}<!-- Vimeo Video --><div class="main-video"><iframe src="//player.vimeo.com/video/88054119" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>{{/ vimeo_id }}{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}<!-- Display Main Content -->{{{ post_content }}}</div></article>',"projects-view" : '{{# posts }}{{> single-project-partial }}{{/ posts }}',"single-project-home" : '<div id="container-{{ ID }}" class="home-project-container single-project-home-template {{# available }}available-true{{/ available }}{{^ available }}available-false{{/ available }}"><div class="home-content-container"><h2>{{ post_title }}</h2><div class="excpert"></div></div><canvas id="canvas-{{ ID }}" class="{{# available }}available-true{{/ available }}{{^ available }}available-false{{/ available }}"></canvas><video id="video-{{ ID }}" controls loop>{{#video_files}}<source src="{{{ url }}}" type="{{ mime_type }}">{{/video_files}}</video></div>',"single-project" : '<div id="modal-{{ ID }}" class="reveal-modal single-modal project-modal single-project-template" data-reveal><article class="project">{{# vimeo_id }}<!-- Vimeo Video --><div class="main-video"></div>{{/ vimeo_id }}{{^ vimeo_id }}{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}{{/ vimeo_id }}<!-- Display Post Content --><div class="entry-content"><!-- Display Post Title --><h2 class="change-color main-project-title"><a class="change-color" href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Main Content -->{{{ post_content }}}</div></article><a class="close-reveal-modal top change-bg-color">&#215;</a></div>',"single" : '<article class="single single-template"><!-- Display Post Title --><h2><a href="{{ permalink }}">{{ post_title }}</a></h2><!-- Display Post Content --><div class="entry-content">{{# featured_image }}<div class="featured-image"><!-- Display Featured Image --><img class="main-image" src="{{ featured_image.url }}"></div>{{/ featured_image }}<!-- Display Main Content -->{{{ post_content }}}</div></article>',"vimeo-video" : '<iframe src="//player.vimeo.com/video/{{ vimeo_id }}" width="596" height="350" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> ',
     "done": "true"
   }; 
 module.exports = Templates;
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -3159,7 +3236,7 @@ module.exports = Templates;
 
 }));
 
-},{"underscore":18}],13:[function(require,module,exports){
+},{"underscore":19}],14:[function(require,module,exports){
 !function() {
   var d3 = {
     version: "3.4.4"
@@ -12454,10 +12531,10 @@ module.exports = Templates;
     this.d3 = d3;
   }
 }();
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = require('./vendor/dat.gui')
 module.exports.color = require('./vendor/dat.color')
-},{"./vendor/dat.color":15,"./vendor/dat.gui":16}],15:[function(require,module,exports){
+},{"./vendor/dat.color":16,"./vendor/dat.gui":17}],16:[function(require,module,exports){
 /**
  * dat-gui JavaScript Controller Library
  * http://code.google.com/p/dat-gui
@@ -13213,7 +13290,7 @@ dat.color.math = (function () {
 })(),
 dat.color.toString,
 dat.utils.common);
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /**
  * dat-gui JavaScript Controller Library
  * http://code.google.com/p/dat-gui
@@ -16874,7 +16951,7 @@ dat.dom.CenteredDiv = (function (dom, common) {
 dat.utils.common),
 dat.dom.dom,
 dat.utils.common);
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /*!
  * mustache.js - Logic-less {{mustache}} templates with JavaScript
  * http://github.com/janl/mustache.js
@@ -17446,7 +17523,7 @@ dat.utils.common);
 
 }));
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 //     Underscore.js 1.6.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
