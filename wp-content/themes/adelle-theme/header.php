@@ -20,7 +20,7 @@
 	<link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>" type="text/css">
 	<?php wp_head(); ?>
 </head>
-<body style="background-color: black;">
+<body>
 	<h1 id="main-page-title"><a href="<?php bloginfo('url'); ?>"><?php bloginfo('name'); ?></a></h1>
 	<header id="header">
 		<!-- Main Menu -->

@@ -105,6 +105,12 @@ var Views = {};
                     .find('.close-reveal-modal').click(function(){
                         self.global.router.navigate( '/', true);
                     });
+                console.log( 'JSJ G S' );
+                // Init Slideshow
+                if( typeof createJSJGallerySlideshow !== 'undefined'){
+                    createJSJGallerySlideshow(); 
+                }
+
             })(this);
 
             // Update Global

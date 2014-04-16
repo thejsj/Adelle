@@ -1,6 +1,11 @@
 <div id="modal-{{ ID }}" class="reveal-modal single-modal project-modal single-project-template" data-reveal>
 	<article class="project">
 		
+		<!-- Display Post Title -->
+		<h2 class="change-bg-color main-project-title">
+			<a href="{{ permalink }}">{{ post_title }}</a>
+		</h2>
+
 		{{# vimeo_id }}
 			<!-- Vimeo Video -->
 			<div class="main-video"></div>
@@ -17,12 +22,6 @@
 
 		<!-- Display Post Content -->
 		<div class="entry-content">
-
-			<!-- Display Post Title -->
-			<h2 class="change-color main-project-title">
-				<a class="change-color" href="{{ permalink }}">{{ post_title }}</a>
-			</h2>
-
 			<!-- Display Main Content -->
 			{{{ post_content }}}
 		</div>

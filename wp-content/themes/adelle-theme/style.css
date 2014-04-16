@@ -5952,6 +5952,15 @@ h1#main-page-title {
 
 .single-modal {
   margin-bottom: 100px; }
+  .single-modal h2 {
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 0.2em;
+    padding: 10px 0;
+    margin: 0;
+    color: white; }
+    .single-modal h2 a {
+      color: white; }
   .single-modal .main-video {
     background-color: black;
     height: 350px;
@@ -5964,11 +5973,6 @@ h1#main-page-title {
       right: -2px; }
   .single-modal .entry-content {
     padding: 1.375rem 1.375rem; }
-    .single-modal .entry-content h2 {
-      text-transform: uppercase;
-      text-align: center;
-      letter-spacing: 0.35em;
-      padding: 0px 0px 6px; }
 
 svg#node_map {
   position: fixed;

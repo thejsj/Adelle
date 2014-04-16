@@ -1,0 +1,442 @@
+# Copyright (C) 2014 JSJ Gallery Slideshow
+# This file is distributed under the same license as the JSJ Gallery Slideshow package.
+msgid ""
+msgstr ""
+"Project-Id-Version: JSJ Gallery Slideshow 1.2\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/jsj-gallery-slideshow\n"
+"POT-Creation-Date: 2014-03-20 04:57:35+00:00\n"
+"PO-Revision-Date: 2014-03-20 01:00-0500\n"
+"Last-Translator: Jorge Silva-Jetter <jorge.silva@thejsj.com>\n"
+"Language-Team: LANGUAGE <jorge.silva@thejsj.com>\n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.6.3\n"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:9
+#: jsj-gallery-slideshow-settings-cycle.php:9
+msgid "Transition Effect"
+msgstr "Efecto de transición"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:10
+#: jsj-gallery-slideshow-settings-cycle.php:10
+msgid "Select transition effect for slideshow"
+msgstr "Seleccione efecto de transición para el slideshow"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:18
+#: jsj-gallery-slideshow-settings-cycle.php:18
+msgid "Speed"
+msgstr "Velocidad"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:19
+#: jsj-gallery-slideshow-settings-cycle.php:19
+msgid "Speed of slide transition (in milliseconds)"
+msgstr "Velocidad de transición entre slides (en milisegundos)"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:26
+#: jsj-gallery-slideshow-settings-cycle.php:26
+msgid "Timeout"
+msgstr "Espera"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:27
+#: jsj-gallery-slideshow-settings-cycle.php:27
+msgid "Milliseconds between slide transitions (0 to disable auto advance)"
+msgstr ""
+"Milisegundos entre transición de slides (0 para desactivar auto avance)"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:34
+#: jsj-gallery-slideshow-settings-cycle.php:34
+msgid "Pause On Hover"
+msgstr "Pausar En Hover"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:35
+#: jsj-gallery-slideshow-settings-cycle.php:35
+msgid "Pause slideshow when hovering over slide"
+msgstr "Pausar el slideshow cuando el cursor esta sobre la imagen"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:42
+#: jsj-gallery-slideshow-settings-cycle.php:42
+msgid "Pause On Pager Hover"
+msgstr "Pausar En Hover De La Paginación"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:43
+#: jsj-gallery-slideshow-settings-cycle.php:43
+msgid "Pause slideshow when hovering over pager thumbnails"
+msgstr "Pausar slideshow cuando el cursor está sobre el paginador"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:53
+#: jsj-gallery-slideshow-settings-cycle.php:53
+msgid "Fit Slides"
+msgstr "Ajustar Slides"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:54
+#: jsj-gallery-slideshow-settings-cycle.php:54
+msgid "Force slides to fit container"
+msgstr "Forzar slides a su contenedor"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:62
+#: jsj-gallery-slideshow-settings-cycle.php:62
+msgid "Slide Height"
+msgstr "Altura De Slide"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:63
+#: jsj-gallery-slideshow-settings-cycle.php:63
+msgid ""
+"Container height (if the \"Fit Slides\" is enabled, slides will also be "
+"resized)."
+msgstr ""
+"Altura del contenedor (si la opción \"Ajustar Slides\" está activada, los "
+"slides también serán ajustados)"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:70
+#: jsj-gallery-slideshow-settings-cycle.php:70
+msgid "Slide Width"
+msgstr "Ancho Del Slide"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:71
+#: jsj-gallery-slideshow-settings-cycle.php:71
+msgid ""
+"Container width (if the \"Fit Slides\" is enabled, slides will also be "
+"resized)"
+msgstr ""
+"Ancho del contenedor (si la opción \"Ajustar Slides\" está activada, los "
+"slides también serán ajustados)"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:78
+#: jsj-gallery-slideshow-settings-cycle.php:78
+msgid "Slide Resize"
+msgstr "Reajustar Tamaño De Slides"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:79
+#: jsj-gallery-slideshow-settings-cycle.php:79
+msgid ""
+"Force slide width/height to a fixed width/height before every transition"
+msgstr "Forzar slide a un tamaño fijo antes de cada transición"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:86
+#: jsj-gallery-slideshow-settings-cycle.php:86
+msgid "Container Resize"
+msgstr "Reajustar Tamaño del Contenedor"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:87
+#: jsj-gallery-slideshow-settings-cycle.php:87
+msgid "Resize container to fit largest slide"
+msgstr "Reajustar tamaño del contender para acomodar el slide más ancho"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:94
+#: jsj-gallery-slideshow-settings-cycle.php:94
+msgid "No Wrapping"
+msgstr "No Envolver"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:95
+#: jsj-gallery-slideshow-settings-cycle.php:95
+msgid "Prevent slideshow from wrapping"
+msgstr "Prevenir envolver ('wrap') el slideshow"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:102
+#: jsj-gallery-slideshow-settings-cycle.php:102
+msgid "Auto Stop"
+msgstr "Auto Parar"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:103
+#: jsj-gallery-slideshow-settings-cycle.php:103
+msgid "End slideshow after X transitions (X == Auto Stop Count)"
+msgstr "Terminar slideshow después de X transiciones (X == Cuenta Auto Parar)"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:111
+#: jsj-gallery-slideshow-settings-cycle.php:111
+msgid "Auto Stop Count"
+msgstr "Cuenta Auto Parar"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:112
+#: jsj-gallery-slideshow-settings-cycle.php:112
+msgid "Number of transitions (See Auto Stop)"
+msgstr "Número de transiciones (Ver Auto Parar)"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:119
+#: jsj-gallery-slideshow-settings-cycle.php:119
+msgid "Starting Slide #"
+msgstr "# Slide Comienzo"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:120
+#: jsj-gallery-slideshow-settings-cycle.php:120
+msgid "Zero-based index of the first slide to be displayed"
+msgstr "Indice (basado en 0) del primer slide en ser presentada"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:127
+#: jsj-gallery-slideshow-settings-cycle.php:127
+msgid "Start Backwards"
+msgstr "Empezar Al Revés"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:128
+#: jsj-gallery-slideshow-settings-cycle.php:128
+msgid "Start slideshow at last slide and move backwards through the stack"
+msgstr "Empezar slideshow en el último slide e ir hacia atrás"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:136
+#: jsj-gallery-slideshow-settings-cycle.php:136
+msgid "Random Slides"
+msgstr "Slide Al Azar"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:137
+#: jsj-gallery-slideshow-settings-cycle.php:137
+msgid "Transition slides randomly (not applicable to shuffle fx)"
+msgstr "Transicionar slides al azar (no aplica a 'shuffle fx')"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:144
+#: jsj-gallery-slideshow-settings-cycle.php:144
+msgid "Delay"
+msgstr "Retraso"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:145
+#: jsj-gallery-slideshow-settings-cycle.php:145
+msgid "Additional delay (in ms) for first transition (hint: can be negative)"
+msgstr "Retraso adicional (en ms) para la primera transición"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:152
+#: jsj-gallery-slideshow-settings-cycle.php:152
+msgid "Re-queue Timeout"
+msgstr "Espera para Recargar"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:153
+#: jsj-gallery-slideshow-settings-cycle.php:153
+msgid "Delay for re-queue (in milliseconds)"
+msgstr "Espera para recargar slideshow (en milisegundos)"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:160
+#: jsj-gallery-slideshow-settings-cycle.php:160
+msgid "Re-queue OnImageNotLoaded"
+msgstr "Recargar en OnImageNotLoaded"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:161
+#: jsj-gallery-slideshow-settings-cycle.php:161
+msgid "Re-queue the slideshow if any images have not been loaded"
+msgstr "Recargar slideshow si cualquier imagen no ha sido cargarda"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:176
+#: jsj-gallery-slideshow-settings-cycle.php:176
+msgid "Manual Trump"
+msgstr "Paro Manual"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:177
+#: jsj-gallery-slideshow-settings-cycle.php:177
+msgid ""
+"Causes manual transition to stop an active transition, instead of being "
+"ignored"
+msgstr ""
+"Causa que una transición manual paré una transición active, en vez de ser "
+"ignorada"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:192
+#: jsj-gallery-slideshow-settings-cycle.php:192
+msgid "Reverse Animation"
+msgstr "Animación Al Revés"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:193
+#: jsj-gallery-slideshow-settings-cycle.php:193
+msgid ""
+"Causes animations to transition in reverse (for effects that support it such "
+"as scrollHorz/scrollVert/shuffle)"
+msgstr ""
+"Causa que la animación trancisione al revés (para los efectos que apoyan "
+"esta funcionalidad)"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:200
+#: jsj-gallery-slideshow-settings-cycle.php:200
+msgid "Synchronize Slides"
+msgstr "Sincronizar Slides"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:201
+#: jsj-gallery-slideshow-settings-cycle.php:201
+msgid "In/out transitions should occur simultaneously"
+msgstr "Transiciones adentro/afuera deben ocurrir simultáneamente"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:208
+#: jsj-gallery-slideshow-settings-cycle.php:208
+msgid "Active Pager Class"
+msgstr "Clase de Paginador Activo"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:209
+#: jsj-gallery-slideshow-settings-cycle.php:209
+msgid "Class name used for the active pager element"
+msgstr "Nombre de clase usada para el elemento activo en el paginador"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:216
+#: jsj-gallery-slideshow-settings-cycle.php:216
+msgid "Clear Type No Background"
+msgstr "Trasfondo Clear Type"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-cycle.php:217
+#: jsj-gallery-slideshow-settings-cycle.php:217
+msgid ""
+"Disable extra cleartype fixing (leave false to force background color "
+"setting on slides)"
+msgstr "Inhabilitar fijación cleartype"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-other.php:7
+#: jsj-gallery-slideshow-settings-other.php:7
+msgid "Check For Shortcode"
+msgstr "Verificar Shortcode"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-other.php:8
+#: jsj-gallery-slideshow-settings-other.php:8
+msgid ""
+"Only load plugin if [gallery] shortcode is being used in content. Deactivate "
+"if using Ajax."
+msgstr ""
+"Sólo cargar este plugin si el shortcode [gallery] está siendo usado en el "
+"contenido. Desactive esta opción si está usando Ajax."
+
+#. Plugin Name of the plugin/theme
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:105
+#: jsj-gallery-slideshow.php:105
+msgid "JSJ Gallery Slideshow"
+msgstr "JSJ Galería Slideshow"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:194
+#: jsj-gallery-slideshow.php:194
+msgid "JSJ Gallery Slideshow Options"
+msgstr "Opciones JSJ Galería Slideshow"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:220
+#: jsj-gallery-slideshow.php:220
+msgid "Your settings have been reverted back to their default."
+msgstr "Su configuración ha sido revertidas a su configuración original."
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:231
+#: jsj-gallery-slideshow.php:231
+msgid "Simple"
+msgstr "Simple"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:232
+#: jsj-gallery-slideshow.php:232
+msgid "Advanced"
+msgstr "Avanzado"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:242
+#: jsj-gallery-slideshow.php:242
+msgid "Gallery Options"
+msgstr "Opciones: Galería"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:249
+#: jsj-gallery-slideshow.php:249
+msgid "Advanced Gallery Options"
+msgstr "Opciones Avanzadas: Galería"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:253
+#: jsj-gallery-slideshow.php:253
+msgid "Loading Options"
+msgstr "Opciones: Cargar"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:260
+#: jsj-gallery-slideshow.php:260
+msgid "If pleased with your settings, go ahead and save them!"
+msgstr "Si está contento con su configuración, guardelas!"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:266
+#: jsj-gallery-slideshow.php:266
+msgid ""
+"Reset all plugin settings to their defaults. This will delete all your "
+"current settings."
+msgstr ""
+"Reajustar todas las opciones a las opciones originales. Esto borrará todas "
+"sus opciones actuales."
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:269
+#: jsj-gallery-slideshow.php:269
+msgid "Reset Plugin Settings"
+msgstr "Reinicializar Opciones Plugin"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:272
+#: jsj-gallery-slideshow.php:272
+msgid "Resources"
+msgstr "Recursos"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:274
+#: jsj-gallery-slideshow.php:274
+msgid "%sRequest A Feature%s"
+msgstr "%Sugiera Un 'Feature'%"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:278
+#: jsj-gallery-slideshow.php:278
+msgid "%sReview This Plugin%s"
+msgstr "%sEvaluar Este Plugin%s"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:279
+#: jsj-gallery-slideshow.php:279
+msgid "%sVisit Plugin Website%s"
+msgstr "%sVisitar Site De Este Plugin%s"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:280
+#: jsj-gallery-slideshow.php:280
+msgid "%sSee All JSJ Plugins%s"
+msgstr "%sVer Todos Los Plugins JSJ%s"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:282
+#: jsj-gallery-slideshow.php:282
+msgid "Credit"
+msgstr "Credito"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:284
+#: jsj-gallery-slideshow.php:284
+msgid "Plugin by  %s"
+msgstr "Plugin por  %s"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:285
+#: jsj-gallery-slideshow.php:285
+msgid "Built with %sJquery Cycle%s"
+msgstr "Hecho con %sJquery Cycle%s"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:286
+#: jsj-gallery-slideshow.php:286
+msgid "Inspired by %sCargo%s"
+msgstr "Inspirado por %sCargo%s"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:442
+#: jsj-gallery-slideshow.php:442
+msgid "Previous"
+msgstr "Anterior"
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:443
+#: jsj-gallery-slideshow.php:443
+msgid "Next Image"
+msgstr "Siguiente Imagen"
+
+#: jsj-gallery-slideshow.php:444
+msgctxt "1 of 10"
+msgid "of"
+msgstr "de"
+
+#. Plugin URI of the plugin/theme
+msgid "http://wordpress.org/plugins/jsj-gallery-slideshow/"
+msgstr "http://wordpress.org/plugins/jsj-gallery-slideshow/"
+
+#. Description of the plugin/theme
+msgid ""
+"A plugin to immediately improve all your WordPress galleries, with a simple, "
+"easy-to-use slideshow."
+msgstr ""
+"Un plugin para inmediatamente mejorar todas sus galerías en Wordpress, con "
+"un slideshow simple y fácil de usar."
+
+#. Author of the plugin/theme
+msgid "Jorge Silva Jetter"
+msgstr "Jorge Silva Jetter"
+
+#. Author URI of the plugin/theme
+msgid "http://thejsj.com"
+msgstr "http://thejsj.com"
+
+#~ msgid "%sHow To Use This Plugin%s"
+#~ msgstr "%sCómo Usar Este Plugin%s"
+
+#~ msgid "%sProvide Feedback%s"
+#~ msgstr "%sProveer Feedback%s"
+
+#~ msgid "Easy"
+#~ msgstr "Fácil"
+
+#~ msgid "A Plugin to change your slidehow."
+#~ msgstr "Un plugin para mejorar su slideshow."
