@@ -62,7 +62,6 @@ var Video;
 	     * @return 
 	     */
 	    self.init = function(){
-
 	        __self.$canvas = $("#" + __self.canvas_id);
 	        __self.canvas  = __self.$canvas.get(0);
 	        __self.$canvas
@@ -160,7 +159,6 @@ var Video;
 	     * @return this
 	     */
 	   	self.init_canvas = function(){
-
 	        // Get Canvas Element
 	        __self.ctx = __self.canvas.getContext('2d');
 	        __self.canvas.width  = __self.canvas_width;

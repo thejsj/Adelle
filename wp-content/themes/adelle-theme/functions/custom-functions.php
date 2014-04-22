@@ -50,6 +50,8 @@
 		add_image_size( 'facebook', 1200, 630, true ); 
 		add_image_size( 'slideshow', 700, 400 );
 		add_image_size( 'slideshow@2x', 700 * 2, 400 * 2 );
+		add_image_size( 'content', 552, 700 );
+		add_image_size( 'content@2x', 552 * 2, 700 * 2 );
 		add_image_size( 'video_still', 360, 240 ); 
 		add_image_size( 'video_still@2x', 360 * 2, 240 * 2 ); 
 	}

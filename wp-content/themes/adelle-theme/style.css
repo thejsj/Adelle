@@ -5973,6 +5973,8 @@ h1#main-page-title {
       right: -2px; }
   .single-modal .entry-content {
     padding: 1.375rem 1.375rem; }
+    .single-modal .entry-content img {
+      max-width: 100% !important; }
 
 svg#node_map {
   position: fixed;

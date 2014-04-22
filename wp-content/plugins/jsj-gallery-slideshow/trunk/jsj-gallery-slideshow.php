@@ -379,7 +379,7 @@ class JSJGallerySlideshow {
 		extract(shortcode_atts(array(
 			'order'      => 'ASC',
 			'orderby'    => 'menu_order ID',
-			'id'         => @$post->ID,
+			'id'         => $post->ID,
 			'itemtag'    => 'dl',
 			'icontag'    => 'dt',
 			'captiontag' => 'dd',
@@ -388,6 +388,8 @@ class JSJGallerySlideshow {
 			'include'    => '',
 			'exclude'    => ''
 			), $attr));
+
+		echo $size;
 
 		$id = intval($id);
 		if ( 'RAND' == $order )

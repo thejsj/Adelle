@@ -33,5 +33,10 @@
 
 	.entry-content {
 		padding: rem-calc(22) rem-calc(22);
+
+		img {
+			max-width: 100% !important;
+		}
+
 	}
 }

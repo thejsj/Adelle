@@ -8,13 +8,17 @@ var Router = {};
     Router = Backbone.Router.extend({
         routes : {
             "project/:slug/" : "project",
-            ".*"   : "notFound",
+            "adelle-lin/"   : "page",
+            "about/"   : "page",
             '*path': 'home', // Our last resort, go home
         },
         initialize: function( home_view ){
             this.home_view = home_view; 
         },
         project : function(slug){
+            this.home_view.openModal( slug );
+        },
+        page: function(slug){
             this.home_view.openModal( slug );
         },
         home : function() {

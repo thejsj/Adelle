@@ -1,4 +1,5 @@
 // Jquery is Defined globaly... all because of Foundation
+var Global = require('../classes/global.js');
 
 (function($){
 
@@ -27,12 +28,10 @@
 		}
 	});
 
-	// Get Dependencies
-	var Global = require('../classes/global.js');
-
 	// On Document Ready, Get All Posts through an AJAX Request
 	$(document).ready(function(){
-		
+		console.log('Document Ready');
+		console.log(MyAjax.ajaxurl);
 		// Get Posts
         $.post(	
 		    MyAjax.ajaxurl,

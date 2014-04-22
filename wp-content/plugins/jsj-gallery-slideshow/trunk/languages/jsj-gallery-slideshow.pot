@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: JSJ Gallery Slideshow 1.2.8\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/jsj-gallery-slideshow\n"
-"POT-Creation-Date: 2014-04-22 02:58:45+00:00\n"
+"POT-Creation-Date: 2014-04-22 03:04:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -262,128 +262,130 @@ msgstr ""
 msgid "Only load plugin if [gallery] shortcode is being used in content. Deactivate if using Ajax."
 msgstr ""
 
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:105
-#: jsj-gallery-slideshow.php:104
-msgid "JSJ Gallery Slideshow"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:194
-#: jsj-gallery-slideshow.php:193
-msgid "JSJ Gallery Slideshow Options"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:220
-#: jsj-gallery-slideshow.php:219
-msgid "Your settings have been reverted back to their default."
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:231
-#: jsj-gallery-slideshow.php:230
-msgid "Simple"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:232
-#: jsj-gallery-slideshow.php:231
-msgid "Advanced"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:242
-#: jsj-gallery-slideshow.php:241
-msgid "Gallery Options"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:249
-#: jsj-gallery-slideshow.php:248
-msgid "Advanced Gallery Options"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:253
-#: jsj-gallery-slideshow.php:252
-msgid "Loading Options"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:260
-#: jsj-gallery-slideshow.php:259
-msgid "If pleased with your settings, go ahead and save them!"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:266
-#: jsj-gallery-slideshow.php:265
-msgid "Reset all plugin settings to their defaults. This will delete all your current settings."
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:269
-#: jsj-gallery-slideshow.php:268
-msgid "Reset Plugin Settings"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:272
-#: jsj-gallery-slideshow.php:271
-msgid "Resources"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:274
-#: jsj-gallery-slideshow.php:273
-msgid "%sRequest A Feature%s"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:278
-#: jsj-gallery-slideshow.php:277
-msgid "%sReview This Plugin%s"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:279
-#: jsj-gallery-slideshow.php:278
-msgid "%sVisit Plugin Website%s"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:280
-#: jsj-gallery-slideshow.php:279
-msgid "%sSee All JSJ Plugins%s"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:282
-#: jsj-gallery-slideshow.php:281
-msgid "Credit"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:284
-#: jsj-gallery-slideshow.php:283
-msgid "Plugin by  %s"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:285
-#: jsj-gallery-slideshow.php:284
-msgid "Built with %sJquery Cycle%s"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:286
-#: jsj-gallery-slideshow.php:285
-msgid "Inspired by %sCargo%s"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:442
-#: jsj-gallery-slideshow.php:443
-msgid "Previous"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:443
-#: jsj-gallery-slideshow.php:444
-msgid "Next Image"
-msgstr ""
-
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:444
-#: jsj-gallery-slideshow.php:445
-msgctxt "1 of 10"
-msgid "of"
-msgstr ""
-
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-other.php:15
 #: jsj-gallery-slideshow-settings-other.php:15
 msgid "Default Image Size"
 msgstr ""
 
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow-settings-other.php:16
 #: jsj-gallery-slideshow-settings-other.php:16
 msgid "Set the default WordPress thumbnail image size, in which all thumbnails should be output (Can be overwritten individually)."
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:104
+#: jsj-gallery-slideshow.php:104
+msgid "JSJ Gallery Slideshow"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:193
+#: jsj-gallery-slideshow.php:193
+msgid "JSJ Gallery Slideshow Options"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:219
+#: jsj-gallery-slideshow.php:219
+msgid "Your settings have been reverted back to their default."
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:230
+#: jsj-gallery-slideshow.php:230
+msgid "Simple"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:231
+#: jsj-gallery-slideshow.php:231
+msgid "Advanced"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:241
+#: jsj-gallery-slideshow.php:241
+msgid "Gallery Options"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:248
+#: jsj-gallery-slideshow.php:248
+msgid "Advanced Gallery Options"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:252
+#: jsj-gallery-slideshow.php:252
+msgid "Loading Options"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:259
+#: jsj-gallery-slideshow.php:259
+msgid "If pleased with your settings, go ahead and save them!"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:265
+#: jsj-gallery-slideshow.php:265
+msgid "Reset all plugin settings to their defaults. This will delete all your current settings."
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:268
+#: jsj-gallery-slideshow.php:268
+msgid "Reset Plugin Settings"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:271
+#: jsj-gallery-slideshow.php:271
+msgid "Resources"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:273
+#: jsj-gallery-slideshow.php:273
+msgid "%sRequest A Feature%s"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:277
+#: jsj-gallery-slideshow.php:277
+msgid "%sReview This Plugin%s"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:278
+#: jsj-gallery-slideshow.php:278
+msgid "%sVisit Plugin Website%s"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:279
+#: jsj-gallery-slideshow.php:279
+msgid "%sSee All JSJ Plugins%s"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:281
+#: jsj-gallery-slideshow.php:281
+msgid "Credit"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:283
+#: jsj-gallery-slideshow.php:283
+msgid "Plugin by  %s"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:284
+#: jsj-gallery-slideshow.php:284
+msgid "Built with %sJquery Cycle%s"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:285
+#: jsj-gallery-slideshow.php:285
+msgid "Inspired by %sCargo%s"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:443
+#: jsj-gallery-slideshow.php:443
+msgid "Previous"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:444
+#: jsj-gallery-slideshow.php:444
+msgid "Next Image"
+msgstr ""
+
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:445
+#: jsj-gallery-slideshow.php:445
+msgctxt "1 of 10"
+msgid "of"
 msgstr ""
 #. Plugin Name of the plugin/theme
 msgid "JSJ Gallery Slideshow"

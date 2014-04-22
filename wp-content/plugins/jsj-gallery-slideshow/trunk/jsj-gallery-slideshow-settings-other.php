@@ -16,7 +16,7 @@ $jsj_gallery_slideshow_options_other = array(
 		'descp' => __( 'Set the default WordPress thumbnail image size, in which all thumbnails should be output (Can be overwritten individually).', 'jsj-gallery-slideshow' ),
 		'type' => 'select',
 		'tab' => 'advanced',
-		'parameters' => get_intermediate_image_sizes(),
+		'parameters' => array_merge(get_intermediate_image_sizes(), array('full')),
 		'default' => 'full'
 	)
 );

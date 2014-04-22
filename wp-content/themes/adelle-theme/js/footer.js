@@ -1,5 +1,6 @@
 ;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 // Jquery is Defined globaly... all because of Foundation
+var Global = require('../classes/global.js');
 
 (function($){
 
@@ -28,12 +29,10 @@
 		}
 	});
 
-	// Get Dependencies
-	var Global = require('../classes/global.js');
-
 	// On Document Ready, Get All Posts through an AJAX Request
 	$(document).ready(function(){
-		
+		console.log('Document Ready');
+		console.log(MyAjax.ajaxurl);
 		// Get Posts
         $.post(	
 		    MyAjax.ajaxurl,
@@ -139,13 +138,17 @@ var Router = {};
     Router = Backbone.Router.extend({
         routes : {
             "project/:slug/" : "project",
-            ".*"   : "notFound",
+            "adelle-lin/"   : "page",
+            "about/"   : "page",
             '*path': 'home', // Our last resort, go home
         },
         initialize: function( home_view ){
             this.home_view = home_view; 
         },
         project : function(slug){
+            this.home_view.openModal( slug );
+        },
+        page: function(slug){
             this.home_view.openModal( slug );
         },
         home : function() {
@@ -269,7 +272,6 @@ var Views = {};
                     .find('.close-reveal-modal').click(function(){
                         self.global.router.navigate( '/', true);
                     });
-                console.log( 'JSJ G S' );
                 // Init Slideshow
                 if( typeof createJSJGallerySlideshow !== 'undefined'){
                     createJSJGallerySlideshow(); 
@@ -788,7 +790,7 @@ var MainTitleHandler;
 
 			__self.color = D3.scale.category10();
 			__self.index = 0; 
-			__self.$main_page_title = $("#main-page-title");
+			__self.$main_page_title = $("#main-page-title-link");
 
 			__self.title_length = __self.breakIntoSpans(); 
 
@@ -1305,7 +1307,6 @@ var Video;
 	     * @return 
 	     */
 	    self.init = function(){
-
 	        __self.$canvas = $("#" + __self.canvas_id);
 	        __self.canvas  = __self.$canvas.get(0);
 	        __self.$canvas
@@ -1403,7 +1404,6 @@ var Video;
 	     * @return this
 	     */
 	   	self.init_canvas = function(){
-
 	        // Get Canvas Element
 	        __self.ctx = __self.canvas.getContext('2d');
 	        __self.canvas.width  = __self.canvas_width;

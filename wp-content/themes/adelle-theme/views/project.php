@@ -5,6 +5,7 @@
 		public $template_name = "single-project";
 
 		public function __construct( $post_id_or_object ){
+			
 			parent::__construct( $post_id_or_object );
 
 			// Get Vimeo IDs
@@ -42,8 +43,10 @@
 		private function get_fallback_images(){
 			$fallback_images = get_field( 'video_stills', $this->ID );
 			$images_array = array(); 
-			foreach( $fallback_images as $image ){
-				array_push( $images_array, new Image( false, $image['id'] ) );
+			if($fallback_images && count($fallback_images) > 0){
+				foreach( $fallback_images as $image ){
+					array_push( $images_array, new Image( false, $image['id'] ) );
+				}
 			}
 			return $images_array; 
 		}
@@ -55,7 +58,18 @@
 		 */
 		private function get_related_projects(){
 			$related_projects = array();
-			$all_project_relationships = get_field('project_to_project_relationship', 'option');
+			$all_project_relationships_unfiletered = get_field('project_to_project_relationship', 'option');
+			$all_project_relationships = array(); 
+			// Filter out project that aren't published
+			foreach( $all_project_relationships_unfiletered as $relationship ){
+				if(
+					get_post($relationship['first_project']->ID)->post_status === 'publish' &&
+					get_post($relationship['second_project']->ID)->post_status === 'publish'
+				){
+					array_push($all_project_relationships, $relationship); 
+				}
+			}
+			// Push projects
 			foreach( $all_project_relationships as $relationship ){
 				if( $relationship['first_project']->ID === $this->ID && $relationship['second_project']->ID !== $this->ID ){
 					array_push($related_projects, $relationship['second_project']->ID);

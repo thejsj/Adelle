@@ -21,7 +21,7 @@
 	<?php wp_head(); ?>
 </head>
 <body>
-	<h1 id="main-page-title"><a href="<?php bloginfo('url'); ?>"><?php bloginfo('name'); ?></a></h1>
+	<h1 id="main-page-title"><a href="<?php echo get_permalink(460); ?>" id="main-page-title-link"><?php bloginfo('name'); ?></a></h1>
 	<header id="header">
 		<!-- Main Menu -->
 		<nav>

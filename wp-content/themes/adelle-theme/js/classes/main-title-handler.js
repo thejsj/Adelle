@@ -12,7 +12,7 @@ var MainTitleHandler;
 
 			__self.color = D3.scale.category10();
 			__self.index = 0; 
-			__self.$main_page_title = $("#main-page-title");
+			__self.$main_page_title = $("#main-page-title-link");
 
 			__self.title_length = __self.breakIntoSpans(); 
 
