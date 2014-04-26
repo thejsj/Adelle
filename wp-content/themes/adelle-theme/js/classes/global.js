@@ -20,7 +20,7 @@ var Global = {};
 	 * @param {} callback
 	 * @return self
 	 */
-	Global = function( projects_array ){
+	Global = function( projects_array, pages_array ){
 
 		var self = {}, __self = {};
 
@@ -44,6 +44,7 @@ var Global = {};
 	        self.$body              = $('body');
 	        self.$videos_container  = $("#videos-container");
 	        self.$main_content      = $("#main-content");
+	        self.$menu_items        = self.$body.find('.menu-item a');
 	        self.main_title_handler = new MainTitleHandler();
 
 	        // Manipulate DOM
@@ -52,12 +53,17 @@ var Global = {};
 	        // Bind Scrolling
 	        __self.bindScrolling(); 
 
+	        // Bind Menu Item Links To Backbone
+	        __self.bindMenuItemLinks(); 
+
 			// Bind Debugging and Pausing
 			__self.bindDebugging(); 
 
-			// Init Projects
+			// Init Projects and Pages
 			__self.projects = new Models.ProjectCollection( projects_array );
+			__self.pages = new Models.PageCollection( pages_array );
 			__self.projects.assignColor(); 
+			__self.pages.assignColor(); 
 
 			// Init Cookie Handler (Pass all IDs)
 			self.cookieHandler = new CookieHandler( 
@@ -72,7 +78,7 @@ var Global = {};
 			self.router = {}; 
 
 			// Create Home View
-			__self.home_view = new Views.ProjectHome( __self.projects, self ); 
+			__self.home_view = new Views.ProjectHome( __self.projects, __self.pages, self ); 
 
 			// Init Router
 			self.router = new Router( __self.home_view );
@@ -145,21 +151,20 @@ var Global = {};
 			// Bind Scrolling
 	        __self.dragging = false;
 
-	        $("body").on("touchmove", function(){
-				__self.dragging = true;
-			});
-
-			$("body").on("touchend", function(event){
-				if( __self.dragging ){
-					event.preventDefault();
-					event.stopPropagation(); 
-	          		return false;
-				}
-			});
-
-			$("body").on("touchstart", function(){
-				__self.dragging = false;
-			});
+	        self.$body
+		        .on("touchmove", function(){
+					__self.dragging = true;
+				})
+				.on("touchend", function(event){
+					if( __self.dragging ){
+						event.preventDefault();
+						event.stopPropagation(); 
+		          		return false;
+					}
+				})
+				.on("touchstart", function(){
+					__self.dragging = false;
+				});
 			return self; 
 		}
 
@@ -191,6 +196,17 @@ var Global = {};
 			});
 			return self; 
 		};
+
+		/**
+		 * Bind all links with a .menu-item class to Backbone.js
+		 *
+		 * @return this
+		 */
+		__self.bindMenuItemLinks = function(){
+			self.$menu_items.click(function(){
+				self.router.navigate( this.pathname , {trigger: true });
+			});
+		}
 
 		/**
 		 * Go through a list of projects and get their ids

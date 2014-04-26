@@ -18,9 +18,10 @@ var Views = {};
         current_model: null, 
         current_video: null,
         // Template used for this (in index.html). Parsed by undersocre
-        initialize: function( project_collection, global ){
+        initialize: function( project_collection, pages_collection, global ){
             // Tie this view to the allMovies collection
-            this.coll = project_collection;
+            this._projects  = project_collection;
+            this._pages = pages_collection;
             // Keep a copy of the global object
             this.global = global;
             // Render on init
@@ -29,18 +30,25 @@ var Views = {};
         render: function(){
             // Empty the container (Pure and simple Jquery here)
             this.$el.html('');
-            this.videos = {};
+            this.projects = {};
+            this.pages = {};
             // Render (with underscore) and append (with Jquery) each item in this collction
-            this.coll.each(function(project, i){
+            this._projects.each(function(project, i){
                 // Pass variables to the template throuth the 'movie' variable
-                this.videos[ project.get('ID') ] = ( new Views.SingleProjectVideo( project, this ) );
+                this.projects[ project.get('ID') ] = ( new Views.SingleProject( project, this ) );
             }, this);
+
+            this._pages.each(function(page, i){
+                // Pass variables to the template throuth the 'movie' variable
+                this.pages[ page.get('ID') ] = ( new Views.SinglePageModal( page, this ) );
+            }, this);
+
             // Get all Widths
             if( !this.global.isOrientationHorizontal() ){
                 // Get Width
                 var total_width = 0; 
-                for( i in this.videos ){
-                    total_width += this.videos[i].getWidth(); 
+                for( i in this.projects ){
+                    total_width += this.projects[i].getWidth(); 
                 }
                 this.global.setTotalWidth( total_width );
             }
@@ -74,31 +82,65 @@ var Views = {};
             }
             re_init = setTimeout(function(){
                 // Start
-                self.videos = [];
+                self.projects = [];
                 self.render(); 
             }, 500);
         },
-        openModal: function( slug ){
-
-            // Freeze Container
-            this.global.freezeContainer(); 
-
-            this.current_model = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' })
+        openPage: function( slug ){
+            console.log('Open Page - slug');
+            console.log(slug);
+            this.current_model = this._pages.findWhere({ 'relational_permalink': slug + '/' })
 
             // Set Current Video
-            this.current_video = this.videos[ this.current_model.get('ID') ];
+            this.current_view = this.pages[ this.current_model.get('ID') ];
+
+            this.openModal( this.current_view, this.current_view.$el );
+
+        },
+        closePage: function( slug ){
+            console.log('Close Page - slug');
+            console.log(slug);
+            if( this.current_model !== null && this.current_view !== null ){
+                var $current_modal = this.current_view.$el; 
+                this.closeModal( $current_modal );
+            }
+        },
+        openProject: function( slug ){
+
+            this.current_model = this._projects.findWhere({ 'relational_permalink': 'project/' + slug + '/' })
+
+            // Set Current Video
+            this.current_view = this.projects[ this.current_model.get('ID') ];
 
             // Set As Viewed
-            this.current_model.set('viewed', true);
-            this.current_model.set('currently_viewing', true);
-            this.current_video.setAsViewed(); 
+            this.current_view.setAsViewed();
 
             // Set Related Videos as available
             this.setRelatedAsAvailable( this.current_model.get('ID') );
 
+            this.openModal( this.current_view.modal );
+        },
+        closeProject: function( ){  
+            if( this.current_model !== null && this.current_view !== null ){
+                // Remove Vimdeo Video
+                this.current_view.modal.removeVideo();          
+                var $current_modal = this.current_view.modal.$el; 
+                this.closeModal( $current_modal );
+            }
+        },
+        openModal: function( modal_view ) {
+            // Freeze Container
+            this.global.freezeContainer(); 
+
+            // Set As Viewed
+            this.current_model.set('viewed', true);
+            this.current_model.set('currently_viewing', true);
+
             // Open As Model
-            this.current_video.modal.render(); 
-            var $current_modal = this.current_video.modal.$el; 
+            modal_view.render(); 
+
+            var $current_modal = modal_view.$el; 
+            
             (function(self){
                 $current_modal
                     .foundation('reveal', 'open')
@@ -109,19 +151,14 @@ var Views = {};
                 if( typeof createJSJGallerySlideshow !== 'undefined'){
                     createJSJGallerySlideshow(); 
                 }
-
             })(this);
 
             // Update Global
             this.global.update(); 
         },
-        closeModal: function( ){           
-            if( this.current_model !== null && this.current_video !== null ){
+        closeModal: function( $current_modal ){
+            if( this.current_model !== null && this.current_view !== null ){
 
-                // Remove Vimdeo Video
-                this.current_video.modal.removeVideo(); 
-                // Close Modal
-                var $current_modal = this.current_video.modal.$el; 
                 if( $current_modal ){
                     $current_modal.foundation('reveal', 'close');
                 }
@@ -129,7 +166,7 @@ var Views = {};
                 // Unset Variables
                 this.current_model.set('currently_viewing', false);
                 this.current_model = null;
-                this.current_video = null; 
+                this.current_view = null; 
 
                 // UnFreeze Container
                 this.global.unFreezeContainer(); 
@@ -140,9 +177,9 @@ var Views = {};
         },
         registerLoadedProject: function( ID ){
             // Set this one
-            this.coll.findWhere({ 'ID' : ID }).set('video_loaded', true);
+            this._projects.findWhere({ 'ID' : ID }).set('video_loaded', true);
             // See if all are set
-            if( this.coll.where({ 'video_loaded' : false }).length == 0){
+            if( this._projects.where({ 'video_loaded' : false }).length == 0){
                 this.initVideos();
             }
         },
@@ -155,7 +192,7 @@ var Views = {};
             var time = {};
             this.$el.addClass('visible');
             var ii = 0; 
-            $.each(this.videos, function(i,video){
+            $.each(this.projects, function(i,video){
                 time[ ii ] = ii * 700;
                 setTimeout(function(){
                     video.initCanvas(); 
@@ -165,7 +202,7 @@ var Views = {};
         },
         setRelatedAsAvailable: function( current_model_id ){
 
-            var newly_available = _.filter( this.coll.models , function(model){
+            var newly_available = _.filter( this._projects.models , function(model){
                 if( typeof model !== 'undefined' ){
                     return _.indexOf(model.get('related_projects'), current_model_id) > -1; 
                 }
@@ -174,7 +211,7 @@ var Views = {};
                 }
             }); 
 
-            var this_model = this.coll.where( { ID : current_model_id } )[0];
+            var this_model = this._projects.where( { ID : current_model_id } )[0];
             var that = this; 
             _.each(newly_available, function(model){
                 // Set as Available
@@ -185,8 +222,27 @@ var Views = {};
         },
     });
 
+    Views.SinglePageModal = Backbone.View.extend({
+        template: Templates['single-project'],
+        initialize: function( page, parent ){
+            this.model = page;   
+            this.parent = parent;
+        },
+        render: function(i){
+            this.el = Mustache.render( this.template, this.model.toJSON() ); 
+            this.parent.$el.append( this.el );
+            this.$el = $("#modal-" + this.model.get('ID'));
+            this.$el
+                .css('border-color', this.model.get('color'))
+                .find('.change-color').css('color', this.model.get('color'));
+            this.$el
+                .find('.change-bg-color').css('background-color', this.model.get('color'));
+            return this; 
+        }
+    })
+
     // Single Project In Home Page
-    Views.SingleProjectVideo = Backbone.View.extend({
+    Views.SingleProject = Backbone.View.extend({
         template: Templates['single-project-home'],
         initialize: function( project, parent ){
             this.viewed = false; 
@@ -229,24 +285,9 @@ var Views = {};
         }
     });
 
-    Views.SingleProjectModal = Backbone.View.extend({
+    Views.SingleProjectModal = Views.SinglePageModal.extend({
         template: Templates['single-project'],
         video_template: Templates['vimeo-video'],
-        initialize: function( project, parent ){
-            this.model = project;   
-            this.parent = parent;
-        },
-        render: function(i){
-            this.el = Mustache.render( this.template, this.model.toJSON() ); 
-            this.parent.$el.append( this.el );
-            this.$el = $("#modal-" + this.model.get('ID'));
-            this.$el
-                .css('border-color', this.model.get('color'))
-                .find('.change-color').css('color', this.model.get('color'));
-            this.$el
-                .find('.change-bg-color').css('background-color', this.model.get('color'));
-            return this; 
-        },
         renderVideo: function(){
             this.$el
                 .find('.main-video')
@@ -257,7 +298,7 @@ var Views = {};
                 .find('.main-video')
                 .html( '' );
         },
-    })
+    });
 
 
 })( jQuery );

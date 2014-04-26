@@ -31,7 +31,6 @@ var Global = require('../classes/global.js');
 	// On Document Ready, Get All Posts through an AJAX Request
 	$(document).ready(function(){
 		console.log('Document Ready');
-		console.log(MyAjax.ajaxurl);
 		// Get Posts
         $.post(	
 		    MyAjax.ajaxurl,
@@ -41,7 +40,7 @@ var Global = require('../classes/global.js');
 			function( data ) {
 				console.log( data );
 				// With the data response, create the global object
-				var global = new Global( data.posts ); 
+				var global = new Global( data.posts, data.pages ); 
 			}
 		);
     });

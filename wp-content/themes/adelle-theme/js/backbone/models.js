@@ -9,7 +9,7 @@ var Models = {};
 
 (function($){
 
-    Models.Project = Backbone.Model.extend({
+    Models.Post = Backbone.Model.extend({
         defaults: {
             ID: null, 
             comment_count: "",
@@ -39,16 +39,39 @@ var Models = {};
             post_type: "",
             template_name: "",
             to_ping: "",
-            video_files: [],
-            vimeo_id: "",
-            video_loaded: false,
-            available: false,
             viewed: false,
             currently_viewing: false,
         },
     });
 
-    Models.ProjectCollection = Backbone.Collection.extend({
+    Models.Page = Models.Post.extend({
+        defaults: $.extend({}, this.defaults, {
+            available: true,
+        })
+    });
+
+    Models.Project = Models.Post.extend({
+        defaults: $.extend({}, this.defaults, {
+            video_files: [],
+            vimeo_id: "",
+            video_loaded: false,
+            available: false,
+        })
+    });
+
+    Models.PostCollection = Backbone.Collection.extend({
+        model: Models.Page,
+        assignColor: function( ){
+            var color = D3.scale.category10(); 
+            this.forEach(function(project, i){
+                project.set('color', color(i) );
+            })
+        }
+    });
+
+    Models.PageCollection = Models.PostCollection;
+
+    Models.ProjectCollection = Models.PostCollection.extend({
         model: Models.Project,
         filterAvailable: function( available_projects_ids ){
             // Get Available Projects
@@ -60,12 +83,6 @@ var Models = {};
                 value.set('available', true);
             });
         },
-        assignColor: function( ){
-            var color = D3.scale.category10(); 
-            this.forEach(function(project, i){
-                project.set('color', color(i) );
-            })
-        }
     });
 
 })(jQuery);

@@ -5853,7 +5853,7 @@ h1#main-page-title {
   height: auto;
   width: 90%;
   overflow: visible;
-  z-index: 100;
+  z-index: 50;
   cursor: pointer;
   font-size: 3em;
   -webkit-transition: color 5s;
@@ -5897,7 +5897,8 @@ h1#main-page-title {
         border-color: white; }
 
 #header {
-  position: fixed; }
+  position: fixed;
+  z-index: 50; }
   #header ul.menu {
     list-style-type: none; }
     #header ul.menu li {

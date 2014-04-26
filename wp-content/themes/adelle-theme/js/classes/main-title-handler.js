@@ -9,7 +9,6 @@ var MainTitleHandler;
 		var self = {}, __self = {}; 
 
 		self.init = function(){
-
 			__self.color = D3.scale.category10();
 			__self.index = 0; 
 			__self.$main_page_title = $("#main-page-title-link");
@@ -18,17 +17,22 @@ var MainTitleHandler;
 
 			__self.$main_page_title
 				.addClass('spanned')
-				.hover( __self.hoverOn, __self.hoverOff );
+				.hover( __self.onHover, __self.offHover );
 		}
 
-		__self.hoverOn = function(){
-			if( __self.$main_page_title.hasClass('active') ){
+		__self.onHover = function(){
+			if( __self.$main_page_title.hasClass('spanned') ){
 				// Animate
 				__self.animation_interval = setInterval(function(){
 					// Animate Letters
 					__self.$main_page_title.find(".letter").each(function(i){
+						var current_color = __self.color( (i + __self.index) % __self.title_length ); 
+						if(i === 0){
+							__self.$main_page_title
+								.css('border-bottom-color', current_color);
+						}
 						$(this)
-							.css('color', __self.color( (i + __self.index) % __self.title_length ) );
+							.css('color', current_color );
 					})
 					// Update Index
 					__self.index += 1
@@ -40,12 +44,14 @@ var MainTitleHandler;
 			}
 		}
 
-		__self.hoverOff = function(){
+		__self.offHover = function(){
 			clearInterval( __self.animation_interval );
-			__self.$main_page_title.find(".letter").each(function(i){
-				$(this)
-					.css('color', "#fff" );
-			})
+			__self.$main_page_title
+				.css('border-bottom-color', "#fff")
+				.find(".letter").each(function(i){
+					$(this)
+						.css('color', "#fff" );
+				})
 		}
 
 		__self.breakIntoSpans = function(){

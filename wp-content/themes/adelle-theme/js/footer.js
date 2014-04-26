@@ -32,7 +32,6 @@ var Global = require('../classes/global.js');
 	// On Document Ready, Get All Posts through an AJAX Request
 	$(document).ready(function(){
 		console.log('Document Ready');
-		console.log(MyAjax.ajaxurl);
 		// Get Posts
         $.post(	
 		    MyAjax.ajaxurl,
@@ -42,7 +41,7 @@ var Global = require('../classes/global.js');
 			function( data ) {
 				console.log( data );
 				// With the data response, create the global object
-				var global = new Global( data.posts ); 
+				var global = new Global( data.posts, data.pages ); 
 			}
 		);
     });
@@ -65,7 +64,7 @@ var Models = {};
 
 (function($){
 
-    Models.Project = Backbone.Model.extend({
+    Models.Post = Backbone.Model.extend({
         defaults: {
             ID: null, 
             comment_count: "",
@@ -95,16 +94,39 @@ var Models = {};
             post_type: "",
             template_name: "",
             to_ping: "",
-            video_files: [],
-            vimeo_id: "",
-            video_loaded: false,
-            available: false,
             viewed: false,
             currently_viewing: false,
         },
     });
 
-    Models.ProjectCollection = Backbone.Collection.extend({
+    Models.Page = Models.Post.extend({
+        defaults: $.extend({}, this.defaults, {
+            available: true,
+        })
+    });
+
+    Models.Project = Models.Post.extend({
+        defaults: $.extend({}, this.defaults, {
+            video_files: [],
+            vimeo_id: "",
+            video_loaded: false,
+            available: false,
+        })
+    });
+
+    Models.PostCollection = Backbone.Collection.extend({
+        model: Models.Page,
+        assignColor: function( ){
+            var color = D3.scale.category10(); 
+            this.forEach(function(project, i){
+                project.set('color', color(i) );
+            })
+        }
+    });
+
+    Models.PageCollection = Models.PostCollection;
+
+    Models.ProjectCollection = Models.PostCollection.extend({
         model: Models.Project,
         filterAvailable: function( available_projects_ids ){
             // Get Available Projects
@@ -116,12 +138,6 @@ var Models = {};
                 value.set('available', true);
             });
         },
-        assignColor: function( ){
-            var color = D3.scale.category10(); 
-            this.forEach(function(project, i){
-                project.set('color', color(i) );
-            })
-        }
     });
 
 })(jQuery);
@@ -136,29 +152,45 @@ var Router = {};
 (function($){
 
     Router = Backbone.Router.extend({
+        current_view: null,
         routes : {
             "project/:slug/" : "project",
-            "adelle-lin/"   : "page",
-            "about/"   : "page",
+            ":slug/"   : "page",
             '*path': 'home', // Our last resort, go home
         },
         initialize: function( home_view ){
             this.home_view = home_view; 
+            this.current_view = 'home';
         },
         project : function(slug){
-            this.home_view.openModal( slug );
+            console.log(' + R + open Project : ' + slug);
+            this.closeModals(); 
+            this.home_view.openProject( slug );
+            this.current_view = 'project';
         },
         page: function(slug){
-            this.home_view.openModal( slug );
+            console.log(' + R + open Page : ' + slug);
+            this.closeModals(); 
+            this.home_view.openPage( slug );
+            this.current_view = 'page';
         },
         home : function() {
-            console.log( 'Home' );
-            this.home_view.closeModal();
+            console.log(' + R + Home ');
+            this.closeModals(); 
+            this.current_view = 'home';
         },
         notFound : function(){
-            this.home_view.closeModal();
-            console.log( 'Not Found' );
+            console.log(' + R + Not Found : ' + slug);
+            this.closeModals(); 
         },
+        closeModals : function(){
+            if(this.current_view === 'page'){
+                this.home_view.closePage();
+            }
+            if(this.current_view === 'project'){
+                this.home_view.closeProject();
+            }
+        }
     });
 
 })(jQuery);
@@ -185,9 +217,10 @@ var Views = {};
         current_model: null, 
         current_video: null,
         // Template used for this (in index.html). Parsed by undersocre
-        initialize: function( project_collection, global ){
+        initialize: function( project_collection, pages_collection, global ){
             // Tie this view to the allMovies collection
-            this.coll = project_collection;
+            this._projects  = project_collection;
+            this._pages = pages_collection;
             // Keep a copy of the global object
             this.global = global;
             // Render on init
@@ -196,18 +229,25 @@ var Views = {};
         render: function(){
             // Empty the container (Pure and simple Jquery here)
             this.$el.html('');
-            this.videos = {};
+            this.projects = {};
+            this.pages = {};
             // Render (with underscore) and append (with Jquery) each item in this collction
-            this.coll.each(function(project, i){
+            this._projects.each(function(project, i){
                 // Pass variables to the template throuth the 'movie' variable
-                this.videos[ project.get('ID') ] = ( new Views.SingleProjectVideo( project, this ) );
+                this.projects[ project.get('ID') ] = ( new Views.SingleProject( project, this ) );
             }, this);
+
+            this._pages.each(function(page, i){
+                // Pass variables to the template throuth the 'movie' variable
+                this.pages[ page.get('ID') ] = ( new Views.SinglePageModal( page, this ) );
+            }, this);
+
             // Get all Widths
             if( !this.global.isOrientationHorizontal() ){
                 // Get Width
                 var total_width = 0; 
-                for( i in this.videos ){
-                    total_width += this.videos[i].getWidth(); 
+                for( i in this.projects ){
+                    total_width += this.projects[i].getWidth(); 
                 }
                 this.global.setTotalWidth( total_width );
             }
@@ -241,31 +281,65 @@ var Views = {};
             }
             re_init = setTimeout(function(){
                 // Start
-                self.videos = [];
+                self.projects = [];
                 self.render(); 
             }, 500);
         },
-        openModal: function( slug ){
-
-            // Freeze Container
-            this.global.freezeContainer(); 
-
-            this.current_model = this.coll.findWhere({ 'relational_permalink': 'project/' + slug + '/' })
+        openPage: function( slug ){
+            console.log('Open Page - slug');
+            console.log(slug);
+            this.current_model = this._pages.findWhere({ 'relational_permalink': slug + '/' })
 
             // Set Current Video
-            this.current_video = this.videos[ this.current_model.get('ID') ];
+            this.current_view = this.pages[ this.current_model.get('ID') ];
+
+            this.openModal( this.current_view, this.current_view.$el );
+
+        },
+        closePage: function( slug ){
+            console.log('Close Page - slug');
+            console.log(slug);
+            if( this.current_model !== null && this.current_view !== null ){
+                var $current_modal = this.current_view.$el; 
+                this.closeModal( $current_modal );
+            }
+        },
+        openProject: function( slug ){
+
+            this.current_model = this._projects.findWhere({ 'relational_permalink': 'project/' + slug + '/' })
+
+            // Set Current Video
+            this.current_view = this.projects[ this.current_model.get('ID') ];
 
             // Set As Viewed
-            this.current_model.set('viewed', true);
-            this.current_model.set('currently_viewing', true);
-            this.current_video.setAsViewed(); 
+            this.current_view.setAsViewed();
 
             // Set Related Videos as available
             this.setRelatedAsAvailable( this.current_model.get('ID') );
 
+            this.openModal( this.current_view.modal );
+        },
+        closeProject: function( ){  
+            if( this.current_model !== null && this.current_view !== null ){
+                // Remove Vimdeo Video
+                this.current_view.modal.removeVideo();          
+                var $current_modal = this.current_view.modal.$el; 
+                this.closeModal( $current_modal );
+            }
+        },
+        openModal: function( modal_view ) {
+            // Freeze Container
+            this.global.freezeContainer(); 
+
+            // Set As Viewed
+            this.current_model.set('viewed', true);
+            this.current_model.set('currently_viewing', true);
+
             // Open As Model
-            this.current_video.modal.render(); 
-            var $current_modal = this.current_video.modal.$el; 
+            modal_view.render(); 
+
+            var $current_modal = modal_view.$el; 
+            
             (function(self){
                 $current_modal
                     .foundation('reveal', 'open')
@@ -276,19 +350,14 @@ var Views = {};
                 if( typeof createJSJGallerySlideshow !== 'undefined'){
                     createJSJGallerySlideshow(); 
                 }
-
             })(this);
 
             // Update Global
             this.global.update(); 
         },
-        closeModal: function( ){           
-            if( this.current_model !== null && this.current_video !== null ){
+        closeModal: function( $current_modal ){
+            if( this.current_model !== null && this.current_view !== null ){
 
-                // Remove Vimdeo Video
-                this.current_video.modal.removeVideo(); 
-                // Close Modal
-                var $current_modal = this.current_video.modal.$el; 
                 if( $current_modal ){
                     $current_modal.foundation('reveal', 'close');
                 }
@@ -296,7 +365,7 @@ var Views = {};
                 // Unset Variables
                 this.current_model.set('currently_viewing', false);
                 this.current_model = null;
-                this.current_video = null; 
+                this.current_view = null; 
 
                 // UnFreeze Container
                 this.global.unFreezeContainer(); 
@@ -307,9 +376,9 @@ var Views = {};
         },
         registerLoadedProject: function( ID ){
             // Set this one
-            this.coll.findWhere({ 'ID' : ID }).set('video_loaded', true);
+            this._projects.findWhere({ 'ID' : ID }).set('video_loaded', true);
             // See if all are set
-            if( this.coll.where({ 'video_loaded' : false }).length == 0){
+            if( this._projects.where({ 'video_loaded' : false }).length == 0){
                 this.initVideos();
             }
         },
@@ -322,7 +391,7 @@ var Views = {};
             var time = {};
             this.$el.addClass('visible');
             var ii = 0; 
-            $.each(this.videos, function(i,video){
+            $.each(this.projects, function(i,video){
                 time[ ii ] = ii * 700;
                 setTimeout(function(){
                     video.initCanvas(); 
@@ -332,7 +401,7 @@ var Views = {};
         },
         setRelatedAsAvailable: function( current_model_id ){
 
-            var newly_available = _.filter( this.coll.models , function(model){
+            var newly_available = _.filter( this._projects.models , function(model){
                 if( typeof model !== 'undefined' ){
                     return _.indexOf(model.get('related_projects'), current_model_id) > -1; 
                 }
@@ -341,7 +410,7 @@ var Views = {};
                 }
             }); 
 
-            var this_model = this.coll.where( { ID : current_model_id } )[0];
+            var this_model = this._projects.where( { ID : current_model_id } )[0];
             var that = this; 
             _.each(newly_available, function(model){
                 // Set as Available
@@ -352,8 +421,27 @@ var Views = {};
         },
     });
 
+    Views.SinglePageModal = Backbone.View.extend({
+        template: Templates['single-project'],
+        initialize: function( page, parent ){
+            this.model = page;   
+            this.parent = parent;
+        },
+        render: function(i){
+            this.el = Mustache.render( this.template, this.model.toJSON() ); 
+            this.parent.$el.append( this.el );
+            this.$el = $("#modal-" + this.model.get('ID'));
+            this.$el
+                .css('border-color', this.model.get('color'))
+                .find('.change-color').css('color', this.model.get('color'));
+            this.$el
+                .find('.change-bg-color').css('background-color', this.model.get('color'));
+            return this; 
+        }
+    })
+
     // Single Project In Home Page
-    Views.SingleProjectVideo = Backbone.View.extend({
+    Views.SingleProject = Backbone.View.extend({
         template: Templates['single-project-home'],
         initialize: function( project, parent ){
             this.viewed = false; 
@@ -396,24 +484,9 @@ var Views = {};
         }
     });
 
-    Views.SingleProjectModal = Backbone.View.extend({
+    Views.SingleProjectModal = Views.SinglePageModal.extend({
         template: Templates['single-project'],
         video_template: Templates['vimeo-video'],
-        initialize: function( project, parent ){
-            this.model = project;   
-            this.parent = parent;
-        },
-        render: function(i){
-            this.el = Mustache.render( this.template, this.model.toJSON() ); 
-            this.parent.$el.append( this.el );
-            this.$el = $("#modal-" + this.model.get('ID'));
-            this.$el
-                .css('border-color', this.model.get('color'))
-                .find('.change-color').css('color', this.model.get('color'));
-            this.$el
-                .find('.change-bg-color').css('background-color', this.model.get('color'));
-            return this; 
-        },
         renderVideo: function(){
             this.$el
                 .find('.main-video')
@@ -424,7 +497,7 @@ var Views = {};
                 .find('.main-video')
                 .html( '' );
         },
-    })
+    });
 
 
 })( jQuery );
@@ -525,7 +598,7 @@ var Global = {};
 	 * @param {} callback
 	 * @return self
 	 */
-	Global = function( projects_array ){
+	Global = function( projects_array, pages_array ){
 
 		var self = {}, __self = {};
 
@@ -549,6 +622,7 @@ var Global = {};
 	        self.$body              = $('body');
 	        self.$videos_container  = $("#videos-container");
 	        self.$main_content      = $("#main-content");
+	        self.$menu_items        = self.$body.find('.menu-item a');
 	        self.main_title_handler = new MainTitleHandler();
 
 	        // Manipulate DOM
@@ -557,12 +631,17 @@ var Global = {};
 	        // Bind Scrolling
 	        __self.bindScrolling(); 
 
+	        // Bind Menu Item Links To Backbone
+	        __self.bindMenuItemLinks(); 
+
 			// Bind Debugging and Pausing
 			__self.bindDebugging(); 
 
-			// Init Projects
+			// Init Projects and Pages
 			__self.projects = new Models.ProjectCollection( projects_array );
+			__self.pages = new Models.PageCollection( pages_array );
 			__self.projects.assignColor(); 
+			__self.pages.assignColor(); 
 
 			// Init Cookie Handler (Pass all IDs)
 			self.cookieHandler = new CookieHandler( 
@@ -577,7 +656,7 @@ var Global = {};
 			self.router = {}; 
 
 			// Create Home View
-			__self.home_view = new Views.ProjectHome( __self.projects, self ); 
+			__self.home_view = new Views.ProjectHome( __self.projects, __self.pages, self ); 
 
 			// Init Router
 			self.router = new Router( __self.home_view );
@@ -650,21 +729,20 @@ var Global = {};
 			// Bind Scrolling
 	        __self.dragging = false;
 
-	        $("body").on("touchmove", function(){
-				__self.dragging = true;
-			});
-
-			$("body").on("touchend", function(event){
-				if( __self.dragging ){
-					event.preventDefault();
-					event.stopPropagation(); 
-	          		return false;
-				}
-			});
-
-			$("body").on("touchstart", function(){
-				__self.dragging = false;
-			});
+	        self.$body
+		        .on("touchmove", function(){
+					__self.dragging = true;
+				})
+				.on("touchend", function(event){
+					if( __self.dragging ){
+						event.preventDefault();
+						event.stopPropagation(); 
+		          		return false;
+					}
+				})
+				.on("touchstart", function(){
+					__self.dragging = false;
+				});
 			return self; 
 		}
 
@@ -696,6 +774,17 @@ var Global = {};
 			});
 			return self; 
 		};
+
+		/**
+		 * Bind all links with a .menu-item class to Backbone.js
+		 *
+		 * @return this
+		 */
+		__self.bindMenuItemLinks = function(){
+			self.$menu_items.click(function(){
+				self.router.navigate( this.pathname , {trigger: true });
+			});
+		}
 
 		/**
 		 * Go through a list of projects and get their ids
@@ -787,7 +876,6 @@ var MainTitleHandler;
 		var self = {}, __self = {}; 
 
 		self.init = function(){
-
 			__self.color = D3.scale.category10();
 			__self.index = 0; 
 			__self.$main_page_title = $("#main-page-title-link");
@@ -796,17 +884,22 @@ var MainTitleHandler;
 
 			__self.$main_page_title
 				.addClass('spanned')
-				.hover( __self.hoverOn, __self.hoverOff );
+				.hover( __self.onHover, __self.offHover );
 		}
 
-		__self.hoverOn = function(){
-			if( __self.$main_page_title.hasClass('active') ){
+		__self.onHover = function(){
+			if( __self.$main_page_title.hasClass('spanned') ){
 				// Animate
 				__self.animation_interval = setInterval(function(){
 					// Animate Letters
 					__self.$main_page_title.find(".letter").each(function(i){
+						var current_color = __self.color( (i + __self.index) % __self.title_length ); 
+						if(i === 0){
+							__self.$main_page_title
+								.css('border-bottom-color', current_color);
+						}
 						$(this)
-							.css('color', __self.color( (i + __self.index) % __self.title_length ) );
+							.css('color', current_color );
 					})
 					// Update Index
 					__self.index += 1
@@ -818,12 +911,14 @@ var MainTitleHandler;
 			}
 		}
 
-		__self.hoverOff = function(){
+		__self.offHover = function(){
 			clearInterval( __self.animation_interval );
-			__self.$main_page_title.find(".letter").each(function(i){
-				$(this)
-					.css('color', "#fff" );
-			})
+			__self.$main_page_title
+				.css('border-bottom-color', "#fff")
+				.find(".letter").each(function(i){
+					$(this)
+						.css('color', "#fff" );
+				})
 		}
 
 		__self.breakIntoSpans = function(){
