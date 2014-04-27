@@ -35,10 +35,12 @@ body{
         #main-content {
 
             position: fixed;
+            -webkit-overflow-scrolling:touch;
             // overflow: scroll;
             // height: 100%;
 
             #project-home-container {
+                -webkit-overflow-scrolling:touch;
              //   overflow-y: scroll; 
             }
         }
