@@ -291,6 +291,7 @@ var Views = {};
             this.$el
                 .find('.main-video')
                 .html( Mustache.render( this.video_template, this.model.toJSON() ));
+            alert($(document).width());
         },
         removeVideo: function(){
             this.$el
