@@ -5820,6 +5820,10 @@ body.projects-orientation-horizontal {
   overflow-x: hidden;
   height: 0px;
   background: green; }
+  body.projects-orientation-horizontal #main-content {
+    -webkit-overflow-scrolling: touch; }
+    body.projects-orientation-horizontal #main-content #project-home-container {
+      -webkit-overflow-scrolling: touch; }
 
 canvas {
   margin: 0;

@@ -249,6 +249,7 @@ var Global = {};
 			__self.paused = true; 
 			__self.scroll_top = self.$body.scrollTop();
 			self.$main_content
+				.css( 'position', 'fixed' )
 				.css( 'margin-top', -__self.scroll_top + 'px' );
 		}
 
@@ -278,6 +279,7 @@ var Global = {};
 		self.unFreezeContainer = function(){
 			__self.paused = false; 
 			self.$main_content
+				.css( 'position', 'fixed' )
 				.css('margin-top', '0px');
 		}
 
