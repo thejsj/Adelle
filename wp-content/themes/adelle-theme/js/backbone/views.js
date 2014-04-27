@@ -87,8 +87,6 @@ var Views = {};
             }, 500);
         },
         openPage: function( slug ){
-            console.log('Open Page - slug');
-            console.log(slug);
             this.current_model = this._pages.findWhere({ 'relational_permalink': slug + '/' })
 
             // Set Current Video
@@ -98,8 +96,6 @@ var Views = {};
 
         },
         closePage: function( slug ){
-            console.log('Close Page - slug');
-            console.log(slug);
             if( this.current_model !== null && this.current_view !== null ){
                 var $current_modal = this.current_view.$el; 
                 this.closeModal( $current_modal );

@@ -7,9 +7,8 @@
 	<div class="entry-content">
 		{{# vimeo_id }}
 		<!-- Vimeo Video -->
-		<div class="main-video">
-			<iframe src="//player.vimeo.com/video/88054119" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
-		</div>
+		<div class="main-video"><!-- width="500" height="281" -->
+			<iframe src="//player.vimeo.com/video/{{ vimeo_id }}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
 		{{/ vimeo_id }}
 
 		{{# featured_image }}

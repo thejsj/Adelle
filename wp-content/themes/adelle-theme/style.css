@@ -5964,12 +5964,23 @@ h1#main-page-title {
       color: white; }
   .single-modal .main-video {
     background-color: black;
-    width: 100%;
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 30px;
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
     height: auto; }
     @media all and (min-width: 960px) {
       .single-modal .main-video {
         height: 350px;
         width: 596px; } }
+    .single-modal .main-video iframe, .single-modal .main-video object, .single-modal .main-video embed {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%; }
   .single-modal.reveal-modal {
     height: auto; }
     .single-modal.reveal-modal .close-reveal-modal {
