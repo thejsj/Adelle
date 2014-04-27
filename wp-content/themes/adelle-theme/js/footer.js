@@ -336,9 +336,11 @@ var Views = {};
             (function(self){
                 $current_modal
                     .foundation('reveal', 'open')
+                    .css('max-width', self.global.get('window_width'))
                     .find('.close-reveal-modal').click(function(){
                         self.global.router.navigate( '/', true);
                     });
+
                 // Init Slideshow
                 if( typeof createJSJGallerySlideshow !== 'undefined'){
                     createJSJGallerySlideshow(); 
@@ -484,9 +486,14 @@ var Views = {};
         template: Templates['single-project'],
         video_template: Templates['vimeo-video'],
         renderVideo: function(){
-            this.$el
-                .find('.main-video')
-                .html( Mustache.render( this.video_template, this.model.toJSON() ));
+            (function(that){
+                setTimeout(function(){
+                    that.$el
+                        .find('.main-video')
+                        .html( Mustache.render( that.video_template, that.model.toJSON() ));
+                    alert($(document).width());
+                });
+            }(this));            
         },
         removeVideo: function(){
             this.$el

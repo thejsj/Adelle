@@ -23,7 +23,6 @@
 
 	.main-video {
 		background-color: black; 
-
 		position: relative; 
 		padding-bottom: 56.25%; 
 		padding-top: 30px; 
@@ -66,6 +65,9 @@
 
 		.gallery_container_jsj-gallery-slideshow {
 			max-width: 100% !important;
+			.gallery {
+				max-width: 100% !important;
+			}
 			img {
 				max-width: 100% !important;
 			}

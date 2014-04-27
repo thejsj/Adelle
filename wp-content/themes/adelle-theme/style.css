@@ -5796,6 +5796,7 @@ th.hide-for-touch {
   display: table-cell !important; }
 
 body {
+  overflow: hidden;
   overflow-y: -moz-scrollbars-vertical;
   overflow-y: scroll; }
 
@@ -5809,6 +5810,7 @@ body.projects-orientation-vertical {
   background: white;
   max-height: 100%;
   width: auto;
+  overflow: hidden;
   overflow-y: hidden; }
   body.projects-orientation-vertical #videos-container {
     max-height: 100%;
@@ -5816,6 +5818,7 @@ body.projects-orientation-vertical {
     overflow: hidden;
     position: fixed; }
 body.projects-orientation-horizontal {
+  overflow: hidden;
   overflow-x: hidden;
   height: 0px; }
 
@@ -5944,7 +5947,10 @@ h1#main-page-title {
     text-transform: uppercase;
     letter-spacing: 0.2em;
     font-weight: bold;
-    margin-top: 2.5em; }
+    margin-top: 2.5em;
+    max-width: 100%;
+    padding-right: 0.5em;
+    padding-left: 0.5em; }
 
 .reveal-modal-bg {
   cursor: pointer; }
@@ -5959,7 +5965,6 @@ h1#main-page-title {
     padding: 10px 0;
     margin: 0;
     color: white;
-    max-width: 80%;
     font-size: 0.875rem; }
     @media all and (min-width: 720px) {
       .single-modal h2 {
@@ -5998,6 +6003,8 @@ h1#main-page-title {
     padding: 1.375rem 1.375rem; }
     .single-modal .entry-content .gallery_container_jsj-gallery-slideshow {
       max-width: 100% !important; }
+      .single-modal .entry-content .gallery_container_jsj-gallery-slideshow .gallery {
+        max-width: 100% !important; }
       .single-modal .entry-content .gallery_container_jsj-gallery-slideshow img {
         max-width: 100% !important; }
     .single-modal .entry-content img {
@@ -6028,6 +6035,8 @@ svg#node_map {
       stroke: white;
       stroke-width: 1.5px; }
 
+.gallery_container_jsj-gallery-slideshow .gallery {
+  max-width: 100% !important; }
 .gallery_container_jsj-gallery-slideshow .slideshow_thumb {
   cursor: pointer; }
   .gallery_container_jsj-gallery-slideshow .slideshow_thumb .activeSlide {
