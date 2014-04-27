@@ -5798,7 +5798,8 @@ th.hide-for-touch {
 body {
   overflow: hidden;
   overflow-y: -moz-scrollbars-vertical;
-  overflow-y: scroll; }
+  overflow-y: scroll;
+  position: relative; }
 
 html, body {
   margin: 0;
@@ -5956,7 +5957,6 @@ h1#main-page-title {
   cursor: pointer; }
 
 .single-modal {
-  overflow-x: hidden;
   margin-bottom: 100px;
   margin-top: 43px; }
   .single-modal h2 {

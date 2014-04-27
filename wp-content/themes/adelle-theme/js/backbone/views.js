@@ -145,6 +145,10 @@ var Views = {};
                         self.global.router.navigate( '/', true);
                     });
 
+                $('.reveal-modal-bg').click(function(){
+                    self.global.router.navigate( '/', true);
+                });
+
                 // Init Slideshow
                 if( typeof createJSJGallerySlideshow !== 'undefined'){
                     createJSJGallerySlideshow(); 
@@ -295,7 +299,6 @@ var Views = {};
                     that.$el
                         .find('.main-video')
                         .html( Mustache.render( that.video_template, that.model.toJSON() ));
-                    alert($(document).width());
                 });
             }(this));            
         },

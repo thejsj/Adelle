@@ -104,7 +104,7 @@ var NodeMap;
 				.attr("r", node_map_options.get('radius'))
 				.attr("fill", function(d) { return d.model.get('color'); })
 				.on("click", function(d){
-					alert(d.id + " - " + d.model.get('post_title'));
+					document.location = d.model.get('permalink');
 				})
 
 			node
