@@ -1,6 +1,8 @@
 // Jquery is Defined globaly... all because of Foundation
 var Global = require('../classes/global.js');
 
+console.log('Hello');
+
 (function($){
 
 	// Init Foundation - Declared Afterwards Though Wordpress
@@ -30,7 +32,6 @@ var Global = require('../classes/global.js');
 
 	// On Document Ready, Get All Posts through an AJAX Request
 	$(document).ready(function(){
-
 		// Get Posts
         $.post(	
 		    MyAjax.ajaxurl,

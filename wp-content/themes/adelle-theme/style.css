@@ -5823,8 +5823,6 @@ canvas {
   margin: 0;
   width: 0;
   margin-top: -4px; }
-  canvas:hover {
-    background-color: black; }
 
 video {
   display: none;
@@ -5859,12 +5857,13 @@ h1#main-page-title {
   /* For Safari 3.1 to 6.0 */
   -moz-transition: color 5s;
   transition: color 5s; }
-  @media all and (min-width: 400px) {
+  @media all and (min-width: 720px) {
     h1#main-page-title {
       font-size: 6em;
       width: 850px;
       height: 107px;
       top: 0;
+      bottom: 0;
       line-height: 0.8em; } }
   h1#main-page-title a {
     -webkit-transition: color 5s;
@@ -5873,7 +5872,7 @@ h1#main-page-title {
     transition: color 5s;
     border-bottom: 3px solid black;
     color: black; }
-    @media all and (min-width: 400px) {
+    @media all and (min-width: 720px) {
       h1#main-page-title a {
         border-bottom: 7px solid black; }
         h1#main-page-title a:hover {
@@ -5996,6 +5995,10 @@ h1#main-page-title {
         right: -2px; }
   .single-modal .entry-content {
     padding: 1.375rem 1.375rem; }
+    .single-modal .entry-content .gallery_container_jsj-gallery-slideshow {
+      max-width: 100% !important; }
+      .single-modal .entry-content .gallery_container_jsj-gallery-slideshow img {
+        max-width: 100% !important; }
     .single-modal .entry-content img {
       max-width: 100% !important; }
 

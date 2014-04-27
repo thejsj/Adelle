@@ -1,6 +1,6 @@
 <?php
 
-class __Mustache_de21a72aa65e2fa7b9f6f2f43dbdda0e extends Mustache_Template
+class __Mustache_d11626cdab56c8e94e9b0bc2cc04b1c7 extends Mustache_Template
 {
     private $lambdaHelper;
 
@@ -9,7 +9,7 @@ class __Mustache_de21a72aa65e2fa7b9f6f2f43dbdda0e extends Mustache_Template
         $this->lambdaHelper = new Mustache_LambdaHelper($this->mustache, $context);
         $buffer = '';
 
-        $buffer .= $indent . '<article class="project">
+        $buffer .= $indent . '<article class="project single-project-partial-template">
 ';
         $buffer .= $indent . '	<!-- Display Post Title -->
 ';
@@ -31,7 +31,7 @@ class __Mustache_de21a72aa65e2fa7b9f6f2f43dbdda0e extends Mustache_Template
 ';
         // 'vimeo_id' section
         $value = $context->find('vimeo_id');
-        $buffer .= $this->sectionE965c02e5b79dd0515fd5c81d2c67ac8($context, $indent, $value);
+        $buffer .= $this->section84b142d10978225993b6d81620ef718f($context, $indent, $value);
         $buffer .= $indent . '
 ';
         // 'featured_image' section
@@ -53,15 +53,14 @@ class __Mustache_de21a72aa65e2fa7b9f6f2f43dbdda0e extends Mustache_Template
         return $buffer;
     }
 
-    private function sectionE965c02e5b79dd0515fd5c81d2c67ac8(Mustache_Context $context, $indent, $value)
+    private function section84b142d10978225993b6d81620ef718f(Mustache_Context $context, $indent, $value)
     {
         $buffer = '';
         if (!is_string($value) && is_callable($value)) {
             $source = '
 		<!-- Vimeo Video -->
-		<div class="main-video">
-			<iframe src="//player.vimeo.com/video/88054119" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
-		</div>
+		<div class="main-video"><!-- width="500" height="281" -->
+			<iframe src="//player.vimeo.com/video/{{ vimeo_id }}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
 		';
             $result = call_user_func($value, $source, $this->lambdaHelper);
             if (strpos($result, '{{') === false) {
@@ -77,11 +76,12 @@ class __Mustache_de21a72aa65e2fa7b9f6f2f43dbdda0e extends Mustache_Template
                 $context->push($value);
                 $buffer .= $indent . '		<!-- Vimeo Video -->
 ';
-                $buffer .= $indent . '		<div class="main-video">
+                $buffer .= $indent . '		<div class="main-video"><!-- width="500" height="281" -->
 ';
-                $buffer .= $indent . '			<iframe src="//player.vimeo.com/video/88054119" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
-';
-                $buffer .= $indent . '		</div>
+                $buffer .= $indent . '			<iframe src="//player.vimeo.com/video/';
+                $value = $this->resolveValue($context->find('vimeo_id'), $context, $indent);
+                $buffer .= htmlspecialchars($value, 2, 'UTF-8');
+                $buffer .= '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
 ';
                 $context->pop();
             }

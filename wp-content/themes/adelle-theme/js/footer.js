@@ -2,6 +2,8 @@
 // Jquery is Defined globaly... all because of Foundation
 var Global = require('../classes/global.js');
 
+console.log('Hello');
+
 (function($){
 
 	// Init Foundation - Declared Afterwards Though Wordpress
@@ -31,7 +33,7 @@ var Global = require('../classes/global.js');
 
 	// On Document Ready, Get All Posts through an AJAX Request
 	$(document).ready(function(){
-
+		console.log('Document Ready');
 		// Get Posts
         $.post(	
 		    MyAjax.ajaxurl,
@@ -163,24 +165,20 @@ var Router = {};
             this.current_view = 'home';
         },
         project : function(slug){
-            console.log(' + R + open Project : ' + slug);
             this.closeModals(); 
             this.home_view.openProject( slug );
             this.current_view = 'project';
         },
         page: function(slug){
-            console.log(' + R + open Page : ' + slug);
             this.closeModals(); 
             this.home_view.openPage( slug );
             this.current_view = 'page';
         },
         home : function() {
-            console.log(' + R + Home ');
             this.closeModals(); 
             this.current_view = 'home';
         },
         notFound : function(){
-            console.log(' + R + Not Found : ' + slug);
             this.closeModals(); 
         },
         closeModals : function(){
@@ -454,6 +452,7 @@ var Views = {};
             // Add it to the DOM
             this.parent.$el.append( this.el );
             this.$el = $("#container-" + this.model.get('ID'));
+            console.log('New Video');
             this.video = new Video( 
                 this.model, 
                 this.parent
@@ -1364,6 +1363,8 @@ var Video;
 	    __self.bound = false; 
 	    __self.converted_to_available = false; 
 
+	    console.log(" New Video - ");
+
 	    if((__self.uses_video && model.get('video_files').length < 1) || (!__self.uses_video && __self.fallback_images.length < 1)){
 	    	return false; 
 	    }
@@ -1405,6 +1406,9 @@ var Video;
 	     * @return 
 	     */
 	    self.init = function(){
+
+	    	console.log('Init');
+
 	        __self.$canvas = $("#" + __self.canvas_id);
 	        __self.canvas  = __self.$canvas.get(0);
 	        __self.$canvas
@@ -1506,7 +1510,7 @@ var Video;
 	        __self.ctx = __self.canvas.getContext('2d');
 	        __self.canvas.width  = __self.canvas_width;
 	        __self.canvas.height = __self.canvas_height;
-
+	        console.log('Init Canvas');
 	        if( !__self.bound ){
 	            __self.bound = true; 
 		        if( __self.uses_video ){

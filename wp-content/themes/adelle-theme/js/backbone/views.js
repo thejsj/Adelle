@@ -255,6 +255,7 @@ var Views = {};
             // Add it to the DOM
             this.parent.$el.append( this.el );
             this.$el = $("#container-" + this.model.get('ID'));
+            console.log('New Video');
             this.video = new Video( 
                 this.model, 
                 this.parent
