@@ -279,7 +279,7 @@ var Global = {};
 		self.unFreezeContainer = function(){
 			__self.paused = false; 
 			self.$main_content
-				.css( 'position', 'fixed' )
+				.css( 'position', 'static' )
 				.css('margin-top', '0px');
 		}
 

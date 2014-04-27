@@ -140,6 +140,7 @@ var Views = {};
             (function(self){
                 $current_modal
                     .foundation('reveal', 'open')
+                    .css('top', '0px')
                     .css('max-width', self.global.get('window_width'))
                     .find('.close-reveal-modal').click(function(){
                         self.global.router.navigate( '/', true);
