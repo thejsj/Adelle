@@ -9,7 +9,7 @@ console.log('Hello');
 	$(document).foundation({
 		reveal: {
 			animation: 'fade',
-			animation_speed: 600,
+			animation_speed: 300,
 			close_on_background_click: true,
 			close_on_esc: true,
 			dismiss_modal_class: 'close-reveal-modal',
