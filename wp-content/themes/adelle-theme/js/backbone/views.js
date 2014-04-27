@@ -140,10 +140,11 @@ var Views = {};
             (function(self){
                 $current_modal
                     .foundation('reveal', 'open')
+                    .css('max-width', this.global.get('window_width'))
                     .find('.close-reveal-modal').click(function(){
                         self.global.router.navigate( '/', true);
-                    })
-                    .css('max-width', this.global.get('window_width'));
+                    });
+
                 // Init Slideshow
                 if( typeof createJSJGallerySlideshow !== 'undefined'){
                     createJSJGallerySlideshow(); 
