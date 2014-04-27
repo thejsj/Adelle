@@ -30,6 +30,18 @@ body{
     &.projects-orientation-horizontal {
         overflow-x: hidden;
         height: 0px;
+        background: green;
+
+        #main-content {
+
+            // position: fixed;
+            // overflow: scroll;
+            // height: 100%;
+
+            #project-home-container {
+             //   overflow-y: scroll; 
+            }
+        }
     }
 
 }

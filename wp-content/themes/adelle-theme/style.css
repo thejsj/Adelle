@@ -5818,7 +5818,8 @@ body.projects-orientation-vertical {
     position: fixed; }
 body.projects-orientation-horizontal {
   overflow-x: hidden;
-  height: 0px; }
+  height: 0px;
+  background: green; }
 
 canvas {
   margin: 0;

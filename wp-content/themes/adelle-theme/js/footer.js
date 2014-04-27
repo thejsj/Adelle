@@ -10,7 +10,7 @@ console.log('Hello');
 	$(document).foundation({
 		reveal: {
 			animation: 'fade',
-			animation_speed: 300,
+			animation_speed: 3000,
 			close_on_background_click: true,
 			close_on_esc: true,
 			dismiss_modal_class: 'close-reveal-modal',
@@ -341,7 +341,7 @@ var Views = {};
                         self.global.router.navigate( '/', true);
                     });
 
-                alert('Position Top : ' + $current_modal.position().top + " / Css Top : " + $current_modal.css('top')  );
+                // alert('Position Top : ' + $current_modal.position().top + " / Css Top : " + $current_modal.css('top')  );
 
                 $('.reveal-modal-bg').click(function(){
                     self.global.router.navigate( '/', true);
@@ -821,7 +821,8 @@ var Global = {};
 			__self.scroll_top = self.$body.scrollTop();
 			self.$main_content
 				.css( 'height', __self.window_height )
-			//	.css( 'position', 'absolute' )
+				.css( 'position', 'relative' )
+				.css( 'overflow', 'hidden' )
 
 			__self.home_view.$el
 				.css( 'position', 'absolute' )
@@ -830,6 +831,13 @@ var Global = {};
 			self.$body
 				.scrollTop( 0 );
 		}
+		// self.freezeContainer = function(){
+		// 	__self.paused = true; 
+		// 	__self.scroll_top = self.$body.scrollTop();
+		// 	self.$main_content
+		// 		.css( 'margin-top', -__self.scroll_top + 'px' );
+		// }
+
 
 		/**
 		 * Reverse freezeConatiner and return it to normal
@@ -851,8 +859,13 @@ var Global = {};
 
 				self.$body
 					.scrollTop( __self.scroll_top );
-			}, Foundation.libs.reveal.settings.animation_speed);
+			}, Foundation.libs.reveal.settings.animation_speed + 50);
 		}
+		// self.unFreezeContainer = function(){
+		// 	__self.paused = false; 
+		// 	self.$main_content
+		// 		.css('margin-top', '0px');
+		// }
 
 		/* * * * * * * * * * * * * *
 		 *                         *

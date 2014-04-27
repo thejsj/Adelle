@@ -235,7 +235,8 @@ var Global = {};
 			__self.scroll_top = self.$body.scrollTop();
 			self.$main_content
 				.css( 'height', __self.window_height )
-			//	.css( 'position', 'absolute' )
+				.css( 'position', 'relative' )
+				.css( 'overflow', 'hidden' )
 
 			__self.home_view.$el
 				.css( 'position', 'absolute' )
@@ -244,6 +245,13 @@ var Global = {};
 			self.$body
 				.scrollTop( 0 );
 		}
+		// self.freezeContainer = function(){
+		// 	__self.paused = true; 
+		// 	__self.scroll_top = self.$body.scrollTop();
+		// 	self.$main_content
+		// 		.css( 'margin-top', -__self.scroll_top + 'px' );
+		// }
+
 
 		/**
 		 * Reverse freezeConatiner and return it to normal
@@ -265,8 +273,13 @@ var Global = {};
 
 				self.$body
 					.scrollTop( __self.scroll_top );
-			}, Foundation.libs.reveal.settings.animation_speed);
+			}, Foundation.libs.reveal.settings.animation_speed + 50);
 		}
+		// self.unFreezeContainer = function(){
+		// 	__self.paused = false; 
+		// 	self.$main_content
+		// 		.css('margin-top', '0px');
+		// }
 
 		/* * * * * * * * * * * * * *
 		 *                         *
