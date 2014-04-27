@@ -33,7 +33,6 @@ console.log('Hello');
 
 	// On Document Ready, Get All Posts through an AJAX Request
 	$(document).ready(function(){
-		console.log('Document Ready');
 		// Get Posts
         $.post(	
 		    MyAjax.ajaxurl,
@@ -779,8 +778,11 @@ var Global = {};
 		 * @return this
 		 */
 		__self.bindMenuItemLinks = function(){
-			self.$menu_items.click(function(){
+			self.$menu_items.click(function(event){
+				console.log('Navigate : ' + this.pathname);
 				self.router.navigate( this.pathname , {trigger: true });
+				event.preventDefault(); 
+				event.stopPropagation(); 
 			});
 		}
 
@@ -1363,8 +1365,6 @@ var Video;
 	    __self.bound = false; 
 	    __self.converted_to_available = false; 
 
-	    console.log(" New Video - ");
-
 	    if((__self.uses_video && model.get('video_files').length < 1) || (!__self.uses_video && __self.fallback_images.length < 1)){
 	    	return false; 
 	    }
@@ -1406,8 +1406,6 @@ var Video;
 	     * @return 
 	     */
 	    self.init = function(){
-
-	    	console.log('Init');
 
 	        __self.$canvas = $("#" + __self.canvas_id);
 	        __self.canvas  = __self.$canvas.get(0);
@@ -1510,7 +1508,7 @@ var Video;
 	        __self.ctx = __self.canvas.getContext('2d');
 	        __self.canvas.width  = __self.canvas_width;
 	        __self.canvas.height = __self.canvas_height;
-	        console.log('Init Canvas');
+	        
 	        if( !__self.bound ){
 	            __self.bound = true; 
 		        if( __self.uses_video ){

@@ -9,7 +9,8 @@
 		letter-spacing: 0.2em; 
 		padding: 10px 0;
 		margin: 0; 
-		color: white; 
+		color: white;
+		max-width: 80%; 
 
 		font-size: rem-calc(14);
 		@include breakpoint('medium') {
@@ -49,7 +50,7 @@
 	&.reveal-modal {
 
 		height: auto; 
-		min-height: none;
+		min-height: 1px;
 
 		.close-reveal-modal {
 			background-color: black;

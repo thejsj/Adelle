@@ -204,8 +204,11 @@ var Global = {};
 		 * @return this
 		 */
 		__self.bindMenuItemLinks = function(){
-			self.$menu_items.click(function(){
+			self.$menu_items.click(function(event){
+				console.log('Navigate : ' + this.pathname);
 				self.router.navigate( this.pathname , {trigger: true });
+				event.preventDefault(); 
+				event.stopPropagation(); 
 			});
 		}
 
