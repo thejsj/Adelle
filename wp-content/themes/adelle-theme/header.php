@@ -15,11 +15,11 @@
 	<meta name="author" content="Adelle Lin">
 	<meta charset="utf-8" />
 	<meta name="Copyright" content="<?php echo ' Copyright' . bloginfo('name') . '. All Rights Reserved.';?>">
-	<meta name="viewport" id="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=10.0,initial-scale=1.0" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=yes,minimal-ui">
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>" type="text/css">
 	<?php wp_head(); ?>
-</head>
+</head> 
 <body>
 	<h1 id="main-page-title" class="menu-item"><a href="<?php echo get_permalink(460); ?>" id="main-page-title-link" class='page-link'><?php bloginfo('name'); ?></a></h1>
 	<header id="header">

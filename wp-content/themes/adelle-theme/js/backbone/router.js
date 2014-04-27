@@ -17,24 +17,20 @@ var Router = {};
             this.current_view = 'home';
         },
         project : function(slug){
-            console.log(' + R + open Project : ' + slug);
             this.closeModals(); 
             this.home_view.openProject( slug );
             this.current_view = 'project';
         },
         page: function(slug){
-            console.log(' + R + open Page : ' + slug);
             this.closeModals(); 
             this.home_view.openPage( slug );
             this.current_view = 'page';
         },
         home : function() {
-            console.log(' + R + Home ');
             this.closeModals(); 
             this.current_view = 'home';
         },
         notFound : function(){
-            console.log(' + R + Not Found : ' + slug);
             this.closeModals(); 
         },
         closeModals : function(){
