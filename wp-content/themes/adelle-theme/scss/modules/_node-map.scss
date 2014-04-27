@@ -7,6 +7,11 @@ svg#node_map{
 	border: solid 1px #c7c7c7;
 	border-radius: 250px; 
 	
+	display: none; 
+	@include breakpoint('medium') {
+		display: block;
+	}
+	
 	.link {
 		stroke: #fff;
 		stroke-width: 1.5px;
