@@ -63,6 +63,14 @@
 
 	.entry-content {
 		padding: rem-calc(22) rem-calc(22);
+
+		.gallery_container_jsj-gallery-slideshow {
+			max-width: 100% !important;
+			img {
+				max-width: 100% !important;
+			}
+		}
+
 		img {
 			max-width: 100% !important;
 		}
