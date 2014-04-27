@@ -1,5 +1,5 @@
 .single-modal {
-
+	overflow-x: hidden;
 	margin-bottom: 100px; 
 	margin-top: 43px;
 
@@ -61,6 +61,7 @@
 	}
 
 	.entry-content {
+		overflow: hidden;
 		padding: rem-calc(22) rem-calc(22);
 
 		.gallery_container_jsj-gallery-slideshow {
