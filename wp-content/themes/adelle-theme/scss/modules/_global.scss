@@ -1,5 +1,4 @@
 body {
-    overflow: hidden;
     overflow-y: -moz-scrollbars-vertical;
     overflow-y: scroll;
     position: relative;
@@ -19,7 +18,6 @@ body{
         background: white;
         max-height: 100%;
         width: auto;
-        overflow: hidden;
         overflow-y: hidden; 
         #videos-container {
             max-height: 100%;
@@ -30,7 +28,6 @@ body{
     }
 
     &.projects-orientation-horizontal {
-        overflow: hidden;
         overflow-x: hidden;
         height: 0px;
     }

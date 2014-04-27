@@ -341,6 +341,8 @@ var Views = {};
                         self.global.router.navigate( '/', true);
                     });
 
+                alert('Position Top : ' + $current_modal.position().top + " / Css Top : " + $current_modal.css('top')  );
+
                 $('.reveal-modal-bg').click(function(){
                     self.global.router.navigate( '/', true);
                 });

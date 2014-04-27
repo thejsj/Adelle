@@ -5796,7 +5796,6 @@ th.hide-for-touch {
   display: table-cell !important; }
 
 body {
-  overflow: hidden;
   overflow-y: -moz-scrollbars-vertical;
   overflow-y: scroll;
   position: relative; }
@@ -5811,7 +5810,6 @@ body.projects-orientation-vertical {
   background: white;
   max-height: 100%;
   width: auto;
-  overflow: hidden;
   overflow-y: hidden; }
   body.projects-orientation-vertical #videos-container {
     max-height: 100%;
@@ -5819,7 +5817,6 @@ body.projects-orientation-vertical {
     overflow: hidden;
     position: fixed; }
 body.projects-orientation-horizontal {
-  overflow: hidden;
   overflow-x: hidden;
   height: 0px; }
 
