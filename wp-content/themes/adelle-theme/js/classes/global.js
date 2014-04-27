@@ -230,27 +230,27 @@ var Global = {};
 		 *
 		 * @return this
 		 */
-		self.freezeContainer = function(){
-			__self.paused = true; 
-			__self.scroll_top = self.$body.scrollTop();
-			self.$main_content
-				.css( 'height', __self.window_height )
-				.css( 'position', 'relative' )
-				.css( 'overflow', 'hidden' )
-
-			__self.home_view.$el
-				.css( 'position', 'absolute' )
-				.css( 'top', -__self.scroll_top + 'px' );
-
-			self.$body
-				.scrollTop( 0 );
-		}
 		// self.freezeContainer = function(){
 		// 	__self.paused = true; 
 		// 	__self.scroll_top = self.$body.scrollTop();
 		// 	self.$main_content
-		// 		.css( 'margin-top', -__self.scroll_top + 'px' );
+		// 		.css( 'height', __self.window_height )
+		// 		.css( 'position', 'relative' )
+		// 		.css( 'overflow', 'hidden' )
+
+		// 	__self.home_view.$el
+		// 		.css( 'position', 'absolute' )
+		// 		.css( 'top', -__self.scroll_top + 'px' );
+
+		// 	self.$body
+		// 		.scrollTop( 0 );
 		// }
+		self.freezeContainer = function(){
+			__self.paused = true; 
+			__self.scroll_top = self.$body.scrollTop();
+			self.$main_content
+				.css( 'margin-top', -__self.scroll_top + 'px' );
+		}
 
 
 		/**
@@ -258,28 +258,28 @@ var Global = {};
 		 *
 		 * @return this
 		 */
-		self.unFreezeContainer = function(){
-			setTimeout(function(){
-				__self.paused = false; 
-				self.$main_content
-					.css( 'overflow', 'visible' )
-					.css( 'height', 'auto' )
-					// .css( 'position', 'static')
-					// .css( 'top', '0px' );
-					
-				__self.home_view.$el
-					.css( 'position', 'static' )
-					.css( 'top', '0px' );
-
-				self.$body
-					.scrollTop( __self.scroll_top );
-			}, Foundation.libs.reveal.settings.animation_speed + 50);
-		}
 		// self.unFreezeContainer = function(){
-		// 	__self.paused = false; 
-		// 	self.$main_content
-		// 		.css('margin-top', '0px');
+		// 	setTimeout(function(){
+		// 		__self.paused = false; 
+		// 		self.$main_content
+		// 			.css( 'overflow', 'visible' )
+		// 			.css( 'height', 'auto' )
+		// 			// .css( 'position', 'static')
+		// 			// .css( 'top', '0px' );
+					
+		// 		__self.home_view.$el
+		// 			.css( 'position', 'static' )
+		// 			.css( 'top', '0px' );
+
+		// 		self.$body
+		// 			.scrollTop( __self.scroll_top );
+		// 	}, Foundation.libs.reveal.settings.animation_speed + 50);
 		// }
+		self.unFreezeContainer = function(){
+			__self.paused = false; 
+			self.$main_content
+				.css('margin-top', '0px');
+		}
 
 		/* * * * * * * * * * * * * *
 		 *                         *
