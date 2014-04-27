@@ -16,5 +16,6 @@ require('browsernizr/test/requestanimationframe');
 require('browsernizr/test/touchevents');
 require('browsernizr/test/webanimations');
 require('browsernizr/test/video');
+require('browsernizr/test/video/loop');
 
 window.Modernizr = require('browsernizr');

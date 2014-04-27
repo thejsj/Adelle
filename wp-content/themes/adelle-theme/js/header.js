@@ -17,9 +17,10 @@ require('browsernizr/test/requestanimationframe');
 require('browsernizr/test/touchevents');
 require('browsernizr/test/webanimations');
 require('browsernizr/test/video');
+require('browsernizr/test/video/loop');
 
 window.Modernizr = require('browsernizr');
-},{"browsernizr":2,"browsernizr/test/canvas":33,"browsernizr/test/css/backgroundposition-xy":34,"browsernizr/test/css/backgroundsize":35,"browsernizr/test/css/fontface":36,"browsernizr/test/css/rgba":37,"browsernizr/test/css/transforms":38,"browsernizr/test/css/transforms3d":39,"browsernizr/test/css/transitions":40,"browsernizr/test/event/deviceorientation-motion":41,"browsernizr/test/geolocation":42,"browsernizr/test/history":43,"browsernizr/test/json":44,"browsernizr/test/requestanimationframe":45,"browsernizr/test/touchevents":46,"browsernizr/test/url/data-uri":47,"browsernizr/test/video":48,"browsernizr/test/webanimations":49}],2:[function(require,module,exports){
+},{"browsernizr":2,"browsernizr/test/canvas":33,"browsernizr/test/css/backgroundposition-xy":34,"browsernizr/test/css/backgroundsize":35,"browsernizr/test/css/fontface":36,"browsernizr/test/css/rgba":37,"browsernizr/test/css/transforms":38,"browsernizr/test/css/transforms3d":39,"browsernizr/test/css/transitions":40,"browsernizr/test/event/deviceorientation-motion":41,"browsernizr/test/geolocation":42,"browsernizr/test/history":43,"browsernizr/test/json":44,"browsernizr/test/requestanimationframe":45,"browsernizr/test/touchevents":46,"browsernizr/test/url/data-uri":47,"browsernizr/test/video":48,"browsernizr/test/video/loop":49,"browsernizr/test/webanimations":50}],2:[function(require,module,exports){
 var Modernizr = require('./lib/Modernizr'),
     ModernizrProto = require('./lib/ModernizrProto'),
     classes = require('./lib/classes'),
@@ -1506,6 +1507,21 @@ Modernizr.video.ogg     // 'probably'
 
 
 },{"./../lib/Modernizr":3,"./../lib/createElement":8}],49:[function(require,module,exports){
+var Modernizr = require('./../../lib/Modernizr');
+var createElement = require('./../../lib/createElement');
+
+/*!
+{
+  "name": "Video Loop Attribute",
+  "property": "videoloop",
+  "tags": ["video", "media"]
+}
+!*/
+
+    Modernizr.addTest('videoloop', 'loop' in createElement('video'));
+
+
+},{"./../../lib/Modernizr":3,"./../../lib/createElement":8}],50:[function(require,module,exports){
 var Modernizr = require('./../lib/Modernizr');
 
 /*!
