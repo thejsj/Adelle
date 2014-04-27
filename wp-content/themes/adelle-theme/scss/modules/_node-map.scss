@@ -1,11 +1,11 @@
 svg#node_map{
 	position: fixed;
 	z-index: 75;
-	bottom: 0;
-	left: 0;
+	bottom: 10px;
+	left: 10px;
 	background: rgba(255,255,255,0.1);
 	border: solid 1px #c7c7c7;
-	border-radius: 250px; 
+	border-radius: 150px; 
 	
 	display: none; 
 	@include breakpoint('medium') {

@@ -846,7 +846,7 @@ var Global = {};
 			} else {
 				self.$main_content
 					.css( 'position', 'static' )
-					.css( 'margin-top', -__self.scroll_top + 'px' );
+					.css( 'margin-top', '0px' );
 			}
 		}
 
@@ -979,7 +979,7 @@ var NodeMap;
 		var self = {}, __self = {};
 
 		__self.project_relationships = [];
-		__self.width = 200, __self.height = 200;
+		__self.width = 170, __self.height = 170;
 
 		__self.nodes = [],__self.links = [];
 

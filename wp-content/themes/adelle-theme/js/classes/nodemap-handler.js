@@ -10,7 +10,7 @@ var NodeMap;
 		var self = {}, __self = {};
 
 		__self.project_relationships = [];
-		__self.width = 200, __self.height = 200;
+		__self.width = 170, __self.height = 170;
 
 		__self.nodes = [],__self.links = [];
 

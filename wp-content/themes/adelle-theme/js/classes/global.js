@@ -259,7 +259,7 @@ var Global = {};
 			} else {
 				self.$main_content
 					.css( 'position', 'static' )
-					.css( 'margin-top', -__self.scroll_top + 'px' );
+					.css( 'margin-top', '0px' );
 			}
 		}
 
