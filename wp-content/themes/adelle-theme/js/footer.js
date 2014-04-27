@@ -336,6 +336,7 @@ var Views = {};
             (function(self){
                 $current_modal
                     .foundation('reveal', 'open')
+                    .css('top', '0px')
                     .css('max-width', self.global.get('window_width'))
                     .find('.close-reveal-modal').click(function(){
                         self.global.router.navigate( '/', true);
@@ -835,8 +836,8 @@ var Global = {};
 			__self.paused = true; 
 			__self.scroll_top = self.$body.scrollTop();
 			self.$main_content
-				.css( 'position', 'fixed' )
-				.css( 'margin-top', -__self.scroll_top + 'px' );
+				.css( 'position', 'relative' )
+	//			.css( 'margin-top', -__self.scroll_top + 'px' );
 		}
 
 
@@ -865,8 +866,11 @@ var Global = {};
 		self.unFreezeContainer = function(){
 			__self.paused = false; 
 			self.$main_content
-				.css( 'position', 'fixed' )
-				.css('margin-top', '0px');
+				.css( 'position', 'static' )
+		//		.css('margin-top', '0px');
+
+			self.$body
+				.scrollTop( __self.scroll_top );
 		}
 
 		/* * * * * * * * * * * * * *

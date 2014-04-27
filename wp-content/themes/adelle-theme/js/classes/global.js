@@ -249,8 +249,8 @@ var Global = {};
 			__self.paused = true; 
 			__self.scroll_top = self.$body.scrollTop();
 			self.$main_content
-				.css( 'position', 'fixed' )
-				.css( 'margin-top', -__self.scroll_top + 'px' );
+				.css( 'position', 'relative' )
+	//			.css( 'margin-top', -__self.scroll_top + 'px' );
 		}
 
 
@@ -280,7 +280,10 @@ var Global = {};
 			__self.paused = false; 
 			self.$main_content
 				.css( 'position', 'static' )
-				.css('margin-top', '0px');
+		//		.css('margin-top', '0px');
+
+			self.$body
+				.scrollTop( __self.scroll_top );
 		}
 
 		/* * * * * * * * * * * * * *
