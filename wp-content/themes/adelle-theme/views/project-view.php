@@ -27,7 +27,9 @@
 
 			foreach( get_posts( $project_args ) as $single_project){
 				$new_project = new Project( $single_project ); 
-				array_push( $posts, $new_project );
+				if(count($new_project->fallback_images) > 0){
+					array_push( $posts, $new_project );
+				}
 			}
 			return $posts; 
 		}

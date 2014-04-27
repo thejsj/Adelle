@@ -30,7 +30,10 @@
 			$video_files = array();
 			$video_formats_keys = array( 'video_file_mp4', 'video_file_ogg', 'video_file_webm' );
 			foreach( $video_formats_keys as $key ){
-				array_push( $video_files, get_field( $key, $this->ID ) );
+				$video_file = get_field( $key, $this->ID );
+				if($video_file !== false){
+					array_push( $video_files, $video_file);
+				}
 			}
 			return $video_files;
 		}

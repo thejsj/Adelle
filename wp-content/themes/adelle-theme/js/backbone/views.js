@@ -271,7 +271,9 @@ var Views = {};
             }
         },
         initCanvas: function(){
-            this.video.init_canvas(); 
+            if(this.video !== false){
+                this.video.init_canvas(); 
+            } 
         },
         setAsViewed: function(){
             this.viewed = true; 

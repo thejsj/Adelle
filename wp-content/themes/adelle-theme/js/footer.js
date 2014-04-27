@@ -470,7 +470,9 @@ var Views = {};
             }
         },
         initCanvas: function(){
-            this.video.init_canvas(); 
+            if(this.video !== false){
+                this.video.init_canvas(); 
+            } 
         },
         setAsViewed: function(){
             this.viewed = true; 
@@ -1360,10 +1362,18 @@ var Video;
 	    __self.canvas_id = 'canvas-' + __self.index;
 	    __self.video_id  = 'video-' + __self.index;
 	    __self.fallback_images = model.get('fallback_images');
-	    __self.uses_video = !global.get( 'fallback_view' ); 
+	    __self.uses_video = !global.get( 'fallback_view' ) && (model.get('video_files').length > 0); 
 	    __self.color = parent.color( __self.index );
 	    __self.bound = false; 
 	    __self.converted_to_available = false; 
+
+	    if((__self.uses_video && model.get('video_files').length < 1) || (!__self.uses_video && __self.fallback_images.length < 1)){
+	    	return false; 
+	    }
+
+	    console.log('ID : ' + __self.index);
+	    console.log('usses video : ' + __self.uses_video );
+	    console.log( model.get('video_files') );
 
 	    __self.element_height = parent.video_quality_heights[ global.options.get('video_quality') ];
 	    __self.element_width  = parent.video_quality_widths[ global.options.get('video_quality') ];
