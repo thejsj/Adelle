@@ -36,8 +36,9 @@ var Global = {};
 	        __self.window_width  = $(window).width();
 	        
 	        // Get Options
-	        self.options = new Options( self );
-	        __self.fallback_view = !Modernizr.video; 
+	        self.options         = new Options( self );
+	        __self.mobile        = (__self.window_width > 768) ? false : true;
+	        __self.fallback_view = !Modernizr.video || __self.mobile; 
 	        __self.orientation   = self.options.get( 'orientation' );
 
 	        // Elements

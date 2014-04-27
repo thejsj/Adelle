@@ -29,10 +29,6 @@ var Video;
 	    	return false; 
 	    }
 
-	    console.log('ID : ' + __self.index);
-	    console.log('usses video : ' + __self.uses_video );
-	    console.log( model.get('video_files') );
-
 	    __self.element_height = parent.video_quality_heights[ global.options.get('video_quality') ];
 	    __self.element_width  = parent.video_quality_widths[ global.options.get('video_quality') ];
 

@@ -30,9 +30,6 @@ var Global = require('../classes/global.js');
 
 	// On Document Ready, Get All Posts through an AJAX Request
 	$(document).ready(function(){
-		console.log('Document Ready');
-
-		alert(JSON.stringify(Modernizr));
 
 		// Get Posts
         $.post(	
