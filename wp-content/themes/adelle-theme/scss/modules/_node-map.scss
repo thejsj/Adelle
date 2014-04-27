@@ -1,11 +1,12 @@
 svg#node_map{
 	position: fixed;
-	z-index: 9999;
+	z-index: 75;
 	bottom: 0;
 	left: 0;
-	// background: rgba(255,255,255,0.1);
-	// border: solid 1px #c7c7c7;
-
+	background: rgba(255,255,255,0.1);
+	border: solid 1px #c7c7c7;
+	border-radius: 250px; 
+	
 	.link {
 		stroke: #fff;
 		stroke-width: 1.5px;
@@ -25,10 +26,5 @@ svg#node_map{
 			stroke-width: 1.5px; 
 		}
 	}
-
-	/*.node.node-0 { fill: #1f77b4; }
-	.node.node-1 { fill: #ff7f0e; }
-	.node.node-2 { fill: #2ca02c; }*/
-
 }
 

@@ -5,6 +5,9 @@
 	@if $point == 400 {
 		@media all and (min-width: 400px) {@content;}
 	}
+	@if $point == 640 or $point == 'medium' {
+		@media all and (min-width: 720px) {@content;}
+	}
 	@if $point == 720 {
 		@media all and (min-width: 720px) {@content;}
 	}
@@ -12,6 +15,9 @@
 		@media all and (min-width: 848px) {@content;}
 	}
 	@if $point == 960 {
+		@media all and (min-width: 960px) {@content;}
+	}
+	@if $point == 1024 or $point == 'large' {
 		@media all and (min-width: 960px) {@content;}
 	}
 	@if $point == 1120 {
