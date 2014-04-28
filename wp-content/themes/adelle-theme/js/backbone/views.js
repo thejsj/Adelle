@@ -169,7 +169,6 @@ var Views = {};
                          $current_modal
                             .foundation('reveal', 'close')
                             .on('closed', function(){
-                                console.log('CLOSED');
                                 // Unset Variables
                                 self.current_model.set('currently_viewing', false);
                                 self.current_model = null;
@@ -270,7 +269,6 @@ var Views = {};
             // Add it to the DOM
             this.parent.$el.append( this.el );
             this.$el = $("#container-" + this.model.get('ID'));
-            console.log('New Video');
             this.video = new Video( 
                 this.model, 
                 this.parent

@@ -66,8 +66,6 @@ var MainTitleHandler;
 
 		self.initTitle = function(){
 
-			console.log('Init Title');
-
 			__self.$main_page_title
 					.addClass('active')
 

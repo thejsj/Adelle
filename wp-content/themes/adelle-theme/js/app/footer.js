@@ -1,8 +1,6 @@
 // Jquery is Defined globaly... all because of Foundation
 var Global = require('../classes/global.js');
 
-console.log('Hello');
-
 (function($){
 
 	// Init Foundation - Declared Afterwards Though Wordpress
@@ -39,7 +37,6 @@ console.log('Hello');
 				action : 'get-projects', // This is the name of your PHP function in functions.php
 			},
 			function( data ) {
-				console.log( data );
 				// With the data response, create the global object
 				var global = new Global( data.posts, data.pages ); 
 			}
