@@ -1,9 +1,7 @@
-h1#main-page-title {
-    text-transform: uppercase;
+#main-page-title {
+    
     position: fixed;
-    font-weight: bold;
     color: black;
-    letter-spacing: 0.2em;
     margin: auto;
     display: inline-block;
     text-align: center;
@@ -16,18 +14,38 @@ h1#main-page-title {
     overflow: visible;
     z-index: 50;
     cursor: pointer;  
-    font-size: 3em;
-    @include breakpoint( 'medium' ) {
-        font-size: 6em;
-        width: 850px; 
-        height: 107px;
-        top: 0;
-        bottom: 0; 
-        line-height: 0.8em;
-    }  
+
     -webkit-transition: color 5s; /* For Safari 3.1 to 6.0 */
     -moz-transition: color 5s;
     transition: color 5s;
+
+    @include breakpoint( 'medium' ) {
+        width: 850px; 
+        height: 107px;
+        top: -150px;
+        bottom: 0; 
+        line-height: 0.8em;
+    }
+
+    h1 {     
+        letter-spacing: 0.2em;
+        text-transform: uppercase;   
+        font-weight: bold;
+        font-size: 3em;
+        @include breakpoint( 'medium' ) {
+            font-size: 6em;
+        }
+    }
+
+    p {
+        max-width: 600px; 
+        margin: auto;
+        padding-right: rem-calc(18);
+        padding-left: rem-calc(18);
+        padding-top: rem-calc(12);
+        padding-bottom: rem-calc(18);
+    }
+
     a {
         -webkit-transition: color 5s; /* For Safari 3.1 to 6.0 */
         -moz-transition: color 5s;

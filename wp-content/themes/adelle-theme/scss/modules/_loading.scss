@@ -1,0 +1,96 @@
+#loadingProgressG{
+	width: 70px;
+	height: 5px;
+	overflow:hidden;
+	background-color: rgb(61, 255, 0);
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+	-ms-border-radius:4px;
+	-o-border-radius:4px;
+	border-radius:4px;
+	margin-top: 15px;
+	margin: auto;
+}
+
+.loadingProgressG{
+	background-color: #000;
+	margin-top:0;
+	margin-left:-100px;
+	-moz-animation-name:bounce_loadingProgressG;
+	-moz-animation-duration:3.2s;
+	-moz-animation-iteration-count:infinite;
+	-moz-animation-timing-function:linear;
+	-webkit-animation-name:bounce_loadingProgressG;
+	-webkit-animation-duration:3.2s;
+	-webkit-animation-iteration-count:infinite;
+	-webkit-animation-timing-function:linear;
+	-ms-animation-name:bounce_loadingProgressG;
+	-ms-animation-duration:3.2s;
+	-ms-animation-iteration-count:infinite;
+	-ms-animation-timing-function:linear;
+	-o-animation-name:bounce_loadingProgressG;
+	-o-animation-duration:3.2s;
+	-o-animation-iteration-count:infinite;
+	-o-animation-timing-function:linear;
+	animation-name:bounce_loadingProgressG;
+	animation-duration:3.2s;
+	animation-iteration-count:infinite;
+	animation-timing-function:linear;
+	width:100px;
+	height:8px;
+}
+
+@-moz-keyframes bounce_loadingProgressG{
+0%{
+margin-left:-100px;
+}
+
+100%{
+margin-left:100px;
+}
+
+}
+
+@-webkit-keyframes bounce_loadingProgressG{
+0%{
+margin-left:-100px;
+}
+
+100%{
+margin-left:100px;
+}
+
+}
+
+@-ms-keyframes bounce_loadingProgressG{
+0%{
+margin-left:-100px;
+}
+
+100%{
+margin-left:100px;
+}
+
+}
+
+@-o-keyframes bounce_loadingProgressG{
+0%{
+margin-left:-100px;
+}
+
+100%{
+margin-left:100px;
+}
+
+}
+
+@keyframes bounce_loadingProgressG{
+0%{
+margin-left:-100px;
+}
+
+100%{
+margin-left:100px;
+}
+
+}

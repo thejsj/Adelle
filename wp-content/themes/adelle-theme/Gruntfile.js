@@ -129,6 +129,16 @@ module.exports = function(grunt) {
 				ext: '.css'
 			}
 		},
+		favicons: {
+			options: {
+				debug: true,
+				windowsTile: false,
+			},
+			icons: {
+				src: 'images/fav.png',
+				dest: 'ico'
+			}
+		},
 	});
 
 	// CSS & Sass

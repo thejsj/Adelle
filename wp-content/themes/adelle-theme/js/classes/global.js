@@ -87,7 +87,7 @@ var Global = {};
 
 			// Init Scroll Handler
 			self.scroll_handler = new ScrollHandler( self );
-
+			console.log('Return');
 			return self; 
 		}
 

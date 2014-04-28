@@ -5840,12 +5840,9 @@ video {
 #footer {
   display: none; }
 
-h1#main-page-title {
-  text-transform: uppercase;
+#main-page-title {
   position: fixed;
-  font-weight: bold;
   color: black;
-  letter-spacing: 0.2em;
   margin: auto;
   display: inline-block;
   text-align: center;
@@ -5858,20 +5855,33 @@ h1#main-page-title {
   overflow: visible;
   z-index: 50;
   cursor: pointer;
-  font-size: 3em;
   -webkit-transition: color 5s;
   /* For Safari 3.1 to 6.0 */
   -moz-transition: color 5s;
   transition: color 5s; }
   @media all and (min-width: 720px) {
-    h1#main-page-title {
-      font-size: 6em;
+    #main-page-title {
       width: 850px;
       height: 107px;
-      top: 0;
+      top: -150px;
       bottom: 0;
       line-height: 0.8em; } }
-  h1#main-page-title a {
+  #main-page-title h1 {
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 3em; }
+    @media all and (min-width: 720px) {
+      #main-page-title h1 {
+        font-size: 6em; } }
+  #main-page-title p {
+    max-width: 600px;
+    margin: auto;
+    padding-right: 1.125rem;
+    padding-left: 1.125rem;
+    padding-top: 0.75rem;
+    padding-bottom: 1.125rem; }
+  #main-page-title a {
     -webkit-transition: color 5s;
     /* For Safari 3.1 to 6.0 */
     -moz-transition: color 5s;
@@ -5879,24 +5889,24 @@ h1#main-page-title {
     border-bottom: 3px solid black;
     color: black; }
     @media all and (min-width: 720px) {
-      h1#main-page-title a {
+      #main-page-title a {
         border-bottom: 7px solid black; }
-        h1#main-page-title a:hover {
+        #main-page-title a:hover {
           color: black;
           border-color: black; } }
-  h1#main-page-title.active {
+  #main-page-title.active {
     -webkit-transition: color 5s;
     /* For Safari 3.1 to 6.0 */
     -moz-transition: color 5s;
     transition: color 5s; }
-    h1#main-page-title.active a {
+    #main-page-title.active a {
       -webkit-transition: color 5s;
       /* For Safari 3.1 to 6.0 */
       -moz-transition: color 5s;
       transition: color 5s;
       color: white;
       border-color: white; }
-      h1#main-page-title.active a:hover {
+      #main-page-title.active a:hover {
         color: white;
         border-color: white; }
 
@@ -6045,3 +6055,78 @@ svg#node_map {
   cursor: pointer; }
   .gallery_container_jsj-gallery-slideshow .slideshow_thumb .activeSlide {
     border: solid 1px black; }
+
+#loadingProgressG {
+  width: 70px;
+  height: 5px;
+  overflow: hidden;
+  background-color: #3dff00;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  margin-top: 15px;
+  margin: auto; }
+
+.loadingProgressG {
+  background-color: black;
+  margin-top: 0;
+  margin-left: -100px;
+  -moz-animation-name: bounce_loadingProgressG;
+  -moz-animation-duration: 3.2s;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-timing-function: linear;
+  -webkit-animation-name: bounce_loadingProgressG;
+  -webkit-animation-duration: 3.2s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  -ms-animation-name: bounce_loadingProgressG;
+  -ms-animation-duration: 3.2s;
+  -ms-animation-iteration-count: infinite;
+  -ms-animation-timing-function: linear;
+  -o-animation-name: bounce_loadingProgressG;
+  -o-animation-duration: 3.2s;
+  -o-animation-iteration-count: infinite;
+  -o-animation-timing-function: linear;
+  animation-name: bounce_loadingProgressG;
+  animation-duration: 3.2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  width: 100px;
+  height: 8px; }
+
+@-moz-keyframes bounce_loadingProgressG {
+  0% {
+    margin-left: -100px; }
+
+  100% {
+    margin-left: 100px; } }
+
+@-webkit-keyframes bounce_loadingProgressG {
+  0% {
+    margin-left: -100px; }
+
+  100% {
+    margin-left: 100px; } }
+
+@-ms-keyframes bounce_loadingProgressG {
+  0% {
+    margin-left: -100px; }
+
+  100% {
+    margin-left: 100px; } }
+
+@-o-keyframes bounce_loadingProgressG {
+  0% {
+    margin-left: -100px; }
+
+  100% {
+    margin-left: 100px; } }
+
+@keyframes bounce_loadingProgressG {
+  0% {
+    margin-left: -100px; }
+
+  100% {
+    margin-left: 100px; } }
