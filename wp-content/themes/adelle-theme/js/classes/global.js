@@ -254,13 +254,13 @@ var Global = {};
 			if( __self.mobile  ){
 				self.$main_content
 					.css( 'position', 'static' );
-				self.$body
-					.scrollTop( __self.scroll_top );
 			} else {
 				self.$main_content
 					.css( 'position', 'static' )
 					.css( 'margin-top', '0px' );
 			}
+			self.$body
+					.scrollTop( __self.scroll_top );
 		}
 
 		/* * * * * * * * * * * * * *

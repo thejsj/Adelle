@@ -4111,14 +4111,14 @@ div.switch {
     background: white;
     background: -moz-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
     background: -webkit-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
-    background: linear-gradient(to bottom, #ffffff 0%, #f2f2f2 100%);
+    background: linear, to bottom, white 0%, #f2f2f2 100%;
     -webkit-box-shadow: 2px 0 10px 0 rgba(0, 0, 0, 0.07), 1000px 0 0 1000px #f3faf6, -2px 0 10px 0 rgba(0, 0, 0, 0.07), -1000px 0 0 1000px whitesmoke;
     box-shadow: 2px 0 10px 0 rgba(0, 0, 0, 0.07), 1000px 0 0 980px #f3faf6, -2px 0 10px 0 rgba(0, 0, 0, 0.07), -1000px 0 0 1000px whitesmoke; }
   div.switch:hover span:last-child, div.switch:focus span:last-child {
     background: white;
     background: -moz-linear-gradient(top, #ffffff 0%, #e6e6e6 100%);
     background: -webkit-linear-gradient(top, #ffffff 0%, #e6e6e6 100%);
-    background: linear-gradient(to bottom, #ffffff 0%, #e6e6e6 100%); }
+    background: linear, to bottom, white 0%, #e6e6e6 100%; }
   div.switch:active {
     background: transparent; }
   div.switch.large {
@@ -5854,11 +5854,7 @@ video {
   width: 90%;
   overflow: visible;
   z-index: 50;
-  cursor: pointer;
-  -webkit-transition: color 5s;
-  /* For Safari 3.1 to 6.0 */
-  -moz-transition: color 5s;
-  transition: color 5s; }
+  cursor: pointer; }
   @media all and (min-width: 720px) {
     #main-page-title {
       width: 850px;
@@ -5882,33 +5878,54 @@ video {
     padding-top: 0.75rem;
     padding-bottom: 1.125rem; }
   #main-page-title a {
-    -webkit-transition: color 5s;
-    /* For Safari 3.1 to 6.0 */
-    -moz-transition: color 5s;
-    transition: color 5s;
+    -webkit-transition-property: all;
+    -moz-transition-property: all;
+    transition-property: all;
+    -webkit-transition-duration: 2s;
+    -moz-transition-duration: 2s;
+    transition-duration: 2s;
+    -webkit-transition-timing-function: ease-in;
+    -moz-transition-timing-function: ease-in;
+    transition-timing-function: ease-in;
     border-bottom: 3px solid black;
     color: black; }
     @media all and (min-width: 720px) {
       #main-page-title a {
         border-bottom: 7px solid black; }
         #main-page-title a:hover {
-          color: black;
-          border-color: black; } }
+          color: black; } }
   #main-page-title.active {
-    -webkit-transition: color 5s;
-    /* For Safari 3.1 to 6.0 */
-    -moz-transition: color 5s;
-    transition: color 5s; }
+    -webkit-transition-property: all;
+    -moz-transition-property: all;
+    transition-property: all;
+    -webkit-transition-duration: 2s;
+    -moz-transition-duration: 2s;
+    transition-duration: 2s;
+    -webkit-transition-timing-function: ease-in;
+    -moz-transition-timing-function: ease-in;
+    transition-timing-function: ease-in; }
     #main-page-title.active a {
-      -webkit-transition: color 5s;
-      /* For Safari 3.1 to 6.0 */
-      -moz-transition: color 5s;
-      transition: color 5s;
+      -webkit-transition-property: all;
+      -moz-transition-property: all;
+      transition-property: all;
+      -webkit-transition-duration: 2s;
+      -moz-transition-duration: 2s;
+      transition-duration: 2s;
+      -webkit-transition-timing-function: ease-in;
+      -moz-transition-timing-function: ease-in;
+      transition-timing-function: ease-in;
       color: white;
       border-color: white; }
       #main-page-title.active a:hover {
-        color: white;
-        border-color: white; }
+        color: white; }
+    #main-page-title.active.animation-done {
+      -webkit-transition-duration: 0s;
+      -moz-transition-duration: 0s;
+      transition-duration: 0s; }
+      #main-page-title.active.animation-done a {
+        -webkit-transition-duration: 0s;
+        -moz-transition-duration: 0s;
+        transition-duration: 0s; }
 
 #header {
   position: fixed;
@@ -5933,16 +5950,20 @@ video {
 
 #project-home-container {
   opacity: 0;
-  -webkit-transition: opacity 300ms;
-  /* For Safari 3.1 to 6.0 */
-  -moz-transition: opacity 300ms;
-  transition: opacity 300ms; }
+  -webkit-transition-property: opacity;
+  -moz-transition-property: opacity;
+  transition-property: opacity;
+  -webkit-transition-duration: 300ms;
+  -moz-transition-duration: 300ms;
+  transition-duration: 300ms; }
   #project-home-container.visible {
     opacity: 1;
-    -webkit-transition: opacity 300ms;
-    /* For Safari 3.1 to 6.0 */
-    -moz-transition: opacity 300ms;
-    transition: opacity 300ms; }
+    -webkit-transition-property: opacity;
+    -moz-transition-property: opacity;
+    transition-property: opacity;
+    -webkit-transition-duration: 300ms;
+    -moz-transition-duration: 300ms;
+    transition-duration: 300ms; }
 
 .home-project-container.available-true {
   cursor: pointer; }
@@ -6029,9 +6050,6 @@ svg#node_map {
   z-index: 75;
   bottom: 10px;
   left: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  border: solid 1px #c7c7c7;
-  border-radius: 150px;
   display: none; }
   @media all and (min-width: 720px) {
     svg#node_map {

@@ -142,6 +142,7 @@ var Views = {};
                     .foundation('reveal', 'open')
                     .css('top', '0px')
                     .css('max-width', self.global.get('window_width'))
+
                     .find('.close-reveal-modal').click(function(){
                         self.global.router.navigate( '/', true);
                     });
@@ -163,21 +164,25 @@ var Views = {};
         },
         closeModal: function( $current_modal ){
             if( this.current_model !== null && this.current_view !== null ){
-
                 if( $current_modal ){
-                    $current_modal.foundation('reveal', 'close');
+                    (function(self){
+                         $current_modal
+                            .foundation('reveal', 'close')
+                            .on('closed', function(){
+                                console.log('CLOSED');
+                                // Unset Variables
+                                self.current_model.set('currently_viewing', false);
+                                self.current_model = null;
+                                self.current_view = null; 
+
+                                // UnFreeze Container
+                                self.global.unFreezeContainer(); 
+
+                                // Update Global
+                                self.global.update(); 
+                            })
+                    }(this))  
                 }
-                
-                // Unset Variables
-                this.current_model.set('currently_viewing', false);
-                this.current_model = null;
-                this.current_view = null; 
-
-                // UnFreeze Container
-                this.global.unFreezeContainer(); 
-
-                // Update Global
-                this.global.update(); 
             }
         },
         registerLoadedProject: function( ID ){
@@ -190,20 +195,21 @@ var Views = {};
         },
         initVideos: function(){
 
-            // Change Class On Header
-            $("#main-page-title").addClass('active');
-
             // Init Videos
             var time = {};
             this.$el.addClass('visible');
             var ii = 0; 
             $.each(this.projects, function(i,video){
-                time[ ii ] = ii * 700;
-                setTimeout(function(){
-                    video.initCanvas(); 
-                }, time[ ii ]);
-                ii++;
+                // time[ ii ] = ii * 700;
+                // setTimeout(function(){
+                //     video.initCanvas(); 
+                // }, time[ ii ]);
+                // ii++;
+                video.initCanvas(); 
             });
+
+            // Change Class On Header
+            this.global.main_title_handler.initTitle();
         },
         setRelatedAsAvailable: function( current_model_id ){
 

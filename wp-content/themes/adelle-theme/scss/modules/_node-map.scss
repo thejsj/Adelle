@@ -3,9 +3,9 @@ svg#node_map{
 	z-index: 75;
 	bottom: 10px;
 	left: 10px;
-	background: rgba(255,255,255,0.1);
-	border: solid 1px #c7c7c7;
-	border-radius: 150px; 
+	// background: rgba(255,255,255,0.1);
+	// border: solid 1px #c7c7c7;
+	// border-radius: 150px; 
 	
 	display: none; 
 	@include breakpoint('medium') {

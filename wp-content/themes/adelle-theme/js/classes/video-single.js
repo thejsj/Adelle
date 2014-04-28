@@ -172,6 +172,7 @@ var Video;
 	        if( !__self.bound ){
 	            __self.bound = true; 
 		        if( __self.uses_video ){
+		        	console.log('Play Video');
 		            __self.video.play();
 		        }
 		        else {

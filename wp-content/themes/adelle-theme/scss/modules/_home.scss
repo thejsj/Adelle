@@ -1,13 +1,11 @@
 #project-home-container {
     opacity: 0;
-    -webkit-transition: opacity 300ms; /* For Safari 3.1 to 6.0 */
-    -moz-transition: opacity 300ms;
-    transition: opacity 300ms;
+    @include transition-property(opacity);
+    @include transition-duration(300ms);
     &.visible {
         opacity: 1;
-        -webkit-transition: opacity 300ms; /* For Safari 3.1 to 6.0 */
-        -moz-transition: opacity 300ms;
-        transition: opacity 300ms;
+        @include transition-property(opacity);
+        @include transition-duration(300ms);
     }
 }
 

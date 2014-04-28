@@ -1,3 +1,5 @@
+$animation_time: 2.0s;
+
 #main-page-title {
     
     position: fixed;
@@ -14,10 +16,6 @@
     overflow: visible;
     z-index: 50;
     cursor: pointer;  
-
-    -webkit-transition: color 5s; /* For Safari 3.1 to 6.0 */
-    -moz-transition: color 5s;
-    transition: color 5s;
 
     @include breakpoint( 'medium' ) {
         width: 850px; 
@@ -47,32 +45,37 @@
     }
 
     a {
-        -webkit-transition: color 5s; /* For Safari 3.1 to 6.0 */
-        -moz-transition: color 5s;
-        transition: color 5s;
+        @include transition-property(all);
+        @include transition-duration($animation_time);
+        @include transition-timing-function(ease-in);
         border-bottom: 3px solid black;
         color: black; 
         @include breakpoint( 'medium' ) {
             border-bottom: 7px solid black;
             &:hover {
-                color: black; 
-                border-color: black;
+                color: black;
             }
         } 
     }
+
     &.active {
-        -webkit-transition: color 5s; /* For Safari 3.1 to 6.0 */
-        -moz-transition: color 5s;
-        transition: color 5s;
+        @include transition-property(all);
+        @include transition-duration($animation_time);
+        @include transition-timing-function(ease-in);
         a {
-            -webkit-transition: color 5s; /* For Safari 3.1 to 6.0 */
-            -moz-transition: color 5s;
-            transition: color 5s;
+            @include transition-property(all);
+            @include transition-duration($animation_time);
+            @include transition-timing-function(ease-in);
             color: white; 
             border-color: white; 
             &:hover {
                 color: white; 
-                border-color: white; 
+            }
+        }
+        &.animation-done {
+            @include transition-duration(0s);
+            a {
+                @include transition-duration(0s);
             }
         }
     }
