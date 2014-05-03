@@ -23,13 +23,13 @@
     <link rel="shortcut icon" type="image/x-icon" href="<?php bloginfo('template_url'); ?>/ico/favicon.ico">
     <link rel="icon" type="image/png" href="<?php bloginfo('template_url'); ?>/ico/favicon.ico">
     <link href="<?php bloginfo('template_url'); ?>/ico/apple-touch-icon.png" rel="apple-touch-icon" />
-    <link href="<?php bloginfo('template_url'); ?>/ico/apple-touch-icon-60x60.png" rel="apple-touch-icon" sizes="60x60" />
-    <link href="<?php bloginfo('template_url'); ?>/ico/apple-touch-icon-72x72.png" rel="apple-touch-icon" sizes="72x72" />
-    <link href="<?php bloginfo('template_url'); ?>/ico/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76" />
-    <link href="<?php bloginfo('template_url'); ?>/ico/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114" />
-    <link href="<?php bloginfo('template_url'); ?>/ico/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120" />
-    <link href="<?php bloginfo('template_url'); ?>/ico/apple-touch-icon-144x144.png" rel="apple-touch-icon" sizes="144x144" />
-    <link href="<?php bloginfo('template_url'); ?>/ico/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152" />
+    <link href="<?php bloginfo('template_url'); ?>/ico/apple-touch-icon-60x60-precomposed.png" rel="apple-touch-icon" sizes="60x60" />
+    <link href="<?php bloginfo('template_url'); ?>/ico/apple-touch-icon-72x72-precomposed.png" rel="apple-touch-icon" sizes="72x72" />
+    <link href="<?php bloginfo('template_url'); ?>/ico/apple-touch-icon-76x76-precomposed.png" rel="apple-touch-icon" sizes="76x76" />
+    <link href="<?php bloginfo('template_url'); ?>/ico/apple-touch-icon-114x114-precomposed.png" rel="apple-touch-icon" sizes="114x114" />
+    <link href="<?php bloginfo('template_url'); ?>/ico/apple-touch-icon-120x120-precomposed.png" rel="apple-touch-icon" sizes="120x120" />
+    <link href="<?php bloginfo('template_url'); ?>/ico/apple-touch-icon-144x144-precomposed.png" rel="apple-touch-icon" sizes="144x144" />
+    <link href="<?php bloginfo('template_url'); ?>/ico/apple-touch-icon-152x152-precomposed.png" rel="apple-touch-icon" sizes="152x152" />
 
 	<!-- CSS -->
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic' rel='stylesheet' type='text/css'>
