@@ -136,7 +136,7 @@ module.exports = function(grunt) {
 			},
 			icons: {
 				src: 'images/fav.png',
-				dest: 'ico'
+				dest: './ico'
 			}
 		},
 	});
@@ -160,6 +160,6 @@ module.exports = function(grunt) {
 	// Tasks
 	grunt.registerTask('default', ['build','watch']);
 	grunt.registerTask('build', ['sass', 'browserify']);
-	grunt.registerTask('staging', ['build', 'uglify:dependencies', 'uglify:dev']);
-	grunt.registerTask('production', ['build', 'uglify', 'cssmin']);
+	grunt.registerTask('staging', ['build', 'uglify:dependencies', 'uglify:dev', 'favicons']);
+	grunt.registerTask('production', ['build', 'uglify', 'cssmin'. 'favicons']);
 }
