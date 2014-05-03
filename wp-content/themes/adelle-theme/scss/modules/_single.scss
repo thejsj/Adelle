@@ -106,13 +106,12 @@
 							background-position: center right 15px;
 						}
 					}
-
 					.touchevents & {
 						padding-right: 80px;
-						&.backgroundsize.bgpositionxy {
-							background-image: url('ico/PNG/arrow-right3.png');
-							background-position: center right 15px;
-						}
+					}
+					.touchevents.backgroundsize.bgpositionxy {
+						background-image: url('ico/PNG/arrow-right3.png');
+						background-position: center right 15px;
 					}
 				}
 			}
@@ -126,13 +125,12 @@
 							background-position: center left 15px;
 						}
 					}
-
 					.touchevents & {
 						padding-left: 80px;
-						&.backgroundsize.bgpositionxy {
-							background-image: url('ico/PNG/arrow-left3.png');
-							background-position: center left 15px;
-						}
+					}
+					.touchevents.backgroundsize.bgpositionxy {
+						background-image: url('ico/PNG/arrow-left3.png');
+						background-position: center left 15px;
 					}
 				}
 			}
