@@ -153,6 +153,12 @@ var Views = {};
                     self.global.router.navigate( '/', true);
                 });
 
+                $('.related-projects-list a').click(function(event){
+                    self.global.router.navigate( this.pathname, true);
+                    event.preventDefault(); 
+                    event.stopPropogation();
+                });
+
                 // Init Slideshow
                 if( typeof createJSJGallerySlideshow !== 'undefined'){
                     createJSJGallerySlideshow(); 
