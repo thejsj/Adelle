@@ -26,15 +26,15 @@
 			{{{ post_content }}}
 		</div>
 		<!-- Currently Disabled -->
-		<!-- 
-			<div class="related-projects">
-				<h5 class="change-color">Related</h5>
-				<ul class="related-projects-list">
-					{{# related_project_posts }}
-						<li class="change-bg-color {{ class }}"><a href="{{ permalink }}">{{ post_title }}</a></li>
-					{{/ related_project_posts }}
-				</ul>
-			</div> -->
+
+		<div class="related-projects">
+			<h5 class="change-color">Related</h5>
+			<ul class="related-projects-list">
+				{{# related_project_posts }}
+					<li class="change-bg-color {{ class }}"><a href="{{ permalink }}">{{ post_title }}</a></li>
+				{{/ related_project_posts }}
+			</ul>
+		</div>
 	</article>
 	<a class="close-reveal-modal top change-bg-color">&#215;</a>
 </div>
