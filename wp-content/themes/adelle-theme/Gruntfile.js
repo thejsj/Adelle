@@ -159,7 +159,7 @@ module.exports = function(grunt) {
 
 	// Tasks
 	grunt.registerTask('default', ['build','watch']);
-	grunt.registerTask('build', ['sass', 'browserify']);
-	grunt.registerTask('staging', ['build', 'uglify:dependencies', 'uglify:dev', 'favicons']);
-	grunt.registerTask('production', ['build', 'uglify', 'cssmin', 'favicons']);
+	grunt.registerTask('build', ['sass', 'browserify', 'mustache', 'favicons']);
+	grunt.registerTask('staging', ['build', 'uglify:dependencies', 'uglify:dev']);
+	grunt.registerTask('production', ['build', 'uglify', 'cssmin']);
 }
