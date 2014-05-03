@@ -38,6 +38,7 @@ var Global = require('../classes/global.js');
 			},
 			function( data ) {
 				// With the data response, create the global object
+				console.log(data.posts);
 				var global = new Global( data.posts, data.pages ); 
 			}
 		);

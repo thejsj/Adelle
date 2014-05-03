@@ -18,7 +18,9 @@
 			$this->fallback_images = $this->get_fallback_images(); 
 
 			// Get Project Relationship
-			$this->related_projects = $this->get_related_projects();
+			$this->related_projects = $this->get_related_projects_ids();
+
+			$this->related_project_posts = $this->get_related_projects( $this->related_projects ); 
 		}
 		
 		/**
@@ -57,10 +59,10 @@
 		/**
 		 * Get related videos
 		 *
-		 * @return array
+		 * @return array of ids
 		 */
-		private function get_related_projects(){
-			$related_projects = array();
+		private function get_related_projects_ids(){
+			$related_projects_ids = array();
 			$all_project_relationships_unfiletered = get_field('project_to_project_relationship', 'option');
 			$all_project_relationships = array(); 
 			// Filter out project that aren't published
@@ -75,16 +77,29 @@
 			// Push projects
 			foreach( $all_project_relationships as $relationship ){
 				if( $relationship['first_project']->ID === $this->ID && $relationship['second_project']->ID !== $this->ID ){
-					array_push($related_projects, $relationship['second_project']->ID);
+					array_push($related_projects_ids, $relationship['second_project']->ID);
 				}
 				else if( $relationship['first_project']->ID !== $this->ID && $relationship['second_project']->ID === $this->ID ){
-					array_push($related_projects, $relationship['first_project']->ID);
+					array_push($related_projects_ids, $relationship['first_project']->ID);
 				}
+			}
+			return $related_projects_ids;
+		}
+
+		/**
+		 * Get all projects in array
+		 * 
+		 * @return array
+		 */ 
+		private function get_related_projects( $ids ){
+			$related_projects = array(); 
+			foreach( $ids as $key => $project_id ){
+				$singleProject = new Single($project_id); 
+				$singleProject->class = ( $key % 2 == 0 ) ? 'even' : 'odd';
+				array_push( $related_projects, $singleProject);
 			}
 			return $related_projects;
 		}
 
-
 	}
-
 ?>

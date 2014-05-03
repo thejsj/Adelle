@@ -80,4 +80,88 @@
 		}
 
 	}
+
+	.related-projects {
+		h1,h2,h3,h4,h5,h6 {
+			margin: 0;
+			text-align: center; 
+			text-transform: uppercase;
+			font-weight: bold;
+			letter-spacing: 0.1em;
+			padding: 5px;
+		}
+	}
+
+	.related-projects-list {
+		margin:0; 
+		list-style-type: none; 
+		li {
+			&.odd {
+				a {
+					background-position: center right 40px;
+					&:hover {
+						padding-right: 80px;
+						.backgroundsize.bgpositionxy & {
+							background-image: url('ico/PNG/arrow-right3.png');
+							background-position: center right 15px;
+						}
+					}
+
+					.touchevents & {
+						padding-right: 80px;
+						&.backgroundsize.bgpositionxy {
+							background-image: url('ico/PNG/arrow-right3.png');
+							background-position: center right 15px;
+						}
+					}
+				}
+			}
+			&.even {
+				a {
+					background-position: center left 40px;
+					&:hover {
+						padding-left: 80px;
+						.backgroundsize.bgpositionxy & {
+							background-image: url('ico/PNG/arrow-left3.png');
+							background-position: center left 15px;
+						}
+					}
+
+					.touchevents & {
+						padding-left: 80px;
+						&.backgroundsize.bgpositionxy {
+							background-image: url('ico/PNG/arrow-left3.png');
+							background-position: center left 15px;
+						}
+					}
+				}
+			}
+			a {
+				color: white; 
+				font-style: italic; 
+				font-size: 1.5em;
+				display: block;
+				width: 100%;
+				height: 100%;
+				padding: 5px 100px;
+				text-align: center;
+				border: 1px solid transparent;
+
+				background-repeat: no-repeat;
+				background-size: contain;
+				background-size: auto 50%;
+
+				-moz-transition: all 700ms; /* For Safari 3.1 to 6.0 */
+				-webkit-transition: all 700ms; /* For Safari 3.1 to 6.0 */
+				transition: all 700ms;
+
+				&:hover {
+					-moz-transition: all 300ms; /* For Safari 3.1 to 6.0 */
+					-webkit-transition: all 300ms; /* For Safari 3.1 to 6.0 */
+					transition: all 300ms;
+					border-color: white; 
+				}
+			}
+		}
+	}
 }
