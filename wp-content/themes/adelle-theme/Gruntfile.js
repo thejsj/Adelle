@@ -13,27 +13,27 @@ module.exports = function(grunt) {
 				  outputStyle: 'expanded'
 				},
 				files: {
-				  'style.css': 'scss/style.scss'
+				  'style.css': 'app/scss/style.scss'
 				}        
 			}
 		},
 		watch: {
 			grunt: { files: ['Gruntfile.js'] },
 			sass: {
-				files: 'scss/**/*.scss',
+				files: 'app/scss/**/*.scss',
 				tasks: ['sass']
 			},
 			mustache : {
-				files: ['templates/*.mustache'],
+				files: ['app/templates/*.mustache'],
 				tasks: ['mustache', 'watchify']
 			},
 			watchify: {
 				files: [
-					'js/app/*.js',
-					'js/classes/*.js',
-					'js/backbone/*.js',
+					'app/js/app/*.js',
+					'app/js/classes/*.js',
+					'app/js/backbone/*.js',
 					'bower_components/foundation/js/**/*.js', 
-					'js/templates.js'
+					'app/js/templates.js'
 				],
 				tasks: ['watchify']
 			},
@@ -46,28 +46,28 @@ module.exports = function(grunt) {
 
 		watchify: {
 			header: {
-				src: './js/app/header.js',
-				dest: './js/header.js',
+				src: './app/js/app/header.js',
+				dest: './dist/js/header.js',
 			},
 			footer: {
-				src: './js/app/footer.js',
-				dest: './js/footer.js',
+				src: './app/js/app/footer.js',
+				dest: './dist/js/footer.js',
 			}
 		},
 		browserify: {
 			header: {
-				src: './js/app/header.js',
-				dest: './js/header.js',
+				src: './app/js/app/header.js',
+				dest: './dist/js/header.js',
 			},
 			footer: {
-				src: './js/app/footer.js',
-				dest: './js/footer.js',
+				src: './app/js/app/footer.js',
+				dest: './dist/js/footer.js',
 			}
 		},
 		mustache: {
 			files : {
-				src: 'templates/',
-				dest: 'js/templates.js',
+				src: 'app/templates/',
+				dest: 'dist/js/templates.js',
 				options: {
 					prefix: 'Templates = ',
 					postfix: '; \nmodule.exports = Templates;',
@@ -87,9 +87,9 @@ module.exports = function(grunt) {
 					mangle: true,
 				},
 				files: {
-					'js/libs/footer-libs.js': [
+					'dist/js/libs/footer-libs.js': [
 						'bower_components/foundation/js/foundation/foundation.js',
-						'js/libs/foundation.reveal.js',
+						'app/js/libs/foundation.reveal.js',
 						'bower_components/jquery.cookie/jquery.cookie.js'
 					],
 				}
@@ -104,8 +104,8 @@ module.exports = function(grunt) {
         			mangle: false,
 				},
 				files: {
-					'js/header.js': ['js/header.js'],
-					'js/footer.js': ['js/footer.js'],
+					'dist/js/header.js': ['app/js/header.js'],
+					'dist/js/footer.js': ['app/js/footer.js'],
 				}
 			},
 			production: {
@@ -115,8 +115,8 @@ module.exports = function(grunt) {
 					mangle: true,
 				},
 				files: {
-					'js/header.js': ['js/header.js'],
-					'js/footer.js': ['js/footer.js'],
+					'dist/js/header.js': ['app/js/header.js'],
+					'dist/js/footer.js': ['app/js/footer.js'],
 				}
 			}
 		},
@@ -135,10 +135,24 @@ module.exports = function(grunt) {
 				windowsTile: false,
 			},
 			icons: {
-				src: 'images/fav.png',
-				dest: './ico'
+				src: 'app/images/fav.png',
+				dest: './dist/ico'
 			}
 		},
+
+		copy: {
+			images: {
+				files: [
+					// includes files within path
+					{ 
+						expand: true, 
+						src: ['app/ico/'], 
+						dest: 'dist/', 
+						filter: 'isFile'
+					},
+				]
+			}
+		}
 	});
 
 	// CSS & Sass
@@ -152,6 +166,7 @@ module.exports = function(grunt) {
 
 	// Images
 	grunt.loadNpmTasks('grunt-favicons');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 
 	// Production
 	grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -159,7 +174,7 @@ module.exports = function(grunt) {
 
 	// Tasks
 	grunt.registerTask('default', ['build','watch']);
-	grunt.registerTask('build', ['sass', 'browserify', 'mustache', 'favicons']);
+	grunt.registerTask('build', ['sass', 'browserify', 'mustache', 'favicons', 'copy']);
 	grunt.registerTask('staging', ['build', 'uglify:dependencies', 'uglify:dev']);
 	grunt.registerTask('production', ['build', 'uglify', 'cssmin']);
 }

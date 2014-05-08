@@ -5888,7 +5888,8 @@ video {
     -moz-transition-timing-function: ease-in;
     transition-timing-function: ease-in;
     border-bottom: 3px solid black;
-    color: black; }
+    color: black;
+    padding-left: 20px; }
     @media all and (min-width: 720px) {
       #main-page-title a {
         border-bottom: 7px solid black; }
@@ -5933,7 +5934,9 @@ video {
   #header ul.menu {
     list-style-type: none; }
     #header ul.menu li {
-      list-style-type: none; }
+      list-style-type: none;
+      display: inline-block;
+      margin-right: 10px; }
       #header ul.menu li a {
         color: white;
         background: black;
@@ -6059,28 +6062,28 @@ video {
       .single-modal .related-projects-list li.odd a:hover {
         padding-right: 40px; }
         .backgroundsize.bgpositionxy .single-modal .related-projects-list li.odd a:hover {
-          background-image: url('ico/PNG/arrow-right3.png');
+          background-image: url('dist/ico/PNG/arrow-right3.png');
           background-position: center right 10px; }
       .touchevents .single-modal .related-projects-list li.odd a {
         padding-left: 0;
         padding-right: 40px;
         text-align: right; }
       .touchevents.backgroundsize.bgpositionxy .single-modal .related-projects-list li.odd a {
-        background-image: url('ico/PNG/arrow-right3.png');
+        background-image: url('dist/ico/PNG/arrow-right3.png');
         background-position: center right 10px; }
     .single-modal .related-projects-list li.even a {
       background-position: center left 30px; }
       .single-modal .related-projects-list li.even a:hover {
         padding-left: 40px; }
         .backgroundsize.bgpositionxy .single-modal .related-projects-list li.even a:hover {
-          background-image: url('ico/PNG/arrow-left3.png');
+          background-image: url('dist/ico/PNG/arrow-left3.png');
           background-position: center left 10px; }
       .touchevents .single-modal .related-projects-list li.even a {
         padding-right: 0;
         padding-left: 40px;
         text-align: left; }
       .touchevents.backgroundsize.bgpositionxy .single-modal .related-projects-list li.even a {
-        background-image: url('ico/PNG/arrow-left3.png');
+        background-image: url('dist/ico/PNG/arrow-left3.png');
         background-position: center left 10px; }
     .single-modal .related-projects-list li a {
       color: white;
@@ -6110,7 +6113,7 @@ video {
 
 svg#node_map {
   position: fixed;
-  z-index: 75;
+  z-index: 100;
   bottom: 10px;
   left: 10px;
   display: none; }
@@ -6122,7 +6125,6 @@ svg#node_map {
     stroke-width: 1.5px;
     opacity: 0.5; }
   svg#node_map .node {
-    /*fill: #000;*/
     opacity: 0.5; }
     svg#node_map .node.viewed-true {
       opacity: 0.9; }
