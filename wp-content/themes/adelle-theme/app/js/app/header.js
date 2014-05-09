@@ -7,6 +7,8 @@ require('browsernizr/test/css/transforms3d');
 require('browsernizr/test/css/transitions');
 require('browsernizr/test/event/deviceorientation-motion');
 require('browsernizr/test/url/data-uri');
+require('browsernizr/test/svg/asimg');
+require('browsernizr/test/svg/inline');
 
 require('browsernizr/test/canvas');
 require('browsernizr/test/geolocation');

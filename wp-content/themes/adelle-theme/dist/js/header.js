@@ -8,6 +8,8 @@ require('browsernizr/test/css/transforms3d');
 require('browsernizr/test/css/transitions');
 require('browsernizr/test/event/deviceorientation-motion');
 require('browsernizr/test/url/data-uri');
+require('browsernizr/test/svg/asimg');
+require('browsernizr/test/svg/inline');
 
 require('browsernizr/test/canvas');
 require('browsernizr/test/geolocation');
@@ -20,7 +22,7 @@ require('browsernizr/test/video');
 require('browsernizr/test/video/loop');
 
 window.Modernizr = require('browsernizr');
-},{"browsernizr":2,"browsernizr/test/canvas":33,"browsernizr/test/css/backgroundposition-xy":34,"browsernizr/test/css/backgroundsize":35,"browsernizr/test/css/fontface":36,"browsernizr/test/css/rgba":37,"browsernizr/test/css/transforms":38,"browsernizr/test/css/transforms3d":39,"browsernizr/test/css/transitions":40,"browsernizr/test/event/deviceorientation-motion":41,"browsernizr/test/geolocation":42,"browsernizr/test/history":43,"browsernizr/test/json":44,"browsernizr/test/requestanimationframe":45,"browsernizr/test/touchevents":46,"browsernizr/test/url/data-uri":47,"browsernizr/test/video":48,"browsernizr/test/video/loop":49,"browsernizr/test/webanimations":50}],2:[function(require,module,exports){
+},{"browsernizr":2,"browsernizr/test/canvas":33,"browsernizr/test/css/backgroundposition-xy":34,"browsernizr/test/css/backgroundsize":35,"browsernizr/test/css/fontface":36,"browsernizr/test/css/rgba":37,"browsernizr/test/css/transforms":38,"browsernizr/test/css/transforms3d":39,"browsernizr/test/css/transitions":40,"browsernizr/test/event/deviceorientation-motion":41,"browsernizr/test/geolocation":42,"browsernizr/test/history":43,"browsernizr/test/json":44,"browsernizr/test/requestanimationframe":45,"browsernizr/test/svg/asimg":46,"browsernizr/test/svg/inline":47,"browsernizr/test/touchevents":48,"browsernizr/test/url/data-uri":49,"browsernizr/test/video":50,"browsernizr/test/video/loop":51,"browsernizr/test/webanimations":52}],2:[function(require,module,exports){
 var Modernizr = require('./lib/Modernizr'),
     ModernizrProto = require('./lib/ModernizrProto'),
     classes = require('./lib/classes'),
@@ -1298,6 +1300,72 @@ Detects support for the `window.requestAnimationFrame` API, for offloading anima
 
 
 },{"./../lib/Modernizr":3,"./../lib/prefixed":22}],46:[function(require,module,exports){
+var Modernizr = require('./../../lib/Modernizr');
+var addTest = require('./../../lib/addTest');
+
+/*!
+{
+  "name": "SVG as an <img> tag source",
+  "property": "svgasimg",
+  "caniuse" : "svg-img",
+  "tags": ["svg"],
+  "authors": ["Stu Cox"],
+  "async" : true,
+  "notes": [{
+    "name": "HTML5 Spec",
+    "href": "http://www.w3.org/TR/html5/embedded-content-0.html#the-img-element"
+  }]
+}
+!*/
+
+  // Assumes data URI support, but according to caniuse every browser which
+  // supports SVG in an <img> also supports data URIs
+  Modernizr.addAsyncTest(function () {
+    var img = new Image();
+
+    img.onerror = function () {
+      addTest('svgasimg', false);
+    };
+    img.onload = function () {
+      addTest('svgasimg', img.width == 1 && img.height == 1);
+    };
+
+    // 1px x 1px SVG; must be base64 or URI encoded for IE9... base64 is shorter
+    img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjwvc3ZnPg==';
+  });
+
+
+},{"./../../lib/Modernizr":3,"./../../lib/addTest":5}],47:[function(require,module,exports){
+var Modernizr = require('./../../lib/Modernizr');
+var createElement = require('./../../lib/createElement');
+
+/*!
+{
+  "name": "Inline SVG",
+  "property": "inlinesvg",
+  "caniuse": "svg-html5",
+  "tags": ["svg"],
+  "notes": [{
+    "name": "Test page",
+    "href": "http://paulirish.com/demo/inline-svg"
+  }],
+  "polyfills": ["inline-svg-polyfill"]
+}
+!*/
+/* DOC
+
+Detects support for inline SVG in HTML (not within XHTML).
+
+*/
+
+  Modernizr.addTest('inlinesvg', function() {
+    var div = createElement('div');
+    div.innerHTML = '<svg/>';
+    return (div.firstChild && div.firstChild.namespaceURI) == 'http://www.w3.org/2000/svg';
+  });
+
+
+},{"./../../lib/Modernizr":3,"./../../lib/createElement":8}],48:[function(require,module,exports){
 var Modernizr = require('./../lib/Modernizr');
 var prefixes = require('./../lib/prefixes');
 var testStyles = require('./../lib/testStyles');
@@ -1355,7 +1423,7 @@ This test will also return `true` for Firefox 4 Multitouch support.
   });
 
 
-},{"./../lib/Modernizr":3,"./../lib/prefixes":23,"./../lib/testStyles":31}],47:[function(require,module,exports){
+},{"./../lib/Modernizr":3,"./../lib/prefixes":23,"./../lib/testStyles":31}],49:[function(require,module,exports){
 var Modernizr = require('./../../lib/Modernizr');
 var addTest = require('./../../lib/addTest');
 
@@ -1441,7 +1509,7 @@ Modernizr.datauri.over32kb  // false in IE8
   });
 
 
-},{"./../../lib/Modernizr":3,"./../../lib/addTest":5}],48:[function(require,module,exports){
+},{"./../../lib/Modernizr":3,"./../../lib/addTest":5}],50:[function(require,module,exports){
 var Modernizr = require('./../lib/Modernizr');
 var createElement = require('./../lib/createElement');
 
@@ -1506,7 +1574,7 @@ Modernizr.video.ogg     // 'probably'
   });
 
 
-},{"./../lib/Modernizr":3,"./../lib/createElement":8}],49:[function(require,module,exports){
+},{"./../lib/Modernizr":3,"./../lib/createElement":8}],51:[function(require,module,exports){
 var Modernizr = require('./../../lib/Modernizr');
 var createElement = require('./../../lib/createElement');
 
@@ -1521,7 +1589,7 @@ var createElement = require('./../../lib/createElement');
     Modernizr.addTest('videoloop', 'loop' in createElement('video'));
 
 
-},{"./../../lib/Modernizr":3,"./../../lib/createElement":8}],50:[function(require,module,exports){
+},{"./../../lib/Modernizr":3,"./../../lib/createElement":8}],52:[function(require,module,exports){
 var Modernizr = require('./../lib/Modernizr');
 
 /*!

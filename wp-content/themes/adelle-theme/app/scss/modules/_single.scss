@@ -103,7 +103,11 @@
 						padding-right: 40px;
 						.backgroundsize.bgpositionxy & {
 							background-image: url('dist/app/ico/white/PNG/arrow-right3.png');
+							
 							background-position: center right 10px;
+						}
+						.backgroundsize.bgpositionxy.svgasimg & {
+							background-image: url('dist/app/ico/white/SVG/arrow-right3.svg');
 						}
 					}
 					.touchevents & {
@@ -114,6 +118,10 @@
 					.touchevents.backgroundsize.bgpositionxy & {
 						background-image: url('dist/app/ico/white/PNG/arrow-right3.png');
 						background-position: center right 10px;
+						
+					}
+					.touchevents.backgroundsize.bgpositionxy.svgasimg & {
+						background-image: url('dist/app/ico/white/SVG/arrow-right3.svg');
 					}
 				}
 			}
@@ -125,6 +133,10 @@
 						.backgroundsize.bgpositionxy & {
 							background-image: url('dist/app/ico/white/PNG/arrow-left3.png');
 							background-position: center left 10px;
+							
+						}
+						.backgroundsize.bgpositionxy.svgasimg & {
+							background-image: url('dist/app/ico/white/SVG/arrow-left3.svg');
 						}
 					}
 					.touchevents & {
@@ -135,6 +147,9 @@
 					.touchevents.backgroundsize.bgpositionxy & {
 						background-image: url('dist/app/ico/white/PNG/arrow-left3.png');
 						background-position: center left 10px;
+					}
+					.touchevents.backgroundsize.bgpositionxy.svgasimg & {
+						background-image: url('dist/app/ico/white/SVG/arrow-left3.svg');
 					}
 				}
 			}
