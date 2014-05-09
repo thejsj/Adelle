@@ -93,9 +93,15 @@ $animation_time: 2.0s;
             margin-right: 10px;
             a {
                 color: white;
-                background: black;
+                background: #222;
+                border-radius: 0 0 3px 3px;
                 padding: 5px 10px;
                 font-size: 16px;
+                border: solid 1px black;
+                border-top: 2px;
+                &:hover {
+                    background: #000;
+                }
             }
         }
     }

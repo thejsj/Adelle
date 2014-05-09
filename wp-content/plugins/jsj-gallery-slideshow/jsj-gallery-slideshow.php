@@ -4,7 +4,7 @@
 Plugin Name: JSJ Gallery Slideshow
 Plugin URI: http://wordpress.org/plugins/jsj-gallery-slideshow/
 Description: A plugin to immediately improve all your WordPress galleries, with a simple, easy-to-use slideshow. 
-Version: 1.2.8
+Version: 1.2.9
 Author: Jorge Silva Jetter
 Author URI: http://thejsj.com
 License: GPL2
@@ -375,11 +375,11 @@ class JSJGallerySlideshow {
 			if ( !$attr['orderby'] )
 				unset( $attr['orderby'] );
 		};
-
+		
 		extract(shortcode_atts(array(
 			'order'      => 'ASC',
 			'orderby'    => 'menu_order ID',
-			'id'         => @$post->ID,
+			'id'         => (isset($post->ID) ? $post->ID : null),
 			'itemtag'    => 'dl',
 			'icontag'    => 'dt',
 			'captiontag' => 'dd',

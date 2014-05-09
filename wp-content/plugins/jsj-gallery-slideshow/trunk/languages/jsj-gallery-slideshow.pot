@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the JSJ Gallery Slideshow package.
 msgid ""
 msgstr ""
-"Project-Id-Version: JSJ Gallery Slideshow 1.2.8\n"
+"Project-Id-Version: JSJ Gallery Slideshow 1.2.9\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/jsj-gallery-slideshow\n"
-"POT-Creation-Date: 2014-04-22 03:04:59+00:00\n"
+"POT-Creation-Date: 2014-04-23 23:56:02+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -372,18 +372,18 @@ msgstr ""
 msgid "Inspired by %sCargo%s"
 msgstr ""
 
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:443
-#: jsj-gallery-slideshow.php:443
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:441
+#: jsj-gallery-slideshow.php:441
 msgid "Previous"
 msgstr ""
 
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:444
-#: jsj-gallery-slideshow.php:444
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:442
+#: jsj-gallery-slideshow.php:442
 msgid "Next Image"
 msgstr ""
 
-#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:445
-#: jsj-gallery-slideshow.php:445
+#: build/jsj-gallery-slideshow/jsj-gallery-slideshow.php:443
+#: jsj-gallery-slideshow.php:443
 msgctxt "1 of 10"
 msgid "of"
 msgstr ""

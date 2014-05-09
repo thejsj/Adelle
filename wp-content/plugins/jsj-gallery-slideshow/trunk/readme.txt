@@ -4,7 +4,7 @@ Donate link: http://thejsj.com
 Tags: slideshow, gallery, simple, jquery, easing, animation, cargo, cycle, jsj
 Requires at least: 3.3
 Tested up to: 3.9
-Stable tag: 1.2.8
+Stable tag: 1.2.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -90,6 +90,12 @@ Adding 'of' as translation string
 = 1.2.7 =
 Adding Dutch translation. Translated by [datiswous](http://profiles.wordpress.org/datiswous/)
 
+= 1.2.8 =
+Adding default image/thumbnail size as a gallery option. (Advanced Options)
+
+= 1.2.9 =
+Fixing small image/thumbnail related error.
+
 == Upgrade notice ==
 
 = 1.0 =
@@ -122,6 +128,12 @@ Minor changes. Update and enjoy!
 
 = 1.2.7 =
 Adding Dutch translation. Translated by [datiswous](http://profiles.wordpress.org/datiswous/)
+
+= 1.2.8 =
+Adding default image/thumbnail size as a gallery option. (Advanced Options)
+
+= 1.2.9 =
+Fixing small image/thumbnail related error.
 
 == Online Examples ==
 

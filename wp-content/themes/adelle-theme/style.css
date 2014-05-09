@@ -5939,9 +5939,14 @@ video {
       margin-right: 10px; }
       #header ul.menu li a {
         color: white;
-        background: black;
+        background: #222222;
+        border-radius: 0 0 3px 3px;
         padding: 5px 10px;
-        font-size: 16px; }
+        font-size: 16px;
+        border: solid 1px black;
+        border-top: 2px; }
+        #header ul.menu li a:hover {
+          background: black; }
 
 .dg li:not(.folder) {
   font-size: 11px; }
@@ -6143,7 +6148,7 @@ svg#node_map {
   width: 70px;
   height: 5px;
   overflow: hidden;
-  background-color: #3dff00;
+  background-color: #f7f7f7;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   -ms-border-radius: 4px;
