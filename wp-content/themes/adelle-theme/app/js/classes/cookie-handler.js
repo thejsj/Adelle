@@ -4,7 +4,7 @@ var CookieHandler = {};
 
 (function($){
 
-	CookieHandler = function( all_project_ids, projects, node_map_options ){
+	CookieHandler = function( all_project_ids, projects, node_map_options, global ){
 
 		var self = {}, __self = {}; 
 
@@ -28,7 +28,7 @@ var CookieHandler = {};
 			$.cookie( __self.cookie_name , __self.availableProjects.join(','), { expires: 30, path: '/' });
 
 			setTimeout(function(){
-				__self.node_map = new NodeMap(projects, node_map_options); 
+				__self.node_map = new NodeMap(projects, node_map_options, global ); 
 			});
 		}
 

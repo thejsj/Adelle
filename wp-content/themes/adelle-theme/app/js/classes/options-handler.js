@@ -40,7 +40,7 @@ var Options = {};
             // Nodemap
             __self.global_options.charge = -69;
 			__self.global_options.linkDistance = 28;
-			__self.global_options.radius = 5.5;
+			__self.global_options.radius = 6.5;
 			__self.global_options.alpha = 1.4;
         };
 

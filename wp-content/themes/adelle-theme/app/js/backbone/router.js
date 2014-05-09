@@ -23,7 +23,6 @@ var Router = {};
         }
 
         self.project = function(slug){
-            console.log( "** Open Project : " + slug );
             self.closeModals(function(){
                 self.home_view.openProject( slug );
                 self.current_view = 'project';
@@ -48,7 +47,6 @@ var Router = {};
         }
 
         self.closeModals = function(callback){
-            console.log("** Close Modals");
             if(self.current_view === 'page'){
                 setTimeout(function(){
                     self.home_view.closePage(callback);

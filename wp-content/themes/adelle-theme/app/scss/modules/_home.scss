@@ -17,16 +17,25 @@
         }
         .home-content-container {
             cursor: pointer; 
+            h2 {
+                opacity: 0.8;
+            }
         }
     }  
+
+    &.available-false {
+        background-image: url('dist/app/ico/black/PNG/lock-background.png');
+    }
+
     
     .home-content-container {
         position: absolute;
         width: 100%; 
-        height: 100%; 
+        height: 100%;
+        z-index: 5; 
         h2 {
             text-align: center;
-            color: rgb(236, 236, 236);
+            color: rgb(255,255,255);
             text-transform: uppercase;
             letter-spacing: 0.2em;
             font-weight: bold;

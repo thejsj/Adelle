@@ -139,17 +139,12 @@ var Views = {};
         },
         openModal: function( modal_view ) {
 
-            console.log(" ++ Open Modal ++ ");
-            console.log( modal_view );
-
             if(this.modal_in_transition){
-                console.log("EARLY RETURN - Open");
                 return false; 
             }
 
             // Prevent certain actions (like opening other modals) when this is on
             this.modal_in_transition = true;
-            console.log("Modal In Transition (1): " + this.modal_in_transition);
 
             // Freeze Container
             this.global.freezeContainer(); 
@@ -176,14 +171,9 @@ var Views = {};
 
                         $(this).unbind();
                         
-                        console.log( ' ^^ openModalCallback ^^ ' );
-                        console.log( this );
                         var that = this; 
                         setTimeout(function(){
-                            console.log("&& Modal Opened &&");
-                            console.log( that );
                             self.modal_in_transition = false;
-                            console.log("Modal In Transition (2): " + self.modal_in_transition);
                         }, 200);
                     });
 
@@ -210,18 +200,10 @@ var Views = {};
         },
         closeModal: function( $current_modal, callback ){
 
-            console.log(" ++ Close Modal ++ ");
-            console.log( $current_modal );
-            console.log( callback );
-
-            console.log( this.modal_in_transition );
             if(this.modal_in_transition){
-                console.log("EARLY RETURN CLOSE");
                 return false; 
             }
-
             this.modal_in_transition = true;
-            console.log("Modal In Transition (3): " + this.modal_in_transition);
 
             if( this.current_model !== null && this.current_view !== null ){
                 if( $current_modal ){
@@ -236,7 +218,9 @@ var Views = {};
                             .foundation('reveal', 'close')
                             .bind('closed', function(){
 
-                                $(this).unbind();
+                                $(this)
+                                    .unbind()
+                                    .remove();
 
                                 // UnFreeze Container
                                 self.global.unFreezeContainer(); 
@@ -247,7 +231,6 @@ var Views = {};
                                 // Execute Callback
                                 setTimeout(function(){
                                     self.modal_in_transition = false;
-                                    console.log("Modal In Transition (4): " + self.modal_in_transition);
                                     if(typeof callback === 'function'){
                                         callback();
                                     }
@@ -258,7 +241,6 @@ var Views = {};
             }
             else {
                 this.modal_in_transition = false;
-                console.log("Modal In Transition : " + this.modal_in_transition);
                 // Execute Callback
                 if(typeof callback === 'function'){
                     callback();

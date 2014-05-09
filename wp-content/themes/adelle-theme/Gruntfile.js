@@ -90,6 +90,7 @@ module.exports = function(grunt) {
 					'dist/js/libs/footer-libs.js': [
 						'bower_components/foundation/js/foundation/foundation.js',
 						'app/js/libs/foundation.reveal.js',
+						// 'bower_components/foundation/js/foundation/foundation.tooltip.js',
 						'bower_components/jquery.cookie/jquery.cookie.js'
 					],
 				}
@@ -104,8 +105,8 @@ module.exports = function(grunt) {
         			mangle: false,
 				},
 				files: {
-					'dist/js/header.js': ['app/js/header.js'],
-					'dist/js/footer.js': ['app/js/footer.js'],
+					'dist/js/header.js': ['dist/js/header.js'],
+					'dist/js/footer.js': ['dist/js/footer.js'],
 				}
 			},
 			production: {
@@ -115,8 +116,8 @@ module.exports = function(grunt) {
 					mangle: true,
 				},
 				files: {
-					'dist/js/header.js': ['app/js/header.js'],
-					'dist/js/footer.js': ['app/js/footer.js'],
+					'dist/js/header.js': ['dist/js/header.js'],
+					'dist/js/footer.js': ['dist/js/footer.js'],
 				}
 			}
 		},
@@ -146,9 +147,8 @@ module.exports = function(grunt) {
 					// includes files within path
 					{ 
 						expand: true, 
-						src: ['app/ico/'], 
+						src: ['app/ico/**/*'], 
 						dest: 'dist/', 
-						filter: 'isFile'
 					},
 				]
 			}

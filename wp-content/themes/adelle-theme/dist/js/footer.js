@@ -167,7 +167,6 @@ var Router = {};
         }
 
         self.project = function(slug){
-            console.log( "** Open Project : " + slug );
             self.closeModals(function(){
                 self.home_view.openProject( slug );
                 self.current_view = 'project';
@@ -192,7 +191,6 @@ var Router = {};
         }
 
         self.closeModals = function(callback){
-            console.log("** Close Modals");
             if(self.current_view === 'page'){
                 setTimeout(function(){
                     self.home_view.closePage(callback);
@@ -357,17 +355,12 @@ var Views = {};
         },
         openModal: function( modal_view ) {
 
-            console.log(" ++ Open Modal ++ ");
-            console.log( modal_view );
-
             if(this.modal_in_transition){
-                console.log("EARLY RETURN - Open");
                 return false; 
             }
 
             // Prevent certain actions (like opening other modals) when this is on
             this.modal_in_transition = true;
-            console.log("Modal In Transition (1): " + this.modal_in_transition);
 
             // Freeze Container
             this.global.freezeContainer(); 
@@ -394,14 +387,9 @@ var Views = {};
 
                         $(this).unbind();
                         
-                        console.log( ' ^^ openModalCallback ^^ ' );
-                        console.log( this );
                         var that = this; 
                         setTimeout(function(){
-                            console.log("&& Modal Opened &&");
-                            console.log( that );
                             self.modal_in_transition = false;
-                            console.log("Modal In Transition (2): " + self.modal_in_transition);
                         }, 200);
                     });
 
@@ -428,18 +416,10 @@ var Views = {};
         },
         closeModal: function( $current_modal, callback ){
 
-            console.log(" ++ Close Modal ++ ");
-            console.log( $current_modal );
-            console.log( callback );
-
-            console.log( this.modal_in_transition );
             if(this.modal_in_transition){
-                console.log("EARLY RETURN CLOSE");
                 return false; 
             }
-
             this.modal_in_transition = true;
-            console.log("Modal In Transition (3): " + this.modal_in_transition);
 
             if( this.current_model !== null && this.current_view !== null ){
                 if( $current_modal ){
@@ -454,7 +434,9 @@ var Views = {};
                             .foundation('reveal', 'close')
                             .bind('closed', function(){
 
-                                $(this).unbind();
+                                $(this)
+                                    .unbind()
+                                    .remove();
 
                                 // UnFreeze Container
                                 self.global.unFreezeContainer(); 
@@ -465,7 +447,6 @@ var Views = {};
                                 // Execute Callback
                                 setTimeout(function(){
                                     self.modal_in_transition = false;
-                                    console.log("Modal In Transition (4): " + self.modal_in_transition);
                                     if(typeof callback === 'function'){
                                         callback();
                                     }
@@ -476,7 +457,6 @@ var Views = {};
             }
             else {
                 this.modal_in_transition = false;
-                console.log("Modal In Transition : " + this.modal_in_transition);
                 // Execute Callback
                 if(typeof callback === 'function'){
                     callback();
@@ -619,7 +599,7 @@ var CookieHandler = {};
 
 (function($){
 
-	CookieHandler = function( all_project_ids, projects, node_map_options ){
+	CookieHandler = function( all_project_ids, projects, node_map_options, global ){
 
 		var self = {}, __self = {}; 
 
@@ -643,7 +623,7 @@ var CookieHandler = {};
 			$.cookie( __self.cookie_name , __self.availableProjects.join(','), { expires: 30, path: '/' });
 
 			setTimeout(function(){
-				__self.node_map = new NodeMap(projects, node_map_options); 
+				__self.node_map = new NodeMap(projects, node_map_options, global ); 
 			});
 		}
 
@@ -744,9 +724,6 @@ var Global = {};
 	        // Bind Menu Item Links To Backbone
 	        __self.bindMenuItemLinks(); 
 
-			// Bind Debugging and Pausing
-			__self.bindDebugging(); 
-
 			// Init Projects and Pages
 			__self.projects = new Models.ProjectCollection( projects_array );
 			__self.pages = new Models.PageCollection( pages_array );
@@ -757,7 +734,8 @@ var Global = {};
 			self.cookieHandler = new CookieHandler( 
 				__self.getAllProjectIds( __self.projects ), 
 				__self.projects,
-				self.options 
+				self.options, 
+				self
 			);
 
 			// Filter Availble Projects
@@ -856,47 +834,19 @@ var Global = {};
 		}
 
 		/**
-		 * Bind Certain Keys for Debugging
-		 *
-		 * @return this
-		 */
-		__self.bindDebugging = function(){
-			__self.debug_mode = true; 
-			__self.paused     = false; 
-
-			$(document).keypress(function(event){
-				if( event.keyCode === 43 ){
-					console.clear();
-					__self.debug_mode = !__self.debug_mode;
-					console.log( 'debug_mode : ' + __self.debug_mode );
-				}
-				else if( event.keyCode === 13 ){
-				    __self.paused = !__self.paused; 
-				    console.log( 'Pasued : ' + __self.paused );
-				}else if( event.keyCode === 100 ){
-				    self.cookieHandler.deleteCookie(); 
-				    console.log( 'Available Deleted ' );
-				}
-				else {
-				    console.log( event.keyCode );
-				}
-			});
-			return self; 
-		};
-
-		/**
 		 * Bind all links with a .menu-item class to Backbone.js
 		 *
 		 * @return this
 		 */
 		__self.bindMenuItemLinks = function(){
 
-			self.$body.find("#menu-item-565 a").click(function(event){
-				self.cookieHandler.deleteCookie(); 
-				location.reload();
-				event.preventDefault(); 
-				event.stopPropagation(); 
-			});
+			self.$body.find("#menu-item-565 a")
+				.click(function(event){
+					self.cookieHandler.deleteCookie(); 
+					location.reload();
+					event.preventDefault(); 
+					event.stopPropagation(); 
+				});
 
 			self.$menu_items.click(function(event){
 				self.router.navigate( this.pathname , {trigger: true });
@@ -1102,7 +1052,7 @@ var NodeMap;
 
 (function($){
 
-	NodeMap = function( projects, node_map_options ){
+	NodeMap = function( projects, node_map_options, global ){
 
 		var self = {}, __self = {};
 
@@ -1110,6 +1060,7 @@ var NodeMap;
 		__self.width = 220, __self.height = 220;
 
 		__self.nodes = [],__self.links = [];
+		__self.global = global;
 
 		var force = D3.layout.force()
 			.nodes(__self.nodes)
@@ -1201,8 +1152,10 @@ var NodeMap;
 				.attr("r", node_map_options.get('radius'))
 				.attr("fill", function(d) { return d.model.get('color'); })
 				.on("click", function(d){
-					document.location = d.model.get('permalink');
-				})
+					if( d.model.get('available') ){
+		                __self.global.router.navigate( d.model.get('relational_permalink') , true);
+		            }
+				});
 
 			node
 				.exit()
@@ -1343,7 +1296,7 @@ var Options = {};
             // Nodemap
             __self.global_options.charge = -69;
 			__self.global_options.linkDistance = 28;
-			__self.global_options.radius = 5.5;
+			__self.global_options.radius = 6.5;
 			__self.global_options.alpha = 1.4;
         };
 

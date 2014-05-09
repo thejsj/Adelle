@@ -5,7 +5,7 @@ var NodeMap;
 
 (function($){
 
-	NodeMap = function( projects, node_map_options ){
+	NodeMap = function( projects, node_map_options, global ){
 
 		var self = {}, __self = {};
 
@@ -13,6 +13,7 @@ var NodeMap;
 		__self.width = 220, __self.height = 220;
 
 		__self.nodes = [],__self.links = [];
+		__self.global = global;
 
 		var force = D3.layout.force()
 			.nodes(__self.nodes)
@@ -104,8 +105,10 @@ var NodeMap;
 				.attr("r", node_map_options.get('radius'))
 				.attr("fill", function(d) { return d.model.get('color'); })
 				.on("click", function(d){
-					document.location = d.model.get('permalink');
-				})
+					if( d.model.get('available') ){
+		                __self.global.router.navigate( d.model.get('relational_permalink') , true);
+		            }
+				});
 
 			node
 				.exit()

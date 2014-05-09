@@ -57,9 +57,6 @@ var Global = {};
 	        // Bind Menu Item Links To Backbone
 	        __self.bindMenuItemLinks(); 
 
-			// Bind Debugging and Pausing
-			__self.bindDebugging(); 
-
 			// Init Projects and Pages
 			__self.projects = new Models.ProjectCollection( projects_array );
 			__self.pages = new Models.PageCollection( pages_array );
@@ -70,7 +67,8 @@ var Global = {};
 			self.cookieHandler = new CookieHandler( 
 				__self.getAllProjectIds( __self.projects ), 
 				__self.projects,
-				self.options 
+				self.options, 
+				self
 			);
 
 			// Filter Availble Projects
@@ -169,47 +167,19 @@ var Global = {};
 		}
 
 		/**
-		 * Bind Certain Keys for Debugging
-		 *
-		 * @return this
-		 */
-		__self.bindDebugging = function(){
-			__self.debug_mode = true; 
-			__self.paused     = false; 
-
-			$(document).keypress(function(event){
-				if( event.keyCode === 43 ){
-					console.clear();
-					__self.debug_mode = !__self.debug_mode;
-					console.log( 'debug_mode : ' + __self.debug_mode );
-				}
-				else if( event.keyCode === 13 ){
-				    __self.paused = !__self.paused; 
-				    console.log( 'Pasued : ' + __self.paused );
-				}else if( event.keyCode === 100 ){
-				    self.cookieHandler.deleteCookie(); 
-				    console.log( 'Available Deleted ' );
-				}
-				else {
-				    console.log( event.keyCode );
-				}
-			});
-			return self; 
-		};
-
-		/**
 		 * Bind all links with a .menu-item class to Backbone.js
 		 *
 		 * @return this
 		 */
 		__self.bindMenuItemLinks = function(){
 
-			self.$body.find("#menu-item-565 a").click(function(event){
-				self.cookieHandler.deleteCookie(); 
-				location.reload();
-				event.preventDefault(); 
-				event.stopPropagation(); 
-			});
+			self.$body.find("#menu-item-565 a")
+				.click(function(event){
+					self.cookieHandler.deleteCookie(); 
+					location.reload();
+					event.preventDefault(); 
+					event.stopPropagation(); 
+				});
 
 			self.$menu_items.click(function(event){
 				self.router.navigate( this.pathname , {trigger: true });

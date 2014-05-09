@@ -18,6 +18,12 @@ svg#node_map {
 
 	.node {
 		opacity: 0.5;
+		&:hover {
+			stroke-width: 2px; 
+			stroke: #fff;
+			fill: black !important;
+			cursor: pointer;
+		}
 
 		&.viewed-true {
 			opacity: 0.9;
