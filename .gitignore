@@ -72,6 +72,7 @@ database-backups/*
 # Foundation
 wp-content/themes/adelle-theme/bower_components/*
 wp-content/themes/adelle-theme/node_modules/*
+wp-content/themes/adelle-theme/dist/*
 **/bower_components/*
 **/node_modules/*
 
