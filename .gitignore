@@ -45,6 +45,8 @@ wp-content/*
 *.mp4
 **/*.ogg
 *.ogg
+**/*.ogv
+*.ogv
 **/*.webm
 *.webm
 **/*.avi
@@ -52,6 +54,7 @@ wp-content/*
 !converted-videos
 converted-videos/**/*.png
 converted-videos/**/*.ogg
+converted-videos/**/*.ogv
 converted-videos/**/*.mp4
 converted-videos/**/*.avi
 converted-videos/**/*.webm
