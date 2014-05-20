@@ -174,7 +174,7 @@ module.exports = function(grunt) {
 
 	// Tasks
 	grunt.registerTask('default', ['build','watch']);
-	grunt.registerTask('build', ['sass', 'browserify', 'mustache', 'favicons', 'copy']);
+	grunt.registerTask('build', ['sass', 'mustache', 'browserify', 'favicons', 'copy']);
 	grunt.registerTask('staging', ['build', 'uglify:dependencies', 'uglify:dev']);
 	grunt.registerTask('production', ['build', 'uglify', 'cssmin']);
 }
