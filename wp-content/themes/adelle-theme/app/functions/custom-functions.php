@@ -64,4 +64,12 @@
 		'main_menu' => 'Main Menu'
 	));
 
+	/**
+	 * Incrase Upload Size
+	 */
+
+	@ini_set( 'upload_max_size' , '64M' );
+	@ini_set( 'post_max_size', '64M');
+	@ini_set( 'max_execution_time', '300' );
+
 ?>

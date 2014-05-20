@@ -38,10 +38,10 @@ var Options = {};
             __self.global_options.video_background_color_alpha_unavailable = 0.006;
 
             // Nodemap
-            __self.global_options.charge = -69;
+            __self.global_options.charge = -58;
 			__self.global_options.linkDistance = 28;
 			__self.global_options.radius = 6.5;
-			__self.global_options.alpha = 1.4;
+			__self.global_options.alpha = 1.2;
         };
 
         __self.initGui = function(){
