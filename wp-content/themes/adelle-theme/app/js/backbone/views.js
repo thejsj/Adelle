@@ -118,7 +118,7 @@ var Views = {};
             // Set As Viewed
             this.current_view.setAsViewed();
 
-            // Set Related Videos as available
+            // Set Current Video as well as Related Videos as available
             this.setRelatedAsAvailable( this.current_model.get('ID') );
 
             this.openModal( this.current_view.modal );
@@ -276,8 +276,8 @@ var Views = {};
                     return false; 
                 }
             }); 
-
             var this_model = this._projects.where( { ID : current_model_id } )[0];
+            newly_available.push(this_model);
             var that = this; 
             _.each(newly_available, function(model){
                 // Set as Available

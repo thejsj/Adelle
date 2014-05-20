@@ -27,4 +27,7 @@
     <?php $this_object->render_template(); ?>
 </noscript>
 <div id='project-home-container'></div>
+<div id="node-map-container">
+    <span class="current-node"></span>
+</div>
 <?php get_footer(); ?>

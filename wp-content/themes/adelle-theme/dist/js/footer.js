@@ -334,7 +334,7 @@ var Views = {};
             // Set As Viewed
             this.current_view.setAsViewed();
 
-            // Set Related Videos as available
+            // Set Current Video as well as Related Videos as available
             this.setRelatedAsAvailable( this.current_model.get('ID') );
 
             this.openModal( this.current_view.modal );
@@ -492,8 +492,8 @@ var Views = {};
                     return false; 
                 }
             }); 
-
             var this_model = this._projects.where( { ID : current_model_id } )[0];
+            newly_available.push(this_model);
             var that = this; 
             _.each(newly_available, function(model){
                 // Set as Available
@@ -750,6 +750,8 @@ var Global = {};
 			self.router = new Router( __self.home_view );
 		    Backbone.history.start({ pushState: Modernizr.history });  // URLs don't work without this
 
+		    $(window).resize(__self.resizeHandler);
+
 			// Init Scroll Handler
 			self.scroll_handler = new ScrollHandler( self );
 			return self; 
@@ -906,6 +908,16 @@ var Global = {};
 					.scrollTop( __self.scroll_top );
 		}
 
+		/**
+		 * On Resize Window
+		 */
+		__self.resizeHandler = function(){
+			__self.window_height = $(window).height();
+	        __self.window_width  = $(window).width();
+			self.setTotalWidth(); 
+			self.reInit();
+		}
+
 		/* * * * * * * * * * * * * *
 		 *                         *
 		 *         Getters         * 
@@ -1059,8 +1071,9 @@ var NodeMap;
 		__self.project_relationships = [];
 		__self.width = 220, __self.height = 220;
 
-		__self.nodes = [],__self.links = [];
+		__self.nodes  = [], __self.links = [];
 		__self.global = global;
+		__self.$el    = $('#node-map-container');
 
 		var force = D3.layout.force()
 			.nodes(__self.nodes)
@@ -1072,7 +1085,7 @@ var NodeMap;
 				__self.tick();
 			});
 
-		var svg = D3.select("body").append("svg")
+		var svg = D3.select("#node-map-container").append("svg")
 			.attr("width", __self.width)
 			.attr("height", __self.height)
 			.attr("id", "node_map");
@@ -1094,7 +1107,6 @@ var NodeMap;
 				// Substitute the project ID by the local id (index), used by D3
 				for( var i = 0; i < related_projects.length; i++ ){
 					var related_project = projects.findWhere( { ID: related_projects[i] } );
-					console.log(related_project);
 					if(related_project){
 						related_projects[i] = related_project.get('id');
 					}
@@ -1158,7 +1170,24 @@ var NodeMap;
 					if( d.model.get('available') ){
 		                __self.global.router.navigate( d.model.get('relational_permalink') , true);
 		            }
-				});
+				})
+				.on("mouseover", function(d){
+					console.log('mouseover');
+					console.log(d.model.get('post_title'));
+					console.log(d);
+					__self.$el.find('.current-node')
+						.text(d.model.get('post_title'));
+					__self.$el
+						.addClass('active');
+				})
+				.on("mouseout", function(d){
+					console.log("mouseout");
+					console.log(d.model.get('post_title'));
+					__self.$el.find('.current-node')
+						.text('');
+					__self.$el
+						.removeClass('active');
+				})
 
 			node
 				.exit()

@@ -83,6 +83,8 @@ var Global = {};
 			self.router = new Router( __self.home_view );
 		    Backbone.history.start({ pushState: Modernizr.history });  // URLs don't work without this
 
+		    $(window).resize(__self.resizeHandler);
+
 			// Init Scroll Handler
 			self.scroll_handler = new ScrollHandler( self );
 			return self; 
@@ -237,6 +239,16 @@ var Global = {};
 			}
 			self.$body
 					.scrollTop( __self.scroll_top );
+		}
+
+		/**
+		 * On Resize Window
+		 */
+		__self.resizeHandler = function(){
+			__self.window_height = $(window).height();
+	        __self.window_width  = $(window).width();
+			self.setTotalWidth(); 
+			self.reInit();
 		}
 
 		/* * * * * * * * * * * * * *

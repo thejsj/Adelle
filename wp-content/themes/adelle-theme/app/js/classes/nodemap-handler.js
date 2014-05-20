@@ -12,8 +12,9 @@ var NodeMap;
 		__self.project_relationships = [];
 		__self.width = 220, __self.height = 220;
 
-		__self.nodes = [],__self.links = [];
+		__self.nodes  = [], __self.links = [];
 		__self.global = global;
+		__self.$el    = $('#node-map-container');
 
 		var force = D3.layout.force()
 			.nodes(__self.nodes)
@@ -25,7 +26,7 @@ var NodeMap;
 				__self.tick();
 			});
 
-		var svg = D3.select("body").append("svg")
+		var svg = D3.select("#node-map-container").append("svg")
 			.attr("width", __self.width)
 			.attr("height", __self.height)
 			.attr("id", "node_map");
@@ -110,7 +111,24 @@ var NodeMap;
 					if( d.model.get('available') ){
 		                __self.global.router.navigate( d.model.get('relational_permalink') , true);
 		            }
-				});
+				})
+				.on("mouseover", function(d){
+					console.log('mouseover');
+					console.log(d.model.get('post_title'));
+					console.log(d);
+					__self.$el.find('.current-node')
+						.text(d.model.get('post_title'));
+					__self.$el
+						.addClass('active');
+				})
+				.on("mouseout", function(d){
+					console.log("mouseout");
+					console.log(d.model.get('post_title'));
+					__self.$el.find('.current-node')
+						.text('');
+					__self.$el
+						.removeClass('active');
+				})
 
 			node
 				.exit()

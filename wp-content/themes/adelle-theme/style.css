@@ -6129,31 +6129,47 @@ video {
         transition: all 300ms;
         border-color: white; }
 
-svg#node_map {
+#node-map-container {
   position: fixed;
   z-index: 100;
   bottom: 10px;
-  left: 10px;
-  display: none; }
-  @media all and (min-width: 720px) {
-    svg#node_map {
-      display: block; } }
-  svg#node_map .link {
-    stroke: white;
-    stroke-width: 1.5px;
-    opacity: 0.5; }
-  svg#node_map .node {
-    opacity: 0.5; }
-    svg#node_map .node:hover {
-      stroke-width: 2px;
+  left: 10px; }
+  #node-map-container.active .current-node {
+    color: white;
+    background: black;
+    background: b;
+    width: 100%;
+    height: 21px;
+    display: block;
+    padding: 5px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 12px; }
+  #node-map-container.active svg#node_map {
+    border: solid 1px black; }
+  #node-map-container svg#node_map {
+    border: solid 1px transparent;
+    display: none; }
+    @media all and (min-width: 720px) {
+      #node-map-container svg#node_map {
+        display: block; } }
+    #node-map-container svg#node_map .link {
       stroke: white;
-      fill: black !important;
-      cursor: pointer; }
-    svg#node_map .node.viewed-true {
-      opacity: 0.9; }
-    svg#node_map .node.viewed-true.currently-viewing-true {
-      stroke: white;
-      stroke-width: 1.5px; }
+      stroke-width: 1.5px;
+      opacity: 0.5; }
+    #node-map-container svg#node_map .node {
+      opacity: 0.5; }
+      #node-map-container svg#node_map .node:hover {
+        stroke-width: 2px;
+        stroke: white;
+        fill: black !important;
+        cursor: pointer; }
+      #node-map-container svg#node_map .node.viewed-true {
+        opacity: 0.9; }
+      #node-map-container svg#node_map .node.viewed-true.currently-viewing-true {
+        stroke: white;
+        stroke-width: 1.5px; }
 
 .gallery_container_jsj-gallery-slideshow .gallery {
   max-width: 100% !important; }
