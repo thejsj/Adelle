@@ -49,6 +49,12 @@ wp-content/*
 *.webm
 **/*.avi
 *.avi
+!converted-videos
+converted-videos/**/*.png
+converted-videos/**/*.ogg
+converted-videos/**/*.mp4
+converted-videos/**/*.avi
+converted-videos/**/*.webm
 
 # Ignore Python PYC files
 **/*.pyc
