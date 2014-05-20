@@ -1094,7 +1094,10 @@ var NodeMap;
 				// Substitute the project ID by the local id (index), used by D3
 				for( var i = 0; i < related_projects.length; i++ ){
 					var related_project = projects.findWhere( { ID: related_projects[i] } );
-					related_projects[i] = related_project.get('id');
+					console.log(related_project);
+					if(related_project){
+						related_projects[i] = related_project.get('id');
+					}
 				}
 
 				// Generate a list of all project relationships
@@ -1294,10 +1297,10 @@ var Options = {};
             __self.global_options.video_background_color_alpha_unavailable = 0.006;
 
             // Nodemap
-            __self.global_options.charge = -69;
+            __self.global_options.charge = -58;
 			__self.global_options.linkDistance = 28;
 			__self.global_options.radius = 6.5;
-			__self.global_options.alpha = 1.4;
+			__self.global_options.alpha = 1.2;
         };
 
         __self.initGui = function(){

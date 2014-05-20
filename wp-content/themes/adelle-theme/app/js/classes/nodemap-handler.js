@@ -47,7 +47,9 @@ var NodeMap;
 				// Substitute the project ID by the local id (index), used by D3
 				for( var i = 0; i < related_projects.length; i++ ){
 					var related_project = projects.findWhere( { ID: related_projects[i] } );
-					related_projects[i] = related_project.get('id');
+					if(related_project){
+						related_projects[i] = related_project.get('id');
+					}
 				}
 
 				// Generate a list of all project relationships
