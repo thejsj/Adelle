@@ -52,6 +52,7 @@ converted-videos/**/*.webm
 # Ignore Shell Scripts
 **.sh
 
+
 # Ignore OS generated files
 .orig
 .DS_Store
@@ -62,6 +63,7 @@ converted-videos/**/*.webm
 ehthumbs.db
 Thumbs.db
 !README.md
+.htaccess
 
 # Database Backups
 database-backups
