@@ -78,19 +78,6 @@ content/themes/adelle-theme/dist/*
 content/themes/adelle-theme/mustache_cache
 content/themes/adelle-theme/mustache_cache/*
 
-#############################
-# Ignore OS generated files #
-#############################
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-.htaccess
-
-
 ############################
 # Ignore unwanted WP files #
 ############################
