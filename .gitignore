@@ -17,21 +17,6 @@
 !.gitattributes
 !favicon.ico
 !apple-touch-icon-precomposed.png
-!wp-content/
-
-# Ignore everything in the "wp-content" directory, except the "plugins"
-# and "themes" directories.
-wp-content/*
-!wp-content/themes/
-
-# Ignore everything in the "plugins" directory, except the plugins you
-# specify (see the commented-out examples for hints on how to do this.)
-
-# Don't ignore plugins JSJ
-!wp-content/plugins/
-# wp-content/plugins/*
-# !wp-content/plugins/my-single-file-plugin.php
-# !wp-content/plugins/my-directory-plugin/
 
 # Ignore everything in the "themes" directory, except the themes you
 # specify (see the commented-out example for a hint on how to do this.)
@@ -79,12 +64,40 @@ database-backups
 database-backups/*
 
 # Foundation
-wp-content/themes/adelle-theme/bower_components/*
-wp-content/themes/adelle-theme/node_modules/*
-wp-content/themes/adelle-theme/dist/*
+content/themes/adelle-theme/bower_components/*
+content/themes/adelle-theme/node_modules/*
+content/themes/adelle-theme/dist/*
 **/bower_components/*
 **/node_modules/*
 
 # Mustache 
-wp-content/themes/adelle-theme/mustache_cache
-wp-content/themes/adelle-theme/mustache_cache/*
+content/themes/adelle-theme/mustache_cache
+content/themes/adelle-theme/mustache_cache/*
+
+#############################
+# Ignore OS generated files #
+#############################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.htaccess
+
+
+############################
+# Ignore unwanted WP files #
+############################
+
+wp/
+content/upgrade/
+content/plugins/
+
+###################################
+# Ignore Sensitive Tutorial files #
+###################################
+
+wp-config.php
+/vendor/

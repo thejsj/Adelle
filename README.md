@@ -30,3 +30,15 @@ brew install ffmpeg2theora
 
 # Converting Videos
 
+Put all the videos you want to convert in:
+```
+converted-videos/raw-videos/un-converted
+```
+
+Run the following script:
+
+```
+python converted-videos/convert_video.py
+```
+
+When done, move all videos in ```un-converted``` to ```covnerted```.
