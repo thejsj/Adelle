@@ -1,0 +1,24 @@
+<article class="project single-project-partial-template">
+	<!-- Display Post Title -->
+	<h2>
+		<a href="{{ permalink }}">{{ post_title }}</a>
+	</h2>
+	<!-- Display Post Content -->
+	<div class="entry-content">
+		{{# vimeo_id }}
+		<!-- Vimeo Video -->
+		<div class="main-video"><!-- width="500" height="281" -->
+			<iframe src="//player.vimeo.com/video/{{ vimeo_id }}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
+		{{/ vimeo_id }}
+
+		{{# featured_image }}
+		<div class="featured-image">
+			<!-- Display Featured Image -->
+			<img class="main-image" src="{{ featured_image.url }}">
+		</div>
+		{{/ featured_image }}
+
+		<!-- Display Main Content -->
+		{{{ post_content }}}
+	</div>
+</article>

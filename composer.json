@@ -1,0 +1,53 @@
+{
+    "name": "thejsj/adelle-lin-website",
+    "description": "Adelle Lin Website. On Wordpress.",
+    "authors": [
+        {
+            "name": "Jorge Silva",
+            "email": "jorge.silva@thejsj.com"
+        }
+    ],
+    "require": {
+        "wpackagist/advanced-custom-fields": ">=4.3.8",
+        "wpackagist/jsj-gallery-slideshow": ">=1.2.9",
+        "wpackagist/regenerate-thumbnails": ">=2.2.4",
+        "wordpress": "3.9.1",
+        "fancyguy/webroot-installer": "1.0.0"
+    },
+    "require-dev": {
+        "wpackagist/debug-bar": "0.8.*"
+    },
+    "repositories":[
+        {
+            "type":"composer",
+            "url":"http://wpackagist.org"
+        },
+        {
+            "type"   : "package",
+            "package": {
+                "name"   : "wordpress",
+                "type"   : "webroot",
+                "version": "3.9.1",
+                "dist"   : {
+                    "url" : "http://wordpress.org/wordpress-3.9.1.zip",
+                    "type": "zip"
+                },
+                "source" : {
+                    "url"  : "https://github.com/WordPress/WordPress",
+                    "type" : "git",
+                    "reference": "3.9.1"
+                },
+                "require" : {
+                  "fancyguy/webroot-installer": "1.0.0"
+                }
+            }
+        }
+    ],
+    "extra": {
+        "installer-paths": {
+            "content/plugins/{$name}/": ["type:wordpress-plugin"]
+        },
+        "webroot-dir": "wp",
+        "webroot-package": "wordpress"
+    }
+}

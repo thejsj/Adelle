@@ -1,0 +1,108 @@
+$animation_time: 2.0s;
+
+#main-page-title {
+    
+    position: fixed;
+    color: black;
+    margin: auto;
+    display: inline-block;
+    text-align: center;
+    left: 0;
+    right: 0;
+    top: 100px;
+    line-height: 1.3em;
+    height: auto; 
+    width: 90%; 
+    overflow: visible;
+    z-index: 50;
+    cursor: pointer;  
+
+    @include breakpoint( 'medium' ) {
+        width: 850px; 
+        height: 107px;
+        top: -150px;
+        bottom: 0; 
+        line-height: 0.8em;
+    }
+
+    h1 {     
+        letter-spacing: 0.2em;
+        text-transform: uppercase;   
+        font-weight: bold;
+        font-size: 3em;
+        @include breakpoint( 'medium' ) {
+            font-size: 6em;
+        }
+    }
+
+    p {
+        max-width: 600px; 
+        margin: auto;
+        padding-right: rem-calc(18);
+        padding-left: rem-calc(18);
+        padding-top: rem-calc(12);
+        padding-bottom: rem-calc(18);
+    }
+
+    a {
+        @include transition-property(all);
+        @include transition-duration($animation_time);
+        @include transition-timing-function(ease-in);
+        border-bottom: 3px solid black;
+        color: black; 
+        padding-left: 20px; 
+        @include breakpoint( 'medium' ) {
+            border-bottom: 7px solid black;
+            &:hover {
+                color: black;
+            }
+        } 
+    }
+
+    &.active {
+        @include transition-property(all);
+        @include transition-duration($animation_time);
+        @include transition-timing-function(ease-in);
+        a {
+            @include transition-property(all);
+            @include transition-duration($animation_time);
+            @include transition-timing-function(ease-in);
+            color: white; 
+            border-color: white; 
+            &:hover {
+                color: white; 
+            }
+        }
+        &.animation-done {
+            @include transition-duration(0s);
+            a {
+                @include transition-duration(0s);
+            }
+        }
+    }
+}
+
+#header {
+    position: fixed;
+    z-index: 50;
+    ul.menu {
+        list-style-type: none;
+        li {
+            list-style-type: none;
+            display: inline-block;
+            margin-right: 10px;
+            a {
+                color: white;
+                background: #222;
+                border-radius: 0 0 3px 3px;
+                padding: 5px 10px;
+                font-size: 16px;
+                border: solid 1px black;
+                border-top: 2px;
+                &:hover {
+                    background: #000;
+                }
+            }
+        }
+    }
+}

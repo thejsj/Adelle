@@ -12,7 +12,6 @@
 # http://kernel.org/pub/software/scm/git/docs/gitignore.html
 
 # Ignore everything in the root except the "wp-content" directory.
-/*
 !.gitignore
 !.gitattributes
 !favicon.ico

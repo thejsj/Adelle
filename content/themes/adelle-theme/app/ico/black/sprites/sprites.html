@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+<head>
+	<title>SVG Sprite</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<link href="sprites.css" rel="stylesheet">
+</head>
+<style>
+	body {
+		font-family: sans-serif;
+		color: #555;
+		margin: 2em;
+		line-height: 1.5;
+	}
+	a, a:visited {
+		color: #e74c3c;
+		text-decoration: none;
+	}
+	a:hover {
+		box-shadow: 0 1px;
+	}
+	header {
+		padding-bottom: .5em;
+		margin-bottom: 2em;
+		box-shadow: 0 1px #ccc;
+	}
+	.cell {
+		float: left;
+		margin-right: 1.5em;
+		font-size: 2em;
+		color: #000000;
+		width: 17em;
+		overflow: hidden;
+	}
+</style>
+<body>
+<svg display="none" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="927" height="48" viewBox="0 0 927 48">
+<defs>
+<g id="icon-lock">
+	<path class="path1" d="M8.571 20.571h13.714v-5.143q0-2.839-2.009-4.848t-4.848-2.009-4.848 2.009-2.009 4.848v5.143zM30.857 23.143v15.429q0 1.071-0.75 1.821t-1.821 0.75h-25.714q-1.071 0-1.821-0.75t-0.75-1.821v-15.429q0-1.071 0.75-1.821t1.821-0.75h0.857v-5.143q0-4.929 3.536-8.464t8.464-3.536 8.464 3.536 3.536 8.464v5.143h0.857q1.071 0 1.821 0.75t0.75 1.821z" />
+</g>
+<g id="icon-lock2">
+	<path class="path1" d="M37.922 19.205h-4.322v-3.36c0-6.953-3.202-11.040-9.6-11.040-6.396 0-9.6 4.087-9.6 11.040v3.36h-4.8c-1.325 0-2.4 1.553-2.4 2.88v18.72c0 1.32 1.030 2.734 2.285 3.137l2.87 0.929c1.255 0.406 3.362 0.737 4.685 0.737h13.92c1.32 0 3.43-0.331 4.685-0.737l2.87-0.929c1.258-0.403 2.285-1.817 2.285-3.137v-18.72c0-1.327-1.553-2.88-2.878-2.88zM19.2 14.885c0-3.468 1.915-5.28 4.8-5.28 2.887 0 4.8 1.812 4.8 5.28v4.32h-9.6v-4.32z" />
+</g>
+<g id="icon-ccw">
+	<path class="path1" d="M26.942 4.32c-10.668 0-19.344 8.549-19.606 19.188h-5.897l8.83 9.84 8.827-9.84h-6.854c0.259-7.922 6.739-14.268 14.7-14.268 8.129 0 14.714 6.607 14.714 14.76s-6.586 14.76-14.714 14.76c-3.257 0-6.266-1.066-8.705-2.863l-3.374 3.61c3.329 2.614 7.522 4.174 12.079 4.174 10.836 0 19.62-8.81 19.62-19.68-0.002-10.87-8.786-19.68-19.62-19.68z" />
+</g>
+<g id="icon-arrow-left">
+	<path class="path1" d="M27.449 10.838c-1.003 0.979-10.805 11.27-10.805 11.27-0.535 0.523-0.802 1.207-0.802 1.891s0.266 1.368 0.802 1.891c0 0 9.802 10.291 10.805 11.268 1.003 0.979 2.808 1.046 3.878 0 1.068-1.044 1.152-2.501-0.002-3.78l-8.993-9.379 8.993-9.379c1.154-1.282 1.070-2.738 0.002-3.782-1.073-1.044-2.878-0.979-3.878 0z" />
+</g>
+<g id="icon-arrow-down">
+	<path class="path1" d="M37.159 20.551c-0.977 1.003-11.268 10.807-11.268 10.807-0.523 0.535-1.207 0.802-1.891 0.802-0.686 0-1.37-0.266-1.891-0.802 0 0-10.291-9.804-11.27-10.807-0.977-1.003-1.044-2.806 0-3.878 1.046-1.070 2.503-1.154 3.782 0l9.379 8.995 9.377-8.993c1.282-1.154 2.741-1.070 3.782 0 1.046 1.070 0.982 2.875 0 3.876z" />
+</g>
+<g id="icon-arrow-up">
+	<path class="path1" d="M37.159 27.449c-0.977-1.003-11.268-10.805-11.268-10.805-0.523-0.535-1.207-0.804-1.891-0.804-0.686 0-1.37 0.269-1.891 0.804 0 0-10.291 9.802-11.27 10.805-0.977 1.003-1.044 2.808 0 3.878 1.046 1.068 2.503 1.154 3.782 0l9.379-8.993 9.377 8.993c1.282 1.154 2.741 1.068 3.782 0 1.046-1.073 0.982-2.878 0-3.878z" />
+</g>
+<g id="icon-arrow-right">
+	<path class="path1" d="M20.551 10.838c1.003 0.979 10.805 11.27 10.805 11.27 0.538 0.523 0.804 1.207 0.804 1.891s-0.266 1.368-0.804 1.891c0 0-9.802 10.291-10.805 11.268-1.003 0.979-2.806 1.046-3.878 0-1.070-1.044-1.154-2.501 0-3.78l8.995-9.379-8.993-9.379c-1.154-1.282-1.070-2.738 0-3.782s2.875-0.979 3.876 0z" />
+</g>
+<g id="icon-arrow-left2">
+	<path class="path1" d="M29.758 32.203c0.643 0.65 0.643 1.702 0 2.35-0.643 0.65-1.682 0.65-2.326 0l-9.192-9.377c-0.643-0.65-0.643-1.702 0-2.35l9.192-9.379c0.643-0.65 1.682-0.65 2.326 0s0.643 1.699 0 2.35l-7.536 8.203 7.536 8.203z" />
+</g>
+<g id="icon-arrow-down2">
+	<path class="path1" d="M32.203 18.242c0.65-0.643 1.702-0.643 2.35 0 0.65 0.643 0.65 1.682 0 2.326l-9.377 9.192c-0.65 0.643-1.702 0.643-2.35 0l-9.379-9.192c-0.648-0.643-0.648-1.682 0-2.326 0.65-0.643 1.699-0.643 2.35 0l8.203 7.536 8.203-7.536z" />
+</g>
+<g id="icon-arrow-up2">
+	<path class="path1" d="M15.794 29.758c-0.65 0.643-1.699 0.643-2.35 0-0.648-0.643-0.65-1.682 0-2.328l9.379-9.187c0.65-0.643 1.702-0.643 2.35 0l9.379 9.19c0.65 0.646 0.65 1.685 0 2.328s-1.699 0.643-2.35 0l-8.206-7.538-8.203 7.536z" />
+</g>
+<g id="icon-arrow-right2">
+	<path class="path1" d="M18.242 32.203c-0.643 0.65-0.643 1.702 0 2.35 0.641 0.65 1.682 0.65 2.326 0l9.192-9.377c0.643-0.65 0.643-1.702 0-2.35l-9.192-9.379c-0.643-0.65-1.682-0.65-2.326 0s-0.643 1.699-0.002 2.347l7.538 8.206-7.536 8.203z" />
+</g>
+<g id="icon-arrow-left3">
+	<path class="path1" d="M34.558 41.803c0.643 0.65 0.643 1.699 0 2.35s-1.682 0.65-2.326 0l-18.792-18.977c-0.643-0.65-0.643-1.702 0-2.35l18.792-18.979c0.643-0.65 1.682-0.65 2.326 0s0.643 1.699 0 2.35l-17.136 17.803 17.136 17.803z" />
+</g>
+<g id="icon-arrow-down3">
+	<path class="path1" d="M6.197 13.442c-0.65-0.643-1.702-0.643-2.35 0-0.648 0.641-0.648 1.682 0 2.326l18.979 18.792c0.65 0.643 1.699 0.643 2.35 0l18.979-18.792c0.648-0.643 0.65-1.682 0-2.326s-1.704-0.643-2.35-0.002l-17.806 17.138-17.803-17.136z" />
+</g>
+<g id="icon-arrow-up3">
+	<path class="path1" d="M41.803 34.558c0.65 0.643 1.702 0.643 2.35 0 0.65-0.643 0.65-1.682 0-2.326l-18.979-18.792c-0.648-0.643-1.699-0.643-2.347 0l-18.979 18.792c-0.648 0.643-0.65 1.682 0 2.326s1.699 0.643 2.35 0l17.803-17.138 17.803 17.138z" />
+</g>
+<g id="icon-arrow-up4">
+	<path class="path1" d="M13.439 41.803c-0.643 0.65-0.643 1.699 0 2.35s1.682 0.65 2.326 0l18.792-18.977c0.643-0.65 0.643-1.702 0-2.35l-18.792-18.979c-0.643-0.65-1.682-0.65-2.326 0s-0.643 1.699 0 2.35l17.136 17.803-17.136 17.803z" />
+</g>
+</defs></svg>
+<header>
+	<p>SVG Sprite - Generated by <a href="http://icomoon.io/app">IcoMoon</a></p>
+</header>
+<div class="cell">
+	<svg class="icon icon-lock" viewBox="0 0 31 48"><use xlink:href="#icon-lock"></use></svg>
+icon-lock</div>
+<div class="cell">
+	<svg class="icon icon-lock2" viewBox="0 0 48 48"><use xlink:href="#icon-lock2"></use></svg>
+icon-lock2</div>
+<div class="cell">
+	<svg class="icon icon-ccw" viewBox="0 0 48 48"><use xlink:href="#icon-ccw"></use></svg>
+icon-ccw</div>
+<div class="cell">
+	<svg class="icon icon-arrow-left" viewBox="0 0 48 48"><use xlink:href="#icon-arrow-left"></use></svg>
+icon-arrow-left</div>
+<div class="cell">
+	<svg class="icon icon-arrow-down" viewBox="0 0 48 48"><use xlink:href="#icon-arrow-down"></use></svg>
+icon-arrow-down</div>
+<div class="cell">
+	<svg class="icon icon-arrow-up" viewBox="0 0 48 48"><use xlink:href="#icon-arrow-up"></use></svg>
+icon-arrow-up</div>
+<div class="cell">
+	<svg class="icon icon-arrow-right" viewBox="0 0 48 48"><use xlink:href="#icon-arrow-right"></use></svg>
+icon-arrow-right</div>
+<div class="cell">
+	<svg class="icon icon-arrow-left2" viewBox="0 0 48 48"><use xlink:href="#icon-arrow-left2"></use></svg>
+icon-arrow-left2</div>
+<div class="cell">
+	<svg class="icon icon-arrow-down2" viewBox="0 0 48 48"><use xlink:href="#icon-arrow-down2"></use></svg>
+icon-arrow-down2</div>
+<div class="cell">
+	<svg class="icon icon-arrow-up2" viewBox="0 0 48 48"><use xlink:href="#icon-arrow-up2"></use></svg>
+icon-arrow-up2</div>
+<div class="cell">
+	<svg class="icon icon-arrow-right2" viewBox="0 0 48 48"><use xlink:href="#icon-arrow-right2"></use></svg>
+icon-arrow-right2</div>
+<div class="cell">
+	<svg class="icon icon-arrow-left3" viewBox="0 0 48 48"><use xlink:href="#icon-arrow-left3"></use></svg>
+icon-arrow-left3</div>
+<div class="cell">
+	<svg class="icon icon-arrow-down3" viewBox="0 0 48 48"><use xlink:href="#icon-arrow-down3"></use></svg>
+icon-arrow-down3</div>
+<div class="cell">
+	<svg class="icon icon-arrow-up3" viewBox="0 0 48 48"><use xlink:href="#icon-arrow-up3"></use></svg>
+icon-arrow-up3</div>
+<div class="cell">
+	<svg class="icon icon-arrow-up4" viewBox="0 0 48 48"><use xlink:href="#icon-arrow-up4"></use></svg>
+icon-arrow-up4</div>
+
+</body>
+</html>

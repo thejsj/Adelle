@@ -1,0 +1,14 @@
+.gallery_container_jsj-gallery-slideshow {
+	
+	.gallery {
+		max-width: 100% !important;
+	}
+
+	.slideshow_thumb {
+		cursor: pointer; 	
+
+		.activeSlide {
+			border: solid 1px #000; 
+		}
+	}
+}
