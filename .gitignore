@@ -94,8 +94,9 @@ Thumbs.db
 ############################
 
 wp/
-content/upgrade/
-content/plugins/
+content/upgrade/*
+content/uploads/*
+content/plugins/*
 
 ###################################
 # Ignore Sensitive Tutorial files #

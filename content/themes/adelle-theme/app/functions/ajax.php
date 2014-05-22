@@ -19,6 +19,7 @@
 
     function get_projects() {
 	    header( "Content-Type: application/json" );
+        error_reporting(0);
 	    echo json_encode( new ProjectsView() );
 	    exit;
 	}

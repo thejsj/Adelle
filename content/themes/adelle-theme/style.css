@@ -5981,8 +5981,6 @@ video {
     cursor: pointer; }
     .home-project-container.available-true .home-content-container h2 {
       opacity: 0.8; }
-.home-project-container.available-false {
-  background-image: url('dist/app/ico/black/PNG/lock-background.png'); }
 .home-project-container .home-content-container {
   position: absolute;
   width: 100%;
