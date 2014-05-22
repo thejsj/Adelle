@@ -24,6 +24,8 @@
 !tests/
 !tests/*
 
+config.js
+
 # Ignore Videos
 **/*.mp4
 *.mp4
@@ -104,3 +106,4 @@ content/plugins/*
 
 wp-config.php
 /vendor/
+node_modules

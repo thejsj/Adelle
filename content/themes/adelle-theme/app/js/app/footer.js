@@ -28,10 +28,8 @@ var Global = require('../classes/global.js');
 		}
 	});
 
-	console.log('!!!')
 	// On Document Ready, Get All Posts through an AJAX Request
 	$(document).ready(function(){
-		console.log('Get Projects!');
 		// Get Posts
         $.post(	
 		    MyAjax.ajaxurl,

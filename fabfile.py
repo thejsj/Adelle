@@ -28,8 +28,9 @@ def deploy_staging():
 		run('git stash')
 		run('git fetch --all')
 		run('git reset --hard origin/master')
+		run('composer ')
 		run('service apache2 restart')
-	with cd('/var/www/staging.adelleninja.com/public_html/wp-content/themes/adelle-theme/'):
+	with cd('/var/www/staging.adelleninja.com/public_html/content/themes/adelle-theme/'):
 		run('npm install')
 		run('bower install --allow-root')
 		run('grunt production')
@@ -68,6 +69,7 @@ def install_dependencies():
 		sudo('apt-get install npm')
 		sudo('apt-get install git')
 		sudo('apt-get install php5-json')
+		run('npm intall -g gulp')
 		run('curl -sS https://getcomposer.org/installer | php')
 		run('mv composer.phar /usr/local/bin/composer')
 	with cd('var/www/adelleninja.com/public_html/'):

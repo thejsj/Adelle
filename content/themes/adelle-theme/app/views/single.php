@@ -32,7 +32,7 @@
          * @return string
          */
         public function getRelationalPermalink( $permalink ){
-        	$relational_permalink = str_replace( WP_SITEURL, '', $this->permalink );
+        	$relational_permalink = str_replace( WP_HOME, '', $this->permalink );
         	if( $relational_permalink[0] == "/") {
         		$relational_permalink = substr($relational_permalink, 1);
         	}
