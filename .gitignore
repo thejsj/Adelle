@@ -47,6 +47,9 @@ converted-videos/**/*.webm
 **/*.pyc
 *.pyc
 
+# Ignore Shell Scripts
+**.sh
+
 # Ignore OS generated files
 .orig
 .DS_Store
