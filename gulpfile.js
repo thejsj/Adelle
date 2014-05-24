@@ -7,18 +7,17 @@ var shell  = require('gulp-shell');
 // Pull in staging database
 gulp.task('push-database', function(){
     if(typeof config === 'object'){
-
         if(config.databases[args.from] !== undefined){
             var from = config.databases[args.from];
         } else {
-            console.log('No environment found for "from".\n');
+            console.log('No environment found for "from" / ' + args.from);
             return false;
         }
 
         if(config.databases[args.to] !== undefined){
             var to = config.databases[args.to];
         } else {
-            console.log('No environment found for "from".\n');
+            console.log('No environment found for "to" / ' + args.to);
             return false;
         }
 
