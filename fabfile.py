@@ -12,6 +12,7 @@ def deploy_thejsj():
 		run('git stash')
 		run('git fetch --all')
 		run('git reset --hard origin/master')
+		run('composer install')
 		run('service apache2 restart')
 	with cd('/var/www/thejsj.com/public_html/2013/adelle/wp-content/themes/adelle-theme/'):
 		run('npm install')
@@ -28,7 +29,7 @@ def deploy_staging():
 		run('git stash')
 		run('git fetch --all')
 		run('git reset --hard origin/master')
-		run('composer ')
+		run('composer install')
 		run('service apache2 restart')
 	with cd('/var/www/staging.adelleninja.com/public_html/content/themes/adelle-theme/'):
 		run('npm install')
@@ -45,6 +46,7 @@ def deploy_production():
 		run('git stash')
 		run('git fetch --all')
 		run('git reset --hard origin/master')
+		run('composer install')
 		run('service apache2 restart')
 	with cd('/var/www/adelleninja.com/public_html//wp-content/themes/adelle-theme/'):
 		run('npm install')

@@ -73,6 +73,7 @@ database-backups/*
 content/themes/adelle-theme/bower_components/*
 content/themes/adelle-theme/node_modules/*
 content/themes/adelle-theme/dist/*
+
 **/bower_components/*
 **/node_modules/*
 
