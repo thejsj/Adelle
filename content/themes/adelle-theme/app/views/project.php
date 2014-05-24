@@ -67,7 +67,7 @@
 			$all_project_relationships_unfiletered = get_field('project_to_project_relationship', 'option');
 			$all_project_relationships = array(); 
 			// Filter out project that aren't published
-			foreach( $all_project_relationships_unfiletered as $relationship ){
+			foreach ($all_project_relationships_unfiletered as $relationship ) {
 				if(
 					get_post($relationship['first_project']->ID)->post_status === 'publish' &&
 					get_post($relationship['second_project']->ID)->post_status === 'publish'

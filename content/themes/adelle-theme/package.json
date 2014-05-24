@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "devDependencies": {
-    "node-sass": "~0.7.0",
+    "node-sass": "~0.8.6",
     "grunt": "~0.4.4",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-sass": "~0.8.0",
