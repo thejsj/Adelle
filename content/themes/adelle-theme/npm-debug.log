@@ -1,0 +1,145 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/Cellar/node/0.10.22/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install' ]
+2 info using npm@1.3.14
+3 info using node@v0.10.22
+4 verbose readDependencies using package.json deps
+5 verbose install where, deps [ '/Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme',
+5 verbose install   [ 'browsernizr',
+5 verbose install     'backbone',
+5 verbose install     'underscore',
+5 verbose install     'mustache',
+5 verbose install     'jquery',
+5 verbose install     'jquery-browserify',
+5 verbose install     'grunt-mustache',
+5 verbose install     'd3',
+5 verbose install     'zurb-foundation-npm',
+5 verbose install     'foundation-js',
+5 verbose install     'grunt-favicons',
+5 verbose install     'node-sass',
+5 verbose install     'grunt',
+5 verbose install     'grunt-contrib-watch',
+5 verbose install     'grunt-sass',
+5 verbose install     'grunt-contrib-uglify',
+5 verbose install     'grunt-contrib-cssmin',
+5 verbose install     'grunt-watchify',
+5 verbose install     'dat-gui',
+5 verbose install     'browserify',
+5 verbose install     'grunt-browserify',
+5 verbose install     'favicon',
+5 verbose install     'node-bourbon',
+5 verbose install     'grunt-contrib-copy',
+5 verbose install     'esprima-fb' ] ]
+6 info preinstall adelle-lin-theme@0.0.1
+7 warn package.json foundation-js@0.1.0 No repository field.
+8 warn package.json browsernizr@1.0.2 No repository field.
+9 verbose readDependencies using package.json deps
+10 verbose already installed skipping mustache@~0.8.1 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+11 verbose already installed skipping underscore@~1.6.0 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+12 verbose already installed skipping jquery@~2.1.0 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+13 verbose already installed skipping jquery-browserify@~1.8.1 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+14 verbose already installed skipping grunt-mustache@~0.1.6 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+15 verbose already installed skipping d3@~3.4.4 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+16 verbose already installed skipping zurb-foundation-npm@0.0.1 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+17 verbose already installed skipping grunt-favicons@~0.6.4 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+18 verbose already installed skipping foundation-js@~0.1.0 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+19 verbose already installed skipping node-sass@~0.7.0 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+20 verbose already installed skipping grunt@~0.4.4 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+21 verbose already installed skipping grunt-sass@~0.8.0 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+22 verbose already installed skipping grunt-contrib-watch@~0.5.3 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+23 verbose already installed skipping grunt-contrib-uglify@~0.4.0 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+24 verbose already installed skipping grunt-contrib-cssmin@~0.9.0 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+25 verbose already installed skipping grunt-watchify@~0.1.0 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+26 verbose already installed skipping dat-gui@~0.5.0 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+27 verbose already installed skipping browserify@~3.45.0 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+28 verbose already installed skipping grunt-browserify@~2.0.1 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+29 verbose already installed skipping favicon@0.0.2 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+30 verbose already installed skipping node-bourbon@~1.2.2 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+31 verbose already installed skipping grunt-contrib-copy@~0.5.0 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+32 verbose cache add [ 'esprima-fb@~1.0.2', null ]
+33 verbose cache add name=undefined spec="esprima-fb@~1.0.2" args=["esprima-fb@~1.0.2",null]
+34 verbose parsed url { protocol: null,
+34 verbose parsed url   slashes: null,
+34 verbose parsed url   auth: null,
+34 verbose parsed url   host: null,
+34 verbose parsed url   port: null,
+34 verbose parsed url   hostname: null,
+34 verbose parsed url   hash: null,
+34 verbose parsed url   search: null,
+34 verbose parsed url   query: null,
+34 verbose parsed url   pathname: 'esprima-fb@~1.0.2',
+34 verbose parsed url   path: 'esprima-fb@~1.0.2',
+34 verbose parsed url   href: 'esprima-fb@~1.0.2' }
+35 verbose cache add name="esprima-fb" spec="~1.0.2" args=["esprima-fb","~1.0.2"]
+36 verbose parsed url { protocol: null,
+36 verbose parsed url   slashes: null,
+36 verbose parsed url   auth: null,
+36 verbose parsed url   host: null,
+36 verbose parsed url   port: null,
+36 verbose parsed url   hostname: null,
+36 verbose parsed url   hash: null,
+36 verbose parsed url   search: null,
+36 verbose parsed url   query: null,
+36 verbose parsed url   pathname: '~1.0.2',
+36 verbose parsed url   path: '~1.0.2',
+36 verbose parsed url   href: '~1.0.2' }
+37 verbose addNamed [ 'esprima-fb', '~1.0.2' ]
+38 verbose addNamed [ null, '>=1.0.2-0 <1.1.0-0' ]
+39 verbose already installed skipping browsernizr@~1.0.2 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+40 verbose already installed skipping backbone@~1.1.2 /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+41 silly lockFile 9649210d-esprima-fb-1-0-2 esprima-fb@~1.0.2
+42 verbose lock esprima-fb@~1.0.2 /Users/jorgesilva/.npm/9649210d-esprima-fb-1-0-2.lock
+43 silly addNameRange { name: 'esprima-fb',
+43 silly addNameRange   range: '>=1.0.2-0 <1.1.0-0',
+43 silly addNameRange   hasData: false }
+44 verbose url raw esprima-fb
+45 verbose url resolving [ 'https://registry.npmjs.org/', './esprima-fb' ]
+46 verbose url resolved https://registry.npmjs.org/esprima-fb
+47 info trying registry request attempt 1 at 11:43:29
+48 verbose etag "BNJFLB1044H1JUBSBD92HS3IT"
+49 http GET https://registry.npmjs.org/esprima-fb
+50 http 304 https://registry.npmjs.org/esprima-fb
+51 silly registry.get cb [ 304,
+51 silly registry.get   { date: 'Sat, 24 May 2014 15:43:29 GMT',
+51 silly registry.get     server: 'Apache',
+51 silly registry.get     via: '1.1 varnish',
+51 silly registry.get     'last-modified': 'Sat, 24 May 2014 15:43:29 GMT',
+51 silly registry.get     'cache-control': 'max-age=1',
+51 silly registry.get     etag: '"BNJFLB1044H1JUBSBD92HS3IT"',
+51 silly registry.get     'x-served-by': 'cache-iad2135-IAD',
+51 silly registry.get     'x-cache': 'HIT',
+51 silly registry.get     'x-cache-hits': '1',
+51 silly registry.get     'x-timer': 'S1400946209.516948,VS0,VE9',
+51 silly registry.get     vary: 'Accept',
+51 silly registry.get     'content-length': '0',
+51 silly registry.get     'keep-alive': 'timeout=10, max=50',
+51 silly registry.get     connection: 'Keep-Alive' } ]
+52 verbose etag esprima-fb from cache
+53 silly addNameRange number 2 { name: 'esprima-fb',
+53 silly addNameRange   range: '>=1.0.2-0 <1.1.0-0',
+53 silly addNameRange   hasData: true }
+54 silly addNameRange versions [ 'esprima-fb',
+54 silly addNameRange   [ '1001.1001.1000-dev-harmony-fb',
+54 silly addNameRange     '1001.1001.1001-dev-harmony-fb',
+54 silly addNameRange     '1001.1001.2000-dev-harmony-fb',
+54 silly addNameRange     '2001.1001.2000-dev-harmony-fb',
+54 silly addNameRange     '2001.1001.0-dev-harmony-fb',
+54 silly addNameRange     '3001.1.0-dev-harmony-fb',
+54 silly addNameRange     '4001.1.0-dev-harmony-fb' ] ]
+55 silly lockFile 9649210d-esprima-fb-1-0-2 esprima-fb@~1.0.2
+56 silly lockFile 9649210d-esprima-fb-1-0-2 esprima-fb@~1.0.2
+57 error notarget No compatible version found: esprima-fb@'>=1.0.2-0 <1.1.0-0'
+57 error notarget Valid install targets:
+57 error notarget ["1001.1001.1000-dev-harmony-fb","1001.1001.1001-dev-harmony-fb","1001.1001.2000-dev-harmony-fb","2001.1001.2000-dev-harmony-fb","2001.1001.0-dev-harmony-fb","3001.1.0-dev-harmony-fb","4001.1.0-dev-harmony-fb"]
+57 error notarget
+57 error notarget This is most likely not a problem with npm itself.
+57 error notarget In most cases you or one of your dependencies are requesting
+57 error notarget a package version that doesn't exist.
+58 error System Darwin 13.0.0
+59 error command "/usr/local/Cellar/node/0.10.22/bin/node" "/usr/local/bin/npm" "install"
+60 error cwd /Users/jorgesilva/Sites/2014/Adelle/content/themes/adelle-theme
+61 error node -v v0.10.22
+62 error npm -v 1.3.14
+63 error code ETARGET
+64 verbose exit [ 1, true ]

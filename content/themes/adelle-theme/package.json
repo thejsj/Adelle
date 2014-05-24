@@ -1,6 +1,7 @@
 {
   "name": "adelle-lin-theme",
   "version": "0.0.1",
+  "private": true,
   "devDependencies": {
     "node-sass": "~0.7.0",
     "grunt": "~0.4.4",
