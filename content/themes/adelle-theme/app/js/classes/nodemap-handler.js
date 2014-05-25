@@ -43,7 +43,7 @@ var NodeMap;
 			// Add Project Relationships
 			projects.forEach(function(project){
 				// Get related projects, by project IDs
-				var related_projects = _.clone( _.pluck(project.get('related_projects')), 'ID' );
+				var related_projects = _.pluck(project.get('related_projects'), 'ID');
 				// Substitute the project ID by the local id (index), used by D3
 				for( var i = 0; i < related_projects.length; i++ ){
 					var related_project = projects.findWhere( { ID: related_projects[i] } );
@@ -70,6 +70,7 @@ var NodeMap;
 						})
 					}
 				}
+				console.log(__self.project_relationships);
 			});
 
 			// Add available nodes
@@ -112,17 +113,12 @@ var NodeMap;
 		            }
 				})
 				.on("mouseover", function(d){
-					console.log('mouseover');
-					console.log(d.model.get('post_title'));
-					console.log(d);
 					__self.$el.find('.current-node')
 						.text(d.model.get('post_title'));
 					__self.$el
 						.addClass('active');
 				})
 				.on("mouseout", function(d){
-					console.log("mouseout");
-					console.log(d.model.get('post_title'));
 					__self.$el.find('.current-node')
 						.text('');
 					__self.$el
