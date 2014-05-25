@@ -26,19 +26,28 @@ var Router = {};
             self.closeModals(function(){
                 self.home_view.openProject( slug );
                 self.current_view = 'project';
-            }); 
+                if(typeof ga !== 'undefined'){
+                    ga('send', 'pageview', document.URL);
+                }
+            });
         }
 
         self.page = function(slug){
             self.closeModals(function(){
                 self.home_view.openPage( slug );
                 self.current_view = 'page';
+                if(typeof ga !== 'undefined'){
+                    ga('send', 'pageview', document.URL);
+                }
             });    
         }
 
         self.home = function() {
             self.closeModals(function(){
                 self.current_view = 'home';
+                if(typeof ga !== 'undefined'){
+                    ga('send', 'pageview', document.URL);
+                }
             }); 
         }
 
