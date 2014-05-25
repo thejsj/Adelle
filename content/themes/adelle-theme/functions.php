@@ -4,6 +4,7 @@
 ------------------------------------------------ */
 	require_once('app/functions/custom-functions.php');
 	require_once('app/functions/queue-scripts.php');
+	require_once('app/functions/index-page-admin-view.php');
 
 /* Custom Post Types - Projects
 ------------------------------------------------ */
