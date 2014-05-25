@@ -12,7 +12,9 @@
         "wpackagist/jsj-gallery-slideshow": ">=1.2.9",
         "wpackagist/regenerate-thumbnails": ">=2.2.4",
         "wordpress": "3.9.1",
-        "fancyguy/webroot-installer": "1.0.0"
+        "fancyguy/webroot-installer": "1.0.0",
+        "wpackagist/wordpress-seo": ">=1.5.3",
+        "wpackagist/wp-super-cache": ">=1.4"
     },
     "require-dev": {
         "wpackagist/debug-bar": "0.8.*"
