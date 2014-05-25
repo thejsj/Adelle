@@ -77,11 +77,15 @@
 			}
 			// Push projects
 			foreach( $all_project_relationships as $relationship ){
+				$this_video = array(); 
 				if( $relationship['first_project']->ID === $this->ID && $relationship['second_project']->ID !== $this->ID ){
-					array_push($related_projects_ids, $relationship['second_project']->ID);
-				}
-				else if( $relationship['first_project']->ID !== $this->ID && $relationship['second_project']->ID === $this->ID ){
-					array_push($related_projects_ids, $relationship['first_project']->ID);
+					$this_video['ID'] = $relationship['second_project']->ID;
+					$this_video['order_class'] = 'second';
+					array_push($related_projects_ids, $this_video);
+				} else if( $relationship['first_project']->ID !== $this->ID && $relationship['second_project']->ID === $this->ID ){
+					$this_video['ID'] = $relationship['first_project']->ID;
+					$this_video['order_class'] = 'first';
+					array_push($related_projects_ids, $this_video);
 				}
 			}
 			return $related_projects_ids;
@@ -95,8 +99,9 @@
 		private function get_related_projects( $ids ){
 			$related_projects = array(); 
 			foreach( $ids as $key => $project_id ){
-				$singleProject = new Single($project_id); 
-				$singleProject->class = ( $key % 2 == 0 ) ? 'even' : 'odd';
+				$singleProject = new Single($project_id['ID']); 
+				$singleProject->odd_even_class = ( $key % 2 == 0 ) ? 'even' : 'odd';
+				$singleProject->order_class = $project_id['order_class'];
 				array_push( $related_projects, $singleProject);
 			}
 			return $related_projects;

@@ -96,7 +96,7 @@
 		margin:0; 
 		list-style-type: none; 
 		li {
-			&.odd {
+			&.order-first {
 				a {
 					background-position: center right 30px;
 					&:hover {
@@ -125,7 +125,7 @@
 					}
 				}
 			}
-			&.even {
+			&.order-second {
 				a {
 					background-position: center left 30px;
 					&:hover {
