@@ -107,7 +107,7 @@ var Options = {};
 		self.init = function(){
 			__self.initOptions();
 			if( global.get('window_width') > 500 ){
-				__self.initGui();
+			//	__self.initGui();
 			}
 		}
 

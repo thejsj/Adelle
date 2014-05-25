@@ -44,9 +44,6 @@ var NodeMap;
 			projects.forEach(function(project){
 				// Get related projects, by project IDs
 				var related_projects = _.clone( _.pluck(project.get('related_projects')), 'ID' );
-				console.log('related_projects!!! Node map');
-				console.log(related_projects);
-
 				// Substitute the project ID by the local id (index), used by D3
 				for( var i = 0; i < related_projects.length; i++ ){
 					var related_project = projects.findWhere( { ID: related_projects[i] } );

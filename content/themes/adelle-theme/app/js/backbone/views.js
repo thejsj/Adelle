@@ -271,8 +271,6 @@ var Views = {};
             var newly_available = _.filter( this._projects.models , function(model){
                 if( typeof model !== 'undefined' ){
                     var related_projects_ids = _.pluck(model.get('related_projects'), 'ID');
-                    console.log('related_projects_ids');
-                    console.log(related_projects_ids);
                     return _.indexOf(related_projects_ids, current_model_id) > -1; 
                 }
                 else {

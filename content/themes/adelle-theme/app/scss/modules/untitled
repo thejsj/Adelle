@@ -1,0 +1,14 @@
+.main-instructions {
+	
+	display: none; 
+
+	.active {
+
+		position: fixed;
+		width: 300px; 
+		height: 200px; 
+		
+		
+	} 
+
+}

@@ -31,6 +31,8 @@ var Global = {};
 		 */
 		self.init = function(){
 
+			console.log('Init global');
+
 			// Settings
 			__self.window_height = $(window).height();
 	        __self.window_width  = $(window).width();
@@ -45,6 +47,7 @@ var Global = {};
 	        self.$body              = $('body');
 	        self.$videos_container  = $("#videos-container");
 	        self.$main_content      = $("#main-content");
+	        self.$instructions      = $(".main-instructions");
 	        self.$menu_items        = self.$body.find('.menu-item a');
 	        self.main_title_handler = new MainTitleHandler();
 
@@ -70,6 +73,8 @@ var Global = {};
 				self.options, 
 				self
 			);
+
+			__self.activateInstructions();
 
 			// Filter Availble Projects
 			__self.projects.filterAvailable( self.cookieHandler.getAvailableProjects() ); 
@@ -250,6 +255,18 @@ var Global = {};
 			self.setTotalWidth(); 
 			self.reInit();
 		}
+
+		/**
+		 * Activate and bind instrucionts
+		 */
+		__self.activateInstructions = function () {
+			console.log('activateInstructions');
+			self.$instructions
+				.addClass('active')
+				.click(function () {
+					$(this).remove();
+				});
+		} 
 
 		/* * * * * * * * * * * * * *
 		 *                         *

@@ -22,6 +22,12 @@
     }
 ?>
 <?php get_header(); ?>
+<div class="main-instructions">
+    <div class="content">
+        <?php echo get_field('main_instructions', 'option'); ?>
+    </div>
+    <span class="exit-button">OK</span>
+</div>
 <div id="main-page-title" class="menu-item">
         <h1><a href="<?php echo get_permalink(460); ?>" id="main-page-title-link" class='page-link'><?php bloginfo('name'); ?></a></h1>
         <div id="main-page-title-secondary-text">
