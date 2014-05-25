@@ -12,7 +12,6 @@
 	<?php echo(is_search()) ? '<meta name="robots" content="noindex, nofollow" />' : ''; ?>
 	<title><?php wp_title( '|', true, 'right' ); ?></title>
 	<meta name="title" content="<?php wp_title( '|', true, 'right' ); ?>">
-	<meta name="description" content="<?php bloginfo('description');?>">
 	<meta name="google-site-verification" content="">
 	<meta name="author" content="Adelle Lin">
 	<meta charset="utf-8" />
