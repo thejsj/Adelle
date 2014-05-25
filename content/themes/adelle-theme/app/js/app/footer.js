@@ -30,18 +30,20 @@ var Global = require('../classes/global.js');
 
 	// On Document Ready, Get All Posts through an AJAX Request
 	$(document).ready(function(){
-		// Get Posts
-        $.post(	
-		    MyAjax.ajaxurl,
-			{
-				action : 'get-projects', // This is the name of your PHP function in functions.php
-			},
-			function( data ) {
-				console.log(data);
-				// With the data response, create the global object
-				var global = new Global( data.posts, data.pages ); 
-			}
-		);
+		setTimeout(function () {
+			// Get Posts
+	        $.post(	
+			    MyAjax.ajaxurl,
+				{
+					action : 'get-projects', // This is the name of your PHP function in functions.php
+				},
+				function( data ) {
+					console.log(data);
+					// With the data response, create the global object
+					var global = new Global( data.posts, data.pages ); 
+				}
+			);
+    	}, 50);
     });
 
 })( jQuery );
