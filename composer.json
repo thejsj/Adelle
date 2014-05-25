@@ -14,7 +14,7 @@
         "wordpress": "3.9.1",
         "fancyguy/webroot-installer": "1.0.0",
         "wpackagist/wordpress-seo": ">=1.5.3",
-        "wpackagist/w3-total-cache": ">=0.9.4"
+        "wpackagist/wp-super-cache": ">=1.4"
     },
     "require-dev": {
         "wpackagist/debug-bar": "0.8.*"
