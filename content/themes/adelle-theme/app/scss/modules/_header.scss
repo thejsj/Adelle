@@ -33,6 +33,20 @@ $animation_time: 2.0s;
         @include breakpoint( 'medium' ) {
             font-size: 6em;
         }
+        a {
+            @include transition-property(all);
+            @include transition-duration($animation_time);
+            @include transition-timing-function(ease-in);
+            border-bottom: 3px solid black;
+            color: black; 
+            padding-left: 20px; 
+            @include breakpoint( 'medium' ) {
+                border-bottom: 7px solid black;
+                &:hover {
+                    color: black;
+                }
+            } 
+        }
     }
 
     p {
@@ -42,21 +56,10 @@ $animation_time: 2.0s;
         padding-left: rem-calc(18);
         padding-top: rem-calc(12);
         padding-bottom: rem-calc(18);
-    }
-
-    a {
-        @include transition-property(all);
-        @include transition-duration($animation_time);
-        @include transition-timing-function(ease-in);
-        border-bottom: 3px solid black;
-        color: black; 
-        padding-left: 20px; 
-        @include breakpoint( 'medium' ) {
-            border-bottom: 7px solid black;
-            &:hover {
-                color: black;
-            }
-        } 
+        a {
+            color: black; 
+            border-bottom: solid 1px black; 
+        }
     }
 
     &.active {

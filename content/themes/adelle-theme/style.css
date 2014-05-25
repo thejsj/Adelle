@@ -5870,6 +5870,24 @@ video {
     @media all and (min-width: 720px) {
       #main-page-title h1 {
         font-size: 6em; } }
+    #main-page-title h1 a {
+      -webkit-transition-property: all;
+      -moz-transition-property: all;
+      transition-property: all;
+      -webkit-transition-duration: 2s;
+      -moz-transition-duration: 2s;
+      transition-duration: 2s;
+      -webkit-transition-timing-function: ease-in;
+      -moz-transition-timing-function: ease-in;
+      transition-timing-function: ease-in;
+      border-bottom: 3px solid black;
+      color: black;
+      padding-left: 20px; }
+      @media all and (min-width: 720px) {
+        #main-page-title h1 a {
+          border-bottom: 7px solid black; }
+          #main-page-title h1 a:hover {
+            color: black; } }
   #main-page-title p {
     max-width: 600px;
     margin: auto;
@@ -5877,24 +5895,9 @@ video {
     padding-left: 1.125rem;
     padding-top: 0.75rem;
     padding-bottom: 1.125rem; }
-  #main-page-title a {
-    -webkit-transition-property: all;
-    -moz-transition-property: all;
-    transition-property: all;
-    -webkit-transition-duration: 2s;
-    -moz-transition-duration: 2s;
-    transition-duration: 2s;
-    -webkit-transition-timing-function: ease-in;
-    -moz-transition-timing-function: ease-in;
-    transition-timing-function: ease-in;
-    border-bottom: 3px solid black;
-    color: black;
-    padding-left: 20px; }
-    @media all and (min-width: 720px) {
-      #main-page-title a {
-        border-bottom: 7px solid black; }
-        #main-page-title a:hover {
-          color: black; } }
+    #main-page-title p a {
+      color: black;
+      border-bottom: solid 1px black; }
   #main-page-title.active {
     -webkit-transition-property: all;
     -moz-transition-property: all;

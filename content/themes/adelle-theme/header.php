@@ -39,21 +39,3 @@
 	<?php wp_head(); ?>
 </head> 
 <body>
-	<div id="main-page-title" class="menu-item">
-		<h1><a href="<?php echo get_permalink(460); ?>" id="main-page-title-link" class='page-link'><?php bloginfo('name'); ?></a></h1>
-		<div id="main-page-title-secondary-text">
-			<p><?php echo get_field('intro_text', 'option'); ?></p>
-			<div id="loadingProgressG">
-				<div id="loadingProgressG_1" class="loadingProgressG"></div>
-			</div>
-		</div>
-	</div>
-	<header id="header">
-		<!-- Main Menu -->
-		<nav>
-			<?php wp_nav_menu( array(
-				'theme_location'  => 'main_menu',
-			)); ?> 
-		</nav>
-	</header>
-	
