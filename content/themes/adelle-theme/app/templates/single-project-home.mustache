@@ -4,9 +4,4 @@
 		<div class="excpert"></div>
 	</div>
 	<canvas id="canvas-{{ ID }}" class="{{# available }}available-true{{/ available }}{{^ available }}available-false{{/ available }}"></canvas>
-	<video id="video-{{ ID }}" controls loop>
-	{{#video_files}}
-		<source src="{{{ url }}}" type="{{ mime_type }}">
-	{{/video_files}}
-	</video>
 </div>

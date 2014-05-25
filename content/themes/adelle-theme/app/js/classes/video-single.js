@@ -1,3 +1,6 @@
+var Templates  = require('../../../dist/js/templates.js');
+var Mustache   = require('mustache');
+
 var Video; 
 
 (function($){
@@ -16,13 +19,14 @@ var Video;
 	    var global = parent.global; 
 
 	    // Set Basic IDS
-	    __self.index = model.get('ID');
-	    __self.canvas_id = 'canvas-' + __self.index;
-	    __self.video_id  = 'video-' + __self.index;
+	    __self.index           = model.get('ID');
+	    __self.container_id    = 'container-' + __self.index;
+	    __self.canvas_id       = 'canvas-' + __self.index;
+	    __self.video_id        = 'video-' + __self.index;
 	    __self.fallback_images = model.get('fallback_images');
-	    __self.uses_video = !global.get( 'fallback_view' ) && (model.get('video_files').length > 0); 
-	    __self.color = parent.color( __self.index );
-	    __self.bound = false; 
+	    __self.uses_video      = !global.get( 'fallback_view' ) && (model.get('video_files').length > 0); 
+	    __self.color           = parent.color( __self.index );
+	    __self.bound           = false; 
 	    __self.converted_to_available = false; 
 
 	    if((__self.uses_video && model.get('video_files').length < 1) || (!__self.uses_video && __self.fallback_images.length < 1)){
@@ -67,8 +71,12 @@ var Video;
 	     */
 	    self.init = function(){
 
-	        __self.$canvas = $("#" + __self.canvas_id);
-	        __self.canvas  = __self.$canvas.get(0);
+	        __self.$canvas    = $("#" + __self.canvas_id);
+	        
+	        __self.canvas     = __self.$canvas.get(0);
+
+
+
 	        __self.$canvas
 	        	.width( __self.canvas_width )
 	        	.height( __self.canvas_height );
@@ -97,6 +105,11 @@ var Video;
 	     */
 	    __self.init_video = function( callback ){
 	        
+	        // Container - Append Project Video
+	        __self.$container = $("#" + __self.container_id);
+	    	__self.$container
+	        	.append(Mustache.render( Templates['single-project-video'], model.toJSON() ));
+
 	        // Get Video and Canvas Element
 	        __self.$video  = $("#" + __self.video_id);
 	        __self.video = __self.$video.get(0);              
