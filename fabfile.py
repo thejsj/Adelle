@@ -2,70 +2,59 @@ from fabric.api import *
 from fabric.colors import green, red
 from fabric.contrib.project import rsync_project
 
-def deploy_thejsj(): 
-	"""This pushes to staging in thejsj.com""" 
-	env.host_string = '107.170.18.175'
-	env.user = 'root'
-	env.password = 'ioiyuohbsqot'
-	with cd('/var/www/thejsj.com/public_html/2013/adelle/'):
-		run('pwd')
-		run('git stash')
-		run('git fetch --all')
-		run('git reset --hard origin/master')
-		run('composer install')
-		run('service apache2 restart')
-	with cd('/var/www/thejsj.com/public_html/2013/adelle/wp-content/themes/adelle-theme/'):
-		run('npm install')
-		run('bower install --allow-root')
-		run('grunt staging')
+from config import servers # A dictonary with all your enviornments
 
-def deploy_staging(): 
-	"""This pushes to staging""" 
-	env.host_string = '162.243.11.38'
-	env.user = 'root'
-	env.password = 'jhionastoxch'
-	with cd('/var/www/staging.adelleninja.com/public_html/'):
+def set_environment(environment = False):
+	if environment == False:
+		print "You must specify and environment to push"
+	else:
+		env = servers[environment]
+	return env
+
+def deploy(environment = False): 
+	"""This pushes to your environment""" 
+	environment = set_environment(environment)
+	__deploy__(environment)
+
+def __deploy__(environment):
+	env.host_string = environment.host_string
+	env.user = environment.user
+	env.password = environment.password
+	with cd(environment.main_path):
 		run('pwd')
 		run('git stash')
 		run('git fetch --all')
 		run('git reset --hard origin/master')
+		run('composer update')
 		run('composer install')
 		run('service apache2 restart')
-	with cd('/var/www/staging.adelleninja.com/public_html/content/themes/adelle-theme/'):
+	with cd(environment.theme_path):
 		run('npm install')
 		run('bower install --allow-root')
 		run('grunt production')
 
-def deploy_production(): 
-	"""This pushes to production""" 
-	env.host_string = '162.243.11.38'
-	env.user = 'root'
-	env.password = 'jhionastoxch'
-	with cd('/var/www/adelleninja.com/public_html/'):
-		run('pwd')
-		run('git stash')
-		run('git fetch --all')
-		run('git reset --hard origin/master')
-		run('composer install')
-		run('service apache2 restart')
-	with cd('/var/www/adelleninja.com/public_html/content/themes/adelle-theme/'):
-		run('npm install')
-		run('bower install --allow-root')
-		run('grunt production')
+def restart_mysql(environment = False): 
+	"""This pushes to your environment""" 
+	environment = set_environment(environment)
+	__restart_mysql__(environment)
 
-def restart_mysql():
+def __restart_mysql__(environment):
 	"""Restart Mysql""" 
-	env.host_string = '162.243.11.38'
-	env.user = 'root'
-	env.password = 'jhionastoxch'
+	env.host_string = environment.host_string
+	env.user = environment.user
+	env.password = environment.password
 	with cd('/'):
 		run('/etc/init.d/mysql restart')
 
 def install_dependencies():
+	environment = set_environment(environment)
+	__install_dependencies__(environment)
+
+def __install_dependencies__():
 	"""Install Nodejs""" 
-	env.host_string = '162.243.11.38'
-	env.user = 'root'
-	env.password = 'jhionastoxch'
+	env.host_string = environment.host_string
+	env.user = environment.user
+	env.password = environment.password
 	with cd('/'):
 		sudo('apt-get install python-software-properties')
 		sudo('apt-add-repository ppa:chris-lea/node.js')
