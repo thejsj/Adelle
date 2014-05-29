@@ -19,8 +19,7 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 
 	<!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="<?php bloginfo('template_url'); ?>/dist/ico/favicon.ico">
-    <link rel="icon" type="image/png" href="<?php bloginfo('template_url'); ?>/dist/ico/favicon.ico">
+    <link rel="icon" type="image/png" href="<?php bloginfo('template_url'); ?>/dist/ico/favicon.png">
     <link href="<?php bloginfo('template_url'); ?>/dist/ico/apple-touch-icon.png" rel="apple-touch-icon" />
     <link href="<?php bloginfo('template_url'); ?>/dist/ico/apple-touch-icon-60x60-precomposed.png" rel="apple-touch-icon" sizes="60x60" />
     <link href="<?php bloginfo('template_url'); ?>/dist/ico/apple-touch-icon-72x72-precomposed.png" rel="apple-touch-icon" sizes="72x72" />

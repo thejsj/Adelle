@@ -39,6 +39,7 @@ def restart_mysql(environment = False):
 	__restart_mysql__(environment)
 
 def __restart_mysql__(environment):
+	# https://www.digitalocean.com/community/articles/how-to-add-swap-on-ubuntu-12-04
 	"""Restart Mysql""" 
 	env.host_string = environment.host_string
 	env.user = environment.user
