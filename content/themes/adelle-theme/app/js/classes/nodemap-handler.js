@@ -70,7 +70,6 @@ var NodeMap;
 						})
 					}
 				}
-				console.log(__self.project_relationships);
 			});
 
 			// Add available nodes

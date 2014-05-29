@@ -31,8 +31,6 @@ var Global = {};
 		 */
 		self.init = function(){
 
-			console.log('Init global');
-
 			// Settings
 			__self.window_height = $(window).height();
 	        __self.window_width  = $(window).width();
@@ -260,7 +258,6 @@ var Global = {};
 		 * Activate and bind instrucionts
 		 */
 		__self.activateInstructions = function () {
-			console.log('activateInstructions');
 			self.$instructions
 				.addClass('active')
 				.click(function () {

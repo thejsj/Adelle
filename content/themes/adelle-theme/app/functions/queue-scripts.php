@@ -14,7 +14,10 @@ function load_theme_scripts() {
 	wp_enqueue_script( 'footer' );	
 
 	// declare the URL to the file that handles the AJAX request (wp-admin/admin-ajax.php)
-    wp_localize_script( 'footer', 'MyAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+    wp_localize_script( 'footer', 'MyAjax', array( 
+    	'ajaxurl' => admin_url( 'admin-ajax.php' ),
+    	'view'    => new ProjectsView()
+    ));
 }
 
 add_action( 'wp_enqueue_scripts', 'load_theme_scripts', 0);
