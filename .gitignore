@@ -45,6 +45,13 @@ converted-videos/**/*.mp4
 converted-videos/**/*.avi
 converted-videos/**/*.webm
 
+tests/**/*.png
+tests/**/*.ogg
+tests/**/*.ogv
+tests/**/*.mp4
+tests/**/*.avi
+tests/**/*.webm
+
 # Ignore Python PYC files
 **/*.pyc
 *.pyc
