@@ -23,7 +23,7 @@ var Options;
             __self.global_options.canvas_opacity = 1;
             __self.global_options.video_opacity = 0.2;
             __self.global_options.orientation = 'horizontal';
-            __self.global_options.fallback_view = true;
+            __self.global_options.fallback_view = false;
         };
 
         __self.initGui = function(){

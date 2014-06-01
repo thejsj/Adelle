@@ -16,7 +16,8 @@
     "grunt-browserify": "~2.0.1",
     "favicon": "0.0.2",
     "node-bourbon": "~1.2.2",
-    "grunt-contrib-copy": "~0.5.0"
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-favicons": "~0.6.4"
   },
   "dependencies": {
     "browsernizr": "~1.0.2",
@@ -28,7 +29,6 @@
     "grunt-mustache": "~0.1.6",
     "d3": "~3.4.4",
     "zurb-foundation-npm": "0.0.1",
-    "foundation-js": "~0.1.0",
-    "grunt-favicons": "~0.6.4"
+    "foundation-js": "~0.1.0"
   }
 }
