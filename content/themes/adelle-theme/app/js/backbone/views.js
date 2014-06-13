@@ -252,6 +252,7 @@ var Views = {};
             this._projects.findWhere({ 'ID' : ID }).set('video_loaded', true);
             // See if all are set
             if( this._projects.where({ 'video_loaded' : false }).length == 0){
+                console.timeEnd('Videos Load');
                 this.initVideos();
             }
         },

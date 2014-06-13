@@ -75,8 +75,6 @@ var Video;
 	        
 	        __self.canvas     = __self.$canvas.get(0);
 
-
-
 	        __self.$canvas
 	        	.width( __self.canvas_width )
 	        	.height( __self.canvas_height );
@@ -115,6 +113,8 @@ var Video;
 	        __self.video = __self.$video.get(0);              
 
 	        // Bind Can Play Element
+	        console.timeEnd('Videos Init');
+	        console.time('Videos Load');
 	        __self.$video.on('canplay', function(){
 	        	__self.video.play();
 	        	if( !__self.bound ){

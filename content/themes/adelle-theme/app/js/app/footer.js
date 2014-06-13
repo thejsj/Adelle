@@ -29,8 +29,10 @@ var Global = require('../classes/global.js');
 	});
 
 	// On Document Ready, Get All Posts through an AJAX Request
+	console.time('Window Load');
 	$(window).on('load', function(){
-		console.log('Window Load');
+		console.timeEnd('Window Load');
+		console.time('Videos Init');
 		var global = new Global( MyAjax.view.posts, MyAjax.view.pages ); 
     });
 
