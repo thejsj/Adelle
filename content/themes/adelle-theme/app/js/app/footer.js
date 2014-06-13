@@ -30,6 +30,7 @@ var Global = require('../classes/global.js');
 
 	// On Document Ready, Get All Posts through an AJAX Request
 	$(window).on('load', function(){
+		console.log('Window Load');
 		var global = new Global( MyAjax.view.posts, MyAjax.view.pages ); 
     });
 
