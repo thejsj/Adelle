@@ -251,6 +251,7 @@ var Views = {};
             // Set this one
             this._projects.findWhere({ 'ID' : ID }).set('video_loaded', true);
             // See if all are set
+            console.log(this._projects.where({ 'video_loaded' : false }).length + '/' + this._projects.length);
             if( this._projects.where({ 'video_loaded' : false }).length == 0){
                 console.timeEnd('Videos Load');
                 this.initVideos();
